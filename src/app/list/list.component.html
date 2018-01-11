@@ -1,0 +1,416 @@
+<!--
+//*****************************************************************************
+//	システム名　　　：インシデント管理システム
+//	サブシステム名　：
+//	画面名　　　　　：インシデント一覧画面
+//	HTML_ID　　　　：IncidentListView.php
+//	作成日付・作成者：2017.10.05 ADF)S.Yoshida
+//	修正履歴　　　　：
+//*****************************************************************************
+-->
+<my-header></my-header>
+<conditionSave-modal #conditionSaveModal></conditionSave-modal>
+<conditionDelete-modal #conditionDeleteModal></conditionDelete-modal>
+
+<script> var sss </script>
+<div id="listApp" ng-cloak>
+  <div ng-controller="ListController as main" class="container-fluid">
+    <!-- <div id="newTable" class="row" style="width:100%">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel">
+          <table class="table table-striped" id="dataTables-result">
+            <thead>
+              <tr>
+                <th class="table-header-list" style="width:15%">インシデント番号
+                </th>
+                <th class="table-header-list" style="width:15%">受付内容
+                </th>
+                <th class="table-header-list" style="width:15%">機場
+                </th>
+                <th class="table-header-list" style="width:15%">設備
+                </th>
+                <th class="table-header-list" style="width:7%">都道府県
+                </th>
+                <th class="table-header-list" style="width:7%">分類
+                </th>
+                <th class="table-header-list" style="width:8%">ステータス
+                </th>
+                <th class="table-header-list" style="width:9%">発生日時
+                </th>
+                <th class="table-header-list" style="width:9%">受付日
+                  <i class="fa fa-caret-down"></i>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <form>
+      <!-- 仕様検討中のためコメント -->
+      <!--
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+                            <div class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    <button class="btn btn-danger btn-close">&times;</button>
+                                </div>
+                                <div class=""></div>
+                                <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                                    キーワード
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <input type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    -->
+      <div class="row">
+        <span [class.condition-show]="incidentNoShow" [class.condition-hide]="!incidentNoShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="incidentNoShow = false;" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                インシデント番号
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <input name="txt_incidentNo" type="text" class="form-control" [(ngModel)]="incidentNo">
+          </div>
+        </span>
+        <span [class.condition-show]="callContentShow" [class.condition-hide]="!callContentShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="callContentShow = false;" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                受付内容
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <input name="txt_callContent" type="text" class="form-control" [(ngModel)]="callContent">
+          </div>
+        </span>
+      </div>
+
+      <div class="row">
+        <span [class.condition-show]="kijoNmShow" [class.condition-hide]="!kijoNmShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                機場
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <input name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
+          </div>
+        </span>
+        <span [class.condition-show]="setubiNmShow" [class.condition-hide]="!setubiNmShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                設備
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <input name="txt_setubiNm" type="text" class="form-control" [(ngModel)]="setubiNm">
+          </div>
+        </span>
+      </div>
+
+      <div class="row">
+        <span [class.condition-show]="prefCdShow" [class.condition-hide]="!prefCdShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                都道府県
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <select name="sel_PrefCd" multiple="multiple" size="2" class="form-control search-dropdown" [(ngModel)]="prefCd">
+              <option value="1">北海道</option>
+              <option value="2">青森県</option>
+              <option value="3">岩手県</option>
+              <option value="4">宮城県</option>
+              <option value="5">秋田県</option>
+              <option value="6">山形県</option>
+              <option value="7">福島県</option>
+              <option value="8">茨城県</option>
+              <option value="9">栃木県</option>
+              <option value="10">群馬県</option>
+              <option value="11">埼玉県</option>
+              <option value="12">千葉県</option>
+              <option value="13">東京都</option>
+              <option value="14">神奈川県</option>
+              <option value="15">新潟県</option>
+              <option value="16">富山県</option>
+              <option value="17">石川県</option>
+              <option value="18">福井県</option>
+              <option value="19">山梨県</option>
+              <option value="20">長野県</option>
+              <option value="21">岐阜県</option>
+              <option value="22">静岡県</option>
+              <option value="23">愛知県</option>
+              <option value="24">三重県</option>
+              <option value="25">滋賀県</option>
+              <option value="26">京都府</option>
+              <option value="27">大阪府</option>
+              <option value="28">兵庫県</option>
+              <option value="29">奈良県</option>
+              <option value="30">和歌山県</option>
+              <option value="31">鳥取県</option>
+              <option value="32">島根県</option>
+              <option value="33">岡山県</option>
+              <option value="34">広島県</option>
+              <option value="35">山口県</option>
+              <option value="36">徳島県</option>
+              <option value="37">香川県</option>
+              <option value="38">愛媛県</option>
+              <option value="39">高知県</option>
+              <option value="40">福岡県</option>
+              <option value="41">佐賀県</option>
+              <option value="42">長崎県</option>
+              <option value="43">熊本県</option>
+              <option value="44">大分県</option>
+              <option value="45">宮崎県</option>
+              <option value="46">鹿児島県</option>
+              <option value="47">沖縄県</option>
+            </select>
+          </div>
+        </span>
+        <span [class.condition-show]="callDateShow" [class.condition-hide]="!callDateShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                受付日
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <div class="date-div">
+              <div class="input-group">
+                <!-- <input type="text" class="form-control"> -->
+                <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                  [(bsValue)]="callStartDateFrom" value="{{callStartDateFrom | date:'yyyy/MM/dd'}}">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <span class="text-center inner-text">～</span>
+            <div class="date-div">
+              <div class="input-group">
+                <!-- <input type="text" class="form-control"> -->
+                <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                  [(bsValue)]="callStartDateTo" value="{{callStartDateTo | date:'yyyy/MM/dd'}}">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+
+      <div class="row">
+        <span [class.condition-show]="incidentTypeShow" [class.condition-hide]="!incidentTypeShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                インシデント分類
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+            <div class="checkbox">
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeSyougai"> 障害
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeJiko"> 事故
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeClaim"> クレーム
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeToiawase"> 問合せ
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeInfo"> 情報
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeOther"> その他
+              </label>
+            </div>
+          </div>
+        </span>
+      </div>
+      <div class="row">
+        <span [class.condition-show]="incidentStsShow" [class.condition-hide]="!incidentStsShow">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+              </div>
+              <div class=""></div>
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                ステータス
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+            <div class="checkbox">
+              <label class="input-item">
+                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusCall"> 受付済
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusTaio"> 対応入力済
+              </label>
+              <label class="input-item">
+                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusAct"> 処置入力済
+              </label>
+            </div>
+          </div>
+        </span>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <select name="sel_Condition" #condition class="form-control search-dropdown" [(ngModel)]="selCondition">
+                  <option value="0">検索項目を選択</option>
+                  <option [class.condition-hide]="incidentTypeShow" value="incidentTypeShow">インシデント分類</option>
+                  <option [class.condition-hide]="incidentStsShow" value="incidentStsShow">ステータス</option>
+                  <option [class.condition-hide]="incidentNoShow" value="incidentNoShow">インシデント番号</option>
+                  <option [class.condition-hide]="callContentShow" value="callContentShow">受付内容</option>
+                  <option [class.condition-hide]="parentIncidentNoShow" value="parentIncidentNoShow">親インシデント番号</option>
+                  <option [class.condition-hide]="incidentStartDateTimeShow" value="incidentStartDateTimeShow">発生日時</option>
+                  <option [class.condition-hide]="callDateShow" value="callDateShow">受付日</option>
+                  <option [class.condition-hide]="industryTypeCdShow" value="industryTypeCdShow">業種区分</option>
+                  <option [class.condition-hide]="kijoNmShow" value="kijoNmShow">機場</option>
+                  <option [class.condition-hide]="jigyosyutaiNmShow" value="jigyosyutaiNmShow">事業主体</option>
+                  <option [class.condition-hide]="setubiNmShow" value="setubiNmShow">設備</option>
+                  <option [class.condition-hide]="prefCdShow" value="prefCdShow">都道府県</option>
+                  <option [class.condition-hide]="custNmShow" value="custNmShow">顧客</option>
+                  <option [class.condition-hide]="custTypeCdShow" value="custTypeCdShow">顧客分類</option>
+                  <option [class.condition-hide]="salesDeptNmShow" value="salesDeptNmShow">営業部門</option>
+                  <option [class.condition-hide]="salesUserNmShow" value="salesUserNmShow">営業担当者</option>
+                  <option [class.condition-hide]="relateUserNmShow" value="relateUserNmShow">関係者</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <button type="button" (click)="addCondition();" class="btn btn-xs btn-warning">検索項目を追加</button>
+          <button type="button" (click)="conditionSaveModal.openModal(getCondition());" class="btn btn-xs btn-warning">検索条件を保存</button>
+          <button type="button" (click)="conditionDeleteModal.openModal();" class="btn btn-xs btn-warning">検索条件を削除</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 search-result-info">
+              検索結果：　50件
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 transition-button text-right">
+              <button type="button" (click)="excelOutput()" class="btn btn-warning">
+                <i class="fa fa-download"></i> EXCEL出力</button>
+              <button type="button" (click)="search()" class="btn btn-danger">
+                <i class="fa fa-search"></i> 検索</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row" id="search-list">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel">
+          <table class="table table-striped list-table">
+            <thead>
+              <tr>
+                <th class="table-header-list incident-no-th">インシデント番号 </th>
+                <th class="table-header-list" width="25%"> 受付内容</th>
+                <th class="table-header-list">機場</th>
+                <th class="table-header-list">設備</th>
+                <th class="table-header-list">都道府県</th>
+                <th class="table-header-list">発生日時</th>
+                <th class="table-header-list">受付日
+                  <i class="fa fa-caret-down"></i>
+                </th>
+                <th class="table-header-list">分類</th>
+                <th class="table-header-list">ステータス</th>
+                <th class="table-header-list relate-th" popover="関連プロジェクト" triggers="mouseenter:mouseleave">関連PJ</th>
+                <th class="table-header-list relate-th" popover="事故クレーム連絡" triggers="mouseenter:mouseleave">事ク連絡</th>
+                <th class="table-header-list relate-th" popover="現地出動（MR2）" triggers="mouseenter:mouseleave">現地出動</th>
+                <th class="table-header-list relate-th">費用決済</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of incidentList">
+                <td class="code-list">
+                  <a routerLink="/detail/{{data?.incidentId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
+                    <u>{{data?.incidentNo}}</u>
+                  </a>
+                </td>
+                <td class="char-list" popover={{data?.callContent}} triggers="mouseenter:mouseleave">
+                  {{data?.callContent | slice: 0:40 }}
+                  <span *ngIf="data?.callContent?.length >= 40">…</span>
+                </td>
+                <td class="char-list">{{data?.kijoNm}}</td>
+                <td class="char-list">{{data?.setubiNm}}</td>
+                <td class="status-list">{{data?.prefNm}}</td>
+                <td class="date-list">{{data?.incidentStartDateTime}}</td>
+                <td class="date-list">{{data?.callDate}}</td>
+                <td class="status-list">{{data?.incidentTypeNm}}</td>
+                <td class="status-list">{{data?.incidentStatusNm}}</td>
+                <td class="status-list">{{data?.relatePj}}</td>
+                <td class="status-list">{{data?.relateJiko}}</td>
+                <td class="status-list">{{data?.relateMr2}}</td>
+                <td class="status-list">{{data?.relateHiyo}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
