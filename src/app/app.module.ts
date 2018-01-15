@@ -34,6 +34,8 @@ import { EquipmentSearchModalComponent } from './modal/equipmentSearch.modal.com
 import { JsonpService } from './jsonp.service';
 import { WindowRefService } from './windowRef.service';
 
+import { OrderByPipe } from './pipe/order.by.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +56,8 @@ import { WindowRefService } from './windowRef.service';
     ConditionDeleteModalComponent,
     ProjectSearchModalComponent,
     CustomerSearchModalComponent,
-    EquipmentSearchModalComponent
+    EquipmentSearchModalComponent,
+    OrderByPipe
   ],
   imports: [
     BrowserModule,

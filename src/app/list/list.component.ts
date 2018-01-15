@@ -11,6 +11,8 @@ defineLocale('ja', ja);
 
 import { JsonpService } from '../jsonp.service';
 
+import { OrderByParam } from '../pipe/order.by.pipe';
+
 @Component({
   selector: 'my-app',
   templateUrl: './list.component.html',
@@ -23,7 +25,6 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(11111111111);
     // ログイン情報設定
     this.userId = "userId";
     this.userName = "userName";
@@ -527,4 +528,60 @@ export class ListComponent implements OnInit {
   //       $("#newTable").hide();
   //   }
   // });
+
+  // 並び替え処理宣言
+  order = new OrderByParam();
+  orderByParamArray = { // true:ソート有り false:ソート無し [column名 + 「Asc」or「Desc」]
+    'incidentNoAsc': false, // インシデント番号のソートアイコン　昇順
+    'incidentNoDesc': false // インシデント番号のソートアイコン　降順
+  };
+  // 並び替え処理(並び順指定)
+  sort(column: string) {  // ←イベント発火地点
+    var columnAsc = column + 'Asc';
+    var columnDesc = column + 'Desc';
+    this.changeOrderBy(columnAsc, columnDesc);
+    var orderBy = this.getOrderBy(columnAsc, columnDesc);
+    this.order.set(column, orderBy);  // ←ソートを行う
+
+    // 切り替え処理
+    for (var key in this.orderByParamArray) {
+      if (key != columnAsc && key != columnDesc) {
+        // 選択していない項目は全て初期化する
+        this.orderByParamArray[key] = false;
+      }
+    }
+  }
+
+  // ソート順の取得
+  getOrderBy(columnAsc: string, columnDesc: string) {
+    if (this.orderByParamArray[columnAsc] && !this.orderByParamArray[columnDesc]) {
+      return 'ASC';
+    } else if (!this.orderByParamArray[columnAsc] && this.orderByParamArray[columnDesc]) {
+      return 'DESC';
+    }
+    // 番兵
+    this.orderByParamArray[columnAsc] = true;
+    this.orderByParamArray[columnDesc] = false;
+    return 'ASC';
+  }
+  // ソート順の変更
+  changeOrderBy(columnAsc: string, columnDesc: string) {
+    if (!this.orderByParamArray[columnAsc] && !this.orderByParamArray[columnDesc]) {
+      // 初めて選択→昇順
+      this.orderByParamArray[columnAsc] = true;
+    } else if (this.orderByParamArray[columnAsc] && !this.orderByParamArray[columnDesc]) {
+      // 昇順→降順
+      this.orderByParamArray[columnAsc] = false;
+      this.orderByParamArray[columnDesc] = true;
+    } else if (!this.orderByParamArray[columnAsc] && this.orderByParamArray[columnDesc]) {
+      // 降順→昇順
+      this.orderByParamArray[columnAsc] = true;
+      this.orderByParamArray[columnDesc] = false;
+    } else {
+      // 番兵
+      this.orderByParamArray[columnAsc] = false;
+      this.orderByParamArray[columnDesc] = false;
+    }
+  }
+
 }
