@@ -143,10 +143,67 @@ export class EditComponent implements OnInit {
   // 営業担当者選択
   onSalesUserSelected($event: any) {
     if ($event) {
-      this.salesUserId = $event["userId"];
-      this.salesUserNm = $event["userNm"];
-      this.salesDeptCd = $event["sectionCd"];
-      this.salesDeptNm = $event["sectionNm"];
+      switch($event["userSearchType"]){
+        case 'salesUser':
+          this.salesUserId = $event["userId"];
+          this.salesUserNm = $event["userNm"];
+          this.salesDeptCd = $event["sectionCd"];
+          this.salesDeptNm = $event["sectionNm"];
+          break;
+        case 'skanUser':
+          this.skanUserId = $event["userId"];
+          this.skanUserNm = $event["userNm"];
+          this.skanDeptCd = $event["sectionCd"];
+          this.skanDeptNm = $event["sectionNm"];
+          break;
+        case 'callUser':
+          this.callUserId = $event["userId"];
+          this.callUserNm = $event["userNm"];
+          this.callDeptCd = $event["sectionCd"];
+          this.callDeptNm = $event["sectionNm"];
+          break;
+        case 'taioUser':
+          this.taioUserId = $event["userId"];
+          this.taioUserNm = $event["userNm"];
+          this.taioDeptCd = $event["sectionCd"];
+          this.taioDeptNm = $event["sectionNm"];
+          break;
+        case 'actUser':
+          this.actUserId = $event["userId"];
+          this.actUserNm = $event["userNm"];
+          this.actDeptCd = $event["sectionCd"];
+          this.actDeptNm = $event["sectionNm"];
+          break;
+      }
+
+    }
+  }
+
+  // 部門検索
+  onSalesSectionSelected($event: any){
+    if ($event) {
+      switch($event["sectionSearchType"]){
+        case 'salesSection':
+          this.salesDeptCd = $event["postCd"];
+          this.salesDeptNm = $event["sectionNm"];
+          break;
+        case 'skanSection':
+          this.skanDeptCd = $event["postCd"];
+          this.skanDeptNm = $event["sectionNm"];
+          break;
+        case 'callSection':
+          this.callDeptCd = $event["postCd"];
+          this.callDeptNm = $event["sectionNm"];
+          break;
+        case 'taioSection':
+          this.taioDeptCd = $event["postCd"];
+          this.taioDeptNm = $event["sectionNm"];
+          break;
+        case 'actSection':
+          this.actDeptCd = $event["postCd"];
+          this.actDeptNm = $event["sectionNm"];
+          break;
+      }
     }
   }
 

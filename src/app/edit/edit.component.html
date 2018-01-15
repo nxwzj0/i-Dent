@@ -12,15 +12,15 @@
 <incidentSearch-modal #incident></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
 <userSearch-modal #salesUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
-<userSearch-modal #skanUser></userSearch-modal>
-<userSearch-modal #callUser></userSearch-modal>
-<userSearch-modal #taioUser></userSearch-modal>
-<userSearch-modal #actUser></userSearch-modal>
-<sectionSearch-modal #salesSection></sectionSearch-modal>
-<sectionSearch-modal #skanSection></sectionSearch-modal>
-<sectionSearch-modal #callSection></sectionSearch-modal>
-<sectionSearch-modal #taioSection></sectionSearch-modal>
-<sectionSearch-modal #actSection></sectionSearch-modal>
+<userSearch-modal #skanUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
+<userSearch-modal #callUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
+<userSearch-modal #taioUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
+<userSearch-modal #actUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
+<sectionSearch-modal #salesSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
+<sectionSearch-modal #skanSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
+<sectionSearch-modal #callSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
+<sectionSearch-modal #taioSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
+<sectionSearch-modal #actSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <projectSearch-modal #project></projectSearch-modal>
 <customerSearch-modal #customer></customerSearch-modal>
 <equipmentSearch-modal #equipment></equipmentSearch-modal>
@@ -411,7 +411,7 @@
                     <div class="input-group">
                       <input name="txt_salesDeptNm" type="text" class="form-control" [(ngModel)]="salesDeptNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="salesSection.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="salesSection.openModal('salesSection')">
                           <i class="fa fa-building"></i>
                         </button>
                       </span>
@@ -445,7 +445,7 @@
                     <div class="input-group">
                       <input name="txt_skanDeptNm" type="text" class="form-control" [(ngModel)]="skanDeptNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="skanSection.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="skanSection.openModal('skanSection')">
                           <i class="fa fa-building"></i>
                         </button>
                       </span>
@@ -461,7 +461,7 @@
                     <div class="input-group">
                       <input name="txt_skanUserNm" type="text" class="form-control" [(ngModel)]="skanUserNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="skanUser.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="skanUser.openModal('skanUser')">
                           <i class="fa fa-user"></i>
                         </button>
                       </span>
@@ -546,7 +546,7 @@
                     <div class="input-group">
                       <input name="callDeptNm" type="text" class="form-control" [(ngModel)]="callDeptNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="callSection.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="callSection.openModal('callSection')">
                           <i class="fa fa-building"></i>
                         </button>
                       </span>
@@ -561,7 +561,7 @@
                     <div class="input-group">
                       <input name="callUserNm" type="text" class="form-control" [(ngModel)]="callUserNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="callUser.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="callUser.openModal('callUser')">
                           <i class="fa fa-user"></i>
                         </button>
                       </span>
@@ -673,7 +673,7 @@
                     <div class="input-group">
                       <input name="taioDeptNm" type="text" class="form-control" [(ngModel)]="taioDeptNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="taioSection.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="taioSection.openModal('taioSection')">
                           <i class="fa fa-building"></i>
                         </button>
                       </span>
@@ -688,7 +688,7 @@
                     <div class="input-group">
                       <input name="taioUserNm" type="text" class="form-control" [(ngModel)]="taioUserNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="taioUser.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="taioUser.openModal('taioUser')">
                           <i class="fa fa-user"></i>
                         </button>
                       </span>
@@ -835,7 +835,7 @@
                     <div class="input-group">
                       <input name="actDeptNm" type="text" class="form-control" [(ngModel)]="actDeptNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="actSection.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="actSection.openModal('actSection')">
                           <i class="fa fa-building"></i>
                         </button>
                       </span>
@@ -850,7 +850,7 @@
                     <div class="input-group">
                       <input name="actUserNm" type="text" class="form-control" [(ngModel)]="actUserNm">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" (click)="actUser.openModal()">
+                        <button type="button" class="btn btn-input-support" (click)="actUser.openModal('actUser')">
                           <i class="fa fa-user"></i>
                         </button>
                       </span>

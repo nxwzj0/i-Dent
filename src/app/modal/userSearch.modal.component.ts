@@ -25,16 +25,11 @@ export class UserSearchModalComponent {
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
-  // モーダル表示
-  openModal(modalTypeFromParent: any) {
-    if (modalTypeFromParent) {
-      // 親コンポーネントからの値受け取り
-      this.modalType = modalTypeFromParent;
-    }
-    this.clearUserSearch();
-    this.template.show();
-    this.search();
-  }
+  // 検索条件
+  searchUserLastNm = "";
+  searchUserFirstNm = "";
+  searchSectionNm = "";
+  searchSectionCd = "";
 
   // ページングの設定
   maxSize: number = 5; // ページングの表示ページ数
@@ -46,13 +41,25 @@ export class UserSearchModalComponent {
   // ページング処理
   pageChanged(event: any): void {
     this.start = this.itemsPerPage * (this.currentPage - 1);
+    /*--------------*//** 调试用 TEST *//*--------------*/
+    console.group("pageChanged");
+    console.log("start:"+this.start);/**--------------调试用*/
+    console.log("itemsPerPage:"+this.itemsPerPage);/**--------------调试用*/
+    console.log("currentPage:"+this.currentPage);/**--------------调试用*/
+    console.groupEnd();
+    /*--------------*//** 调试用 TEST *//*--------------*/
   }
 
-  // 検索条件
-  searchUserLastNm = "";
-  searchUserFirstNm = "";
-  searchSectionNm = "";
-  searchSectionCd = "";
+  // モーダル表示
+  openModal(modalTypeFromParent: any) {
+    if (modalTypeFromParent) {
+      // 親コンポーネントからの値受け取り
+      this.modalType = modalTypeFromParent;
+    }
+    this.clearUserSearch();
+    this.template.show();
+    this.search();
+  }
 
   // 検索条件の初期化
   clearUserSearch() {
@@ -107,10 +114,11 @@ export class UserSearchModalComponent {
   // 選択ボタンクリック
   onSelect(userId: any, userNm: any, sectionCd: any, sectionNm: any) {
     // 営業担当者
-    if (this.modalType == 'salesUser') {
-      // 親コンポーネントの処理呼び出し
-      this.salesUserSelect.emit({ "userId": userId, "userNm": userNm, "sectionCd": sectionCd, "sectionNm": sectionNm });
-    }
+    this.salesUserSelect.emit({"userSearchType":this.modalType, "userId": userId, "userNm": userNm, "sectionCd": sectionCd, "sectionNm": sectionNm });
+    // if (this.modalType == 'salesUser') {
+    //   // 親コンポーネントの処理呼び出し
+    //   this.salesUserSelect.emit({"userId": userId, "userNm": userNm, "sectionCd": sectionCd, "sectionNm": sectionNm });
+    // }
     // モーダルの非表示
     this.template.hide();
   }
