@@ -25,6 +25,25 @@ export class UserSearchModalComponent {
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
+  // 検索条件
+  searchUserLastNm = "";
+  searchUserFirstNm = "";
+  searchSectionNm = "";
+  searchSectionCd = "";
+
+  // ページングの設定
+  maxSize: number = 5; // ページングの表示ページ数
+  bigTotalItems: number = 0; // 総数
+  itemsPerPage: number = 10; // 1ページに表示する件数
+  currentPage: number = 0; // 現在表示しているページ
+  start: number = 0; // データ表示開始位置
+  end: number = 10; // データ表示終了位置  // ページング処理
+  pageChanged(event: any): void {
+    this.start = this.itemsPerPage * (this.currentPage - 1);
+    let tmpStart: number = +this.start;
+    let tmpItemsPerPage: number = +this.itemsPerPage;
+    this.end = tmpStart + tmpItemsPerPage;
+  }
   // モーダル表示
   openModal(modalTypeFromParent: any) {
     if (modalTypeFromParent) {
@@ -35,28 +54,6 @@ export class UserSearchModalComponent {
     this.template.show();
     this.search();
   }
-
-  // ページングの設定
-  maxSize: number = 5; // ページングの表示ページ数
-  bigTotalItems: number = 0; // 総数
-  itemsPerPage: number = 10; // 1ページに表示する件数
-  currentPage: number = 0; // 現在表示しているページ
-  start: number = 0; // データ表示開始位置
-  end: number = 10; // データ表示終了位置
-
-  // ページング処理
-  pageChanged(event: any): void {
-    this.start = this.itemsPerPage * (this.currentPage - 1);
-    let tmpStart: number = +this.start;
-    let tmpItemsPerPage: number = +this.itemsPerPage;
-    this.end = tmpStart + tmpItemsPerPage;
-  }
-
-  // 検索条件
-  searchUserLastNm = "";
-  searchUserFirstNm = "";
-  searchSectionNm = "";
-  searchSectionCd = "";
 
   // 検索条件の初期化
   clearUserSearch() {
@@ -116,8 +113,7 @@ export class UserSearchModalComponent {
       , "userNm": userNm
       , "sectionCd": sectionCd
       , "sectionNm": sectionNm 
-    });
-    // モーダルの非表示
+    });    // モーダルの非表示
     this.template.hide();
   }
 }
