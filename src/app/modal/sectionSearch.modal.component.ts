@@ -36,10 +36,14 @@ export class SectionSearchModalComponent {
   itemsPerPage: number = 10; // 1ページに表示する件数
   currentPage: number = 0; // 現在表示しているページ
   start: number = 0; // データ表示開始位置
+  end: number = 10; // データ表示終了位置
 
   // ページング処理
   pageChanged(event: any): void {
     this.start = this.itemsPerPage * (this.currentPage - 1);
+    let tmpStart: number = +this.start;
+    let tmpItemsPerPage: number = +this.itemsPerPage;
+    this.end = tmpStart + tmpItemsPerPage;
   }
 
   // モーダル表示
