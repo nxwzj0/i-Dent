@@ -164,3 +164,8 @@ body {
 .require {
     color: red;
 }
+
+/* 入力チェックエラー */
+input.ng-dirty.ng-invalid { 
+    background-color: #fee; 
+}
