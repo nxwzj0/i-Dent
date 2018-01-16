@@ -10,8 +10,6 @@
 -->
 <my-header></my-header>
 <conditionSave-modal #conditionSaveModal></conditionSave-modal>
-<conditionDelete-modal #conditionDeleteModal></conditionDelete-modal>
-
 
 <div id="listApp" ng-cloak>
   <div ng-controller="ListController as main" class="container-fluid">
@@ -102,211 +100,151 @@
       </div>
 
       <div class="row">
-        <span [class.condition-show]="kijoNmShow" [class.condition-hide]="!kijoNmShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                機場
-              </label>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
             </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              機場
+            </label>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-            <input name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
-          </div>
-        </span>
-        <span [class.condition-show]="setubiNmShow" [class.condition-hide]="!setubiNmShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                設備
-              </label>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <input name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
             </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              設備
+            </label>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-            <input name="txt_setubiNm" type="text" class="form-control" [(ngModel)]="setubiNm">
-          </div>
-        </span>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <input name="txt_setubiNm" type="text" class="form-control" [(ngModel)]="setubiNm">
+        </div>
       </div>
 
       <div class="row">
-        <span [class.condition-show]="prefCdShow" [class.condition-hide]="!prefCdShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                都道府県
-              </label>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+            </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              都道府県
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <input name="txt_prefNm" type="text" class="form-control" [(ngModel)]="prefNm">
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
+            </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              受付日
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <div class="date-div">
+            <div class="input-group">
+              <!-- <input type="text" class="form-control"> -->
+              <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                [(bsValue)]="callStartDateFrom" value="{{callStartDateFrom | date:'yyyy/MM/dd'}}">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </span>
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-            <select name="sel_PrefCd" multiple="multiple" size="2" class="form-control search-dropdown" [(ngModel)]="prefCd">
-              <option value="1">北海道</option>
-              <option value="2">青森県</option>
-              <option value="3">岩手県</option>
-              <option value="4">宮城県</option>
-              <option value="5">秋田県</option>
-              <option value="6">山形県</option>
-              <option value="7">福島県</option>
-              <option value="8">茨城県</option>
-              <option value="9">栃木県</option>
-              <option value="10">群馬県</option>
-              <option value="11">埼玉県</option>
-              <option value="12">千葉県</option>
-              <option value="13">東京都</option>
-              <option value="14">神奈川県</option>
-              <option value="15">新潟県</option>
-              <option value="16">富山県</option>
-              <option value="17">石川県</option>
-              <option value="18">福井県</option>
-              <option value="19">山梨県</option>
-              <option value="20">長野県</option>
-              <option value="21">岐阜県</option>
-              <option value="22">静岡県</option>
-              <option value="23">愛知県</option>
-              <option value="24">三重県</option>
-              <option value="25">滋賀県</option>
-              <option value="26">京都府</option>
-              <option value="27">大阪府</option>
-              <option value="28">兵庫県</option>
-              <option value="29">奈良県</option>
-              <option value="30">和歌山県</option>
-              <option value="31">鳥取県</option>
-              <option value="32">島根県</option>
-              <option value="33">岡山県</option>
-              <option value="34">広島県</option>
-              <option value="35">山口県</option>
-              <option value="36">徳島県</option>
-              <option value="37">香川県</option>
-              <option value="38">愛媛県</option>
-              <option value="39">高知県</option>
-              <option value="40">福岡県</option>
-              <option value="41">佐賀県</option>
-              <option value="42">長崎県</option>
-              <option value="43">熊本県</option>
-              <option value="44">大分県</option>
-              <option value="45">宮崎県</option>
-              <option value="46">鹿児島県</option>
-              <option value="47">沖縄県</option>
-            </select>
-          </div>
-        </span>
-        <span [class.condition-show]="callDateShow" [class.condition-hide]="!callDateShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                受付日
-              </label>
+          <span class="text-center inner-text">～</span>
+          <div class="date-div">
+            <div class="input-group">
+              <!-- <input type="text" class="form-control"> -->
+              <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                [(bsValue)]="callStartDateTo" value="{{callStartDateTo | date:'yyyy/MM/dd'}}">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </span>
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-            <div class="date-div">
-              <div class="input-group">
-                <!-- <input type="text" class="form-control"> -->
-                <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
-                  [(bsValue)]="callStartDateFrom" value="{{callStartDateFrom | date:'yyyy/MM/dd'}}">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
-                    <i class="fa fa-calendar"></i>
-                  </button>
-                </span>
-              </div>
-            </div>
-            <span class="text-center inner-text">～</span>
-            <div class="date-div">
-              <div class="input-group">
-                <!-- <input type="text" class="form-control"> -->
-                <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
-                  [(bsValue)]="callStartDateTo" value="{{callStartDateTo | date:'yyyy/MM/dd'}}">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
-                    <i class="fa fa-calendar"></i>
-                  </button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </span>
+        </div>
       </div>
 
       <div class="row">
-        <span [class.condition-show]="incidentTypeShow" [class.condition-hide]="!incidentTypeShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                インシデント分類
-              </label>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
             </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              インシデント分類
+            </label>
           </div>
-          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-            <div class="checkbox">
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeSyougai"> 障害
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeJiko"> 事故
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeClaim"> クレーム
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeToiawase"> 問合せ
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeInfo"> 情報
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="incidentType" value="" [(ngModel)]="incidentTypeOther"> その他
-              </label>
-            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+          <div class="checkbox">
+            <label class="input-item">
+              <input type="checkbox" value=""> 障害
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> 事故
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> クレーム
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> 問合せ
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> 情報
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> その他
+            </label>
           </div>
-        </span>
+        </div>
       </div>
       <div class="row">
-        <span [class.condition-show]="incidentStsShow" [class.condition-hide]="!incidentStsShow">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
-            <div class="row">
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
-              </div>
-              <div class=""></div>
-              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                ステータス
-              </label>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+              <button type="button" (click)="deleteCondition()" class="btn btn-danger btn-close">&times;</button>
             </div>
+            <div class=""></div>
+            <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+              ステータス
+            </label>
           </div>
-          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-            <div class="checkbox">
-              <label class="input-item">
-                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusCall"> 受付済
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusTaio"> 対応入力済
-              </label>
-              <label class="input-item">
-                <input type="checkbox" name="status" value="" [(ngModel)]="incidentStatusAct"> 処置入力済
-              </label>
-            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+          <div class="checkbox">
+            <label class="input-item">
+              <input type="checkbox" value=""> 受付済
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> 対応入力済
+            </label>
+            <label class="input-item">
+              <input type="checkbox" value=""> 処置入力済
+            </label>
           </div>
-        </span>
+        </div>
       </div>
 
       <div class="row">
@@ -316,23 +254,18 @@
               <div class="form-group">
                 <select name="sel_Condition" #condition class="form-control search-dropdown" [(ngModel)]="selCondition">
                   <option value="0">検索項目を選択</option>
-                  <option [class.condition-hide]="incidentTypeShow" value="incidentTypeShow">インシデント分類</option>
-                  <option [class.condition-hide]="incidentStsShow" value="incidentStsShow">ステータス</option>
                   <option [class.condition-hide]="incidentNoShow" value="incidentNoShow">インシデント番号</option>
                   <option [class.condition-hide]="callContentShow" value="callContentShow">受付内容</option>
-                  <option [class.condition-hide]="parentIncidentNoShow" value="parentIncidentNoShow">親インシデント番号</option>
-                  <option [class.condition-hide]="incidentStartDateTimeShow" value="incidentStartDateTimeShow">発生日時</option>
-                  <option [class.condition-hide]="callDateShow" value="callDateShow">受付日</option>
-                  <option [class.condition-hide]="industryTypeCdShow" value="industryTypeCdShow">業種区分</option>
-                  <option [class.condition-hide]="kijoNmShow" value="kijoNmShow">機場</option>
-                  <option [class.condition-hide]="jigyosyutaiNmShow" value="jigyosyutaiNmShow">事業主体</option>
-                  <option [class.condition-hide]="setubiNmShow" value="setubiNmShow">設備</option>
-                  <option [class.condition-hide]="prefCdShow" value="prefCdShow">都道府県</option>
-                  <option [class.condition-hide]="custNmShow" value="custNmShow">顧客</option>
-                  <option [class.condition-hide]="custTypeCdShow" value="custTypeCdShow">顧客分類</option>
-                  <option [class.condition-hide]="salesDeptNmShow" value="salesDeptNmShow">営業部門</option>
-                  <option [class.condition-hide]="salesUserNmShow" value="salesUserNmShow">営業担当者</option>
-                  <option [class.condition-hide]="relateUserNmShow" value="relateUserNmShow">関係者</option>
+                  <option>親インシデント番号</option>
+                  <option>発生日時</option>
+                  <option>業種区分</option>
+                  <option>事業主体</option>
+                  <option>都道府県</option>
+                  <option>顧客</option>
+                  <option>顧客分類</option>
+                  <option>営業部門</option>
+                  <option>営業担当者</option>
+                  <option>関係者</option>
                 </select>
               </div>
             </div>
@@ -340,8 +273,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <button type="button" (click)="addCondition();" class="btn btn-xs btn-warning">検索項目を追加</button>
-          <button type="button" (click)="conditionSaveModal.openModal(getCondition());" class="btn btn-xs btn-warning">検索条件を保存</button>
-          <button type="button" (click)="conditionDeleteModal.openModal();" class="btn btn-xs btn-warning">検索条件を削除</button>
+          <button type="button" (click)="conditionSaveModal.openModal();" class="btn btn-xs btn-warning">検索条件を保存</button>
         </div>
       </div>
 
@@ -349,7 +281,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 search-result-info">
-              検索結果：　50件
+              検索結果：　{{bigTotalItems}}件
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 transition-button text-right">
               <button type="button" (click)="excelOutput()" class="btn btn-warning">
@@ -360,7 +292,19 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+          <pagination name="paging1" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
+            class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
+        </div>
+        <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-4 text-right">
+          <input name="itemperPage" [(ngModel)]="itemsPerPage" type="text" class="itemsPerPage" (input)="pageChanged()"> 件/頁
+        </div>
+      </div>
+
     </form>
+
     <div class="row" id="search-list">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel">
@@ -388,7 +332,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of incidentList | orderBy:order">
+              <tr *ngFor="let data of incidentList | orderBy:order | slice: start: end">
                 <td class="code-list">
                   <a routerLink="/detail/{{data?.incidentId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
                     <u>{{data?.incidentNo}}</u>
@@ -415,5 +359,13 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+        <pagination name="paging2" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
+          class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
+      </div>
+    </div>
+
   </div>
 </div>

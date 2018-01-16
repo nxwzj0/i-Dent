@@ -70,3 +70,8 @@
     z-index: 100 !important;*/
     height: 86px;
 }
+
+/* ヘッダー部 プルダウンをマウスオーバーで表示 */
+.dropdown:hover > .dropdown-menu{
+    display: block;
+}

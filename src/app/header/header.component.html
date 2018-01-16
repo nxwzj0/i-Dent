@@ -44,12 +44,13 @@
         <div class="row header-second">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="nav navbar-nav">
-              <li class="dropdown" dropdown>
-                <a dropdownToggle class="header-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <li class="dropdown">
+                <a routerLink="/list" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }"
+                 class="header-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   インシデント検索
                   <span class="caret"></span>
                 </a>
-                <ul *dropdownMenu class="dropdown-menu">
+                <ul class="dropdown-menu">
                   <li>
                     <a routerLink="/list" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">○○機場検索条件</a>
                   </li>
