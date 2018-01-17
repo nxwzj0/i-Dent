@@ -7,7 +7,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
 import { isNullOrUndefined } from 'util';
-import { $ } from 'protractor';
+import { $, element } from 'protractor';
 import { CheckboxControlValueAccessor } from '@angular/forms/src/directives/checkbox_value_accessor';
 
 @Component({
@@ -30,7 +30,7 @@ export class IncidentSearchModalComponent {
 
   // 検索条件
   searchIncidentNo = "";
-  searchMemo = "";
+  searchCallContent = "";
   searchCallStartDateFrom = "";
   searchCallStartDateTo = "";
   searchIncidentType = "";
@@ -71,7 +71,7 @@ export class IncidentSearchModalComponent {
   // 検索条件の初期化
   clearIncidentSearch() {
     this.searchIncidentNo = "";
-    this.searchMemo = "";
+    this.searchCallContent = "";
     this.searchCallStartDateFrom = "";
     this.searchCallStartDateTo = "";
     this.searchIncidentType = "";
@@ -91,102 +91,22 @@ export class IncidentSearchModalComponent {
 search() {
   // 検索パラメータの作成
   let ps = new URLSearchParams();
-//     incidentNo;
-//     memo;
-//     callDate;
-//     callStartDateFrom;
-//     callStartDateTo;
-//     incidentType;
-//     incidentType1;
-//     incidentType2;
-//     incidentType3;
-//     incidentType4;
-//     incidentType5;
-//     incidentType6;
-//     incidentStatus;
-//     incidentStatus1;
-//     incidentStatus2;
-//     incidentStatus3;
 
-  const searchIncidentTypes= document.getElementsByClassName("searchIncidentType");
-  for(let i = 0;i<searchIncidentTypes.length;i++){
-    console.log(searchIncidentTypes.item(i));
-  }
-  // let type = "";
-  // if(this.searchIncidentType1.valueOf() == "true"){
-  //   if(type == ""){
-  //     type += "1";
-  //   }else{
-  //     type += ","+"1";
-  //   }
-  // }
-  // if(this.searchIncidentType2 == "true"){
-  //   if(type == ""){
-  //     type += "2";
-  //   }else{
-  //     type += ","+"2";
-  //   }
-  // }
-  // if(this.searchIncidentType3 == "true"){
-  //   if(type == ""){
-  //     type += "3";
-  //   }else{
-  //     type += ","+"3";
-  //   }
-  // }
-  // if(this.searchIncidentType4 == "true"){
-  //   if(type == ""){
-  //     type += "4";
-  //   }else{
-  //     type += ","+"4";
-  //   }
-  // }
-  // if(this.searchIncidentType5 == "true"){
-  //   if(type == ""){
-  //     type += "5";
-  //   }else{
-  //     type += ","+"5";
-  //   }
-  // }
-  // if(this.searchIncidentType6 == "true"){
-  //   if(type == ""){
-  //     type += "6";
-  //   }else{
-  //     type += ","+"6";
-  //   }
-  // }
-  // type = this.searchIncidentType;
-  // let status = "";
-  // if(this.searchIncidentStatus1 == "true"){
-  //   if(type == ""){
-  //     status += "1";
-  //   }else{
-  //     status += ","+"1";
-  //   }
-  // }
-  // if(this.searchIncidentStatus2== "true"){
-  //   if(type == ""){
-  //     status += "2";
-  //   }else{
-  //     status += ","+"2";
-  //   }
-  // }
-  // if(this.searchIncidentStatus3 == "true"){
-  //   if(type == ""){
-  //     status += "3";
-  //   }else{
-  //     status += ","+"3";
-  //   }
-  // }
-  // status = this.searchIncidentStatus;
-  // console.log("type"+type);/**--------------调试用*/
-  // console.log("status"+status);/**--------------调试用*/
   ps.set("incidentNo", this.searchIncidentNo);
-  ps.set("memo", this.searchMemo);
+  ps.set("callContent", this.searchCallContent);
   ps.set("callStartDateFrom", this.searchCallStartDateFrom);
   ps.set("callStartDateTo", this.searchCallStartDateTo);
   ps.set("incidentType", this.searchIncidentType);
+  ps.set("incidentType1", this.searchIncidentType1);
+  ps.set("incidentType2", this.searchIncidentType2);
+  ps.set("incidentType3", this.searchIncidentType3);
+  ps.set("incidentType4", this.searchIncidentType4);
+  ps.set("incidentType5", this.searchIncidentType5);
+  ps.set("incidentType6", this.searchIncidentType6);
   ps.set("incidentStatus", this.searchIncidentStatus);
+  ps.set("incidentStatus1", this.searchIncidentStatus1);
+  ps.set("incidentStatus2", this.searchIncidentStatus2);
+  ps.set("incidentStatus3", this.searchIncidentStatus3);
 
   // 検索
   this.jsonpService.commonRequestGet('IncidentListDataGet.php', ps)

@@ -57,7 +57,7 @@
             </div>
             <div class="col-lg-5 col-md-4 col-sm-6 col-xs-5">
               <!--<input type="text" class="form-control">-->
-              <input name="searchMemo" type="text" class="form-control" [(ngModel)]="searchMemo">
+              <input name="searchCallContent" type="text" class="form-control" [(ngModel)]="searchCallContent">
             </div>
           </div>
           <div class="row">
@@ -106,27 +106,27 @@
               <div class="checkbox">
                 <label class="input-item">
                   <!--<input type="checkbox" value="" > 障害-->
-                  <input name="searchIncidentType1" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType1"> 障害
+                  <input name="searchIncidentType1" type="checkbox" value="1" [(ngModel)]="searchIncidentType1"> 障害
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 事故-->
-                  <input name="searchIncidentType2" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType2"> 事故
+                  <input name="searchIncidentType2" type="checkbox" value="2" [(ngModel)]="searchIncidentType2"> 事故
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> クレーム-->
-                  <input name="searchIncidentType3" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType3"> クレーム
+                  <input name="searchIncidentType3"  type="checkbox" value="3" [(ngModel)]="searchIncidentType3"> クレーム
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 問合せ-->
-                  <input name="searchIncidentType4" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType4"> 問合せ
+                  <input name="searchIncidentType4"  type="checkbox" value="4" [(ngModel)]="searchIncidentType4"> 問合せ
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 情報-->
-                  <input name="searchIncidentType5" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType5"> 情報
+                  <input name="searchIncidentType5"  type="checkbox" value="5" [(ngModel)]="searchIncidentType5"> 情報
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> その他-->
-                  <input name="searchIncidentType6" class="searchIncidentType" type="checkbox" value="" [(ngModel)]="searchIncidentType6"> その他
+                  <input name="searchIncidentType6"  type="checkbox" value="6" [(ngModel)]="searchIncidentType6"> その他
                 </label>
               </div>
             </div>
@@ -143,15 +143,15 @@
               <div class="checkbox">
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 受付済-->
-                  <input name="searchIncidentStatus1" type="checkbox" value="" [(ngModel)]="searchIncidentStatus1"> 受付済
+                  <input name="searchIncidentStatus1" type="checkbox" value="1" [(ngModel)]="searchIncidentStatus1"> 受付済
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 対応入力済-->
-                  <input name="searchIncidentStatus2" type="checkbox" value="" [(ngModel)]="searchIncidentStatus2"> 対応入力済
+                  <input name="searchIncidentStatus2" type="checkbox" value="2" [(ngModel)]="searchIncidentStatus2"> 対応入力済
                 </label>
                 <label class="input-item">
                   <!--<input type="checkbox" value=""> 処置入力済-->
-                  <input name="searchIncidentStatus3" type="checkbox" value="" [(ngModel)]="searchIncidentStatus3"> 処置入力済
+                  <input name="searchIncidentStatus3" type="checkbox" value="3" [(ngModel)]="searchIncidentStatus3"> 処置入力済
                 </label>
               </div>
             </div>
@@ -198,8 +198,8 @@
                         </button>
                       </td>
                       <td class="code-list">{{data.incidentNo}}</td>
-                      <td class="char-list">{{data?.memo | slice: 0:20 }}
-                        <span *ngIf="data?.memo.length >= 20">…</span>
+                      <td class="char-list">{{data?.callContent | slice: 0:20 }}
+                        <span *ngIf="data?.callContent.length >= 20">…</span>
                       </td>
                       <td class="date-list">{{data.callDate}}</td>
                       <td class="status-list">{{data.incidentType}}</td>
