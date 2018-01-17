@@ -77,7 +77,7 @@ export class SectionSearchModalComponent {
       .subscribe(
       data => {
         // 通信成功時
-        console.group("SectionSearchModalComponent.search()");
+        console.group("SectionSearchModalComponent.search() success");
         console.log(data);
         console.groupEnd();
         if (data[0]) {
@@ -90,7 +90,7 @@ export class SectionSearchModalComponent {
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
-        console.group("SectionSearchModalComponent.search()");
+        console.group("SectionSearchModalComponent.search() fail");
         console.error(error);
         console.log('サーバとのアクセスに失敗しました。');
         console.groupEnd();

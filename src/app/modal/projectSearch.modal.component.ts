@@ -76,7 +76,7 @@ search() {
     .subscribe(
     data => {
       // 通信成功時
-      console.group("ProjectSearchModalComponent.search()");
+      console.group("ProjectSearchModalComponent.search() success");
       console.log(data);
       console.groupEnd();
       if (data[0]) {
@@ -89,7 +89,7 @@ search() {
     },
     error => {
       // 通信失敗もしくは、コールバック関数内でエラー
-      console.group("ProjectSearchModalComponent.search()");
+      console.group("ProjectSearchModalComponent.search() fail");
       console.error(error);
       console.log('サーバとのアクセスに失敗しました。');
       console.groupEnd();

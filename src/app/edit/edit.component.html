@@ -9,7 +9,7 @@
 //*****************************************************************************
 -->
 <my-header></my-header>
-<incidentSearch-modal #incident></incidentSearch-modal>
+<incidentSearch-modal #incident (incidentSearchSelect)="onIncidentSearchSelected($event)"></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
 <userSearch-modal #salesUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
 <userSearch-modal #skanUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>

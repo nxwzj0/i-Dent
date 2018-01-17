@@ -141,7 +141,14 @@ export class EditComponent implements OnInit {
   }
 
 
-  //
+  // 親インシデント番号
+  onIncidentSearchSelected($event: any){
+    if($event){
+      this.parentIncidentNo = $event["incidentNo"]; // 親インシデント番号
+    }
+  }
+
+  // プロジェクト
   onProjectSearchSelected($event: any){
     if($event){
       this.deliveryPjId = $event["pjNo"]; //納入プロジェクトID
