@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild,Output,EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
@@ -15,10 +15,15 @@ import { JsonpService } from '../jsonp.service';
 export class ProjectSearchModalComponent {
   @ViewChild('template')
   template;
-
   modalRef: BsModalRef;
 
-  constructor(private modalService: BsModalService) { }
+  // モーダルのタイプ　親コンポーネントからの値受け取り
+  modalType: any;
+
+  // 営業担当者イベント(親コンポーネントのメソッド呼び出し)
+  @Output() projectSearchSelect: EventEmitter<any> = new EventEmitter();
+
+  constructor(private modalService: BsModalService,private jsonpService: JsonpService) { }
 
   // 検索条件
   searchPjNo = "";
@@ -27,21 +32,26 @@ export class ProjectSearchModalComponent {
   searchSummaryNm = "";
 
   // ページングの設定
-  maxSize: number = 5;
-  bigTotalItems: number = 100;
-  bigCurrentPage: number = 1;
-  numPages: number = 0;
-  itemsPerPage: number = 10;
+  maxSize: number = 5; // ページングの表示ページ数
+  bigTotalItems: number = 0; // 総数
+  itemsPerPage: number = 10; // 1ページに表示する件数
+  currentPage: number = 0; // 現在表示しているページ
+  start: number = 0; // データ表示開始位置
+  end: number = 10; // データ表示終了位置
 
   // ページング処理
   pageChanged(event: any): void {
-    console.log('Page changed to: ' + event.page);
-    console.log('Number items per page: ' + event.itemsPerPage);
+    this.start = this.itemsPerPage * (this.currentPage - 1);
+    let tmpStart: number = +this.start;
+    let tmpItemsPerPage: number = +this.itemsPerPage;
+    this.end = tmpStart + tmpItemsPerPage;
   }
 
   // モーダル表示
   openModal() {
+    this.clearProjectSearch();
     this.template.show();
+    this.search();
   }
 
   // 検索条件の初期化
@@ -51,6 +61,61 @@ export class ProjectSearchModalComponent {
     this.searchConsumerNm = "";
     this.searchSummaryNm = "";
   }
+
+// 検索処理
+search() {
+  // 検索パラメータの作成
+  let ps = new URLSearchParams();
+  ps.set("pjNo", this.searchPjNo);
+  ps.set("inqNo", this.searchInqNo);
+  ps.set("consumerNm", this.searchConsumerNm);
+  ps.set("summaryNm", this.searchSummaryNm);
+
+  // 検索
+  this.jsonpService.commonRequestGet('ProjListDataGet.php', ps)
+    .subscribe(
+    data => {
+      // 通信成功時
+      console.group("ProjectSearchModalComponent.search()");
+      console.log(data);
+      console.groupEnd();
+      if (data[0]) {
+        let list = data[0];
+        if (list.result !== '' && list.result == true) {
+          // 画面表示パラメータのセット処理
+          this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+        }
+      }
+    },
+    error => {
+      // 通信失敗もしくは、コールバック関数内でエラー
+      console.group("ProjectSearchModalComponent.search()");
+      console.error(error);
+      console.log('サーバとのアクセスに失敗しました。');
+      console.groupEnd();
+      return false;
+    }
+    );
+}
+
+// ユーザ検索結果リスト
+projList = [];
+// 画面表示パラメータのセット処理
+setDspParam(data) {
+  // ページングの設定
+  this.bigTotalItems = data.length;
+  // ユーザリストをセット
+  this.projList = data;
+}
+
+// 選択ボタンクリック data?.postCd, data?.sectionNm
+onSelect(pjNo: any, inqNo: any,consumerNm:any,summaryNm:any) {
+  // 営業担当者
+  this.projectSearchSelect.emit({"pjNo": pjNo, "inqNo": inqNo,"consumerNm":consumerNm,"summaryNm":summaryNm });
+  // モーダルの非表示
+  this.template.hide();
+}
+
 
   // TODO 一時表示用　固定インシデント情報 
   projectList = [

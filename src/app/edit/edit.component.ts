@@ -140,6 +140,15 @@ export class EditComponent implements OnInit {
 
   }
 
+
+  //
+  onProjectSearchSelected($event: any){
+    if($event){
+      this.deliveryPjId = $event["pjNo"]; //納入プロジェクトID
+      this.deliveryPjNm = $event["consumerNm"]; //納入プロジェクト名
+    }
+  }
+
   // 営業担当者選択
   onSalesUserSelected($event: any) {
     if ($event) {
