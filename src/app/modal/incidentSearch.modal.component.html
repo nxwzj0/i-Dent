@@ -3,7 +3,7 @@
 //	システム名　　　：インシデント管理システム
 //	サブシステム名　：
 //	画面名　　　　　：インシデントモーダル部品
-//	作成日付・作成者：2017.12.06 ADF)S.Yoshida
+//	作成日付・作成者：2018-01-18 · newtouch
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
@@ -24,11 +24,10 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 transition-button text-right">
-              <!--<button type="button" class="btn btn-danger btn-mini">-->
-              <button type="button" (click)="clearIncidentSearch()" class="btn btn-danger btn-mini">
+              <button type="button" class="btn btn-danger btn-mini" (click)="clearIncidentSearch()">
                 リセット
               </button>
-              <button type="button" class="btn btn-danger btn-mini">
+              <button type="button" class="btn btn-danger btn-mini" (click)="search()">
                 <i class="fa fa-search"></i> 検索
               </button>
             </div>
@@ -43,7 +42,6 @@
               </div>
             </div>
             <div class="col-lg-5 col-md-4 col-sm-6 col-xs-5">
-              <!--<input type="text" class="form-control" >-->
               <input name="searchIncidentNo" type="text" class="form-control" [(ngModel)]="searchIncidentNo">
             </div>
           </div>
@@ -56,8 +54,7 @@
               </div>
             </div>
             <div class="col-lg-5 col-md-4 col-sm-6 col-xs-5">
-              <!--<input type="text" class="form-control">-->
-              <input name="searchMemo" type="text" class="form-control" [(ngModel)]="searchMemo">
+              <input name="searchCallContent" type="text" class="form-control" [(ngModel)]="searchCallContent">
             </div>
           </div>
           <div class="row">
@@ -69,30 +66,30 @@
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-7">
-              <div class="date-div">
-                <div class="input-group">
-                  <!--<input type="text" class="form-control">-->
-                  <input name="searchIncidentStartDateTime" type="text" class="form-control" [(ngModel)]="searchIncidentStartDateTime">
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-input-support">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
+                <div class="date-div">
+                  <div class="input-group">
+                    <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                      [(bsValue)]="searchCallStartDateFrom" value="{{searchCallStartDateFrom | date:'yyyy/MM/dd'}}">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <span class="text-center inner-text">～</span>
+                <div class="date-div">
+                  <div class="input-group">
+                    <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                      [(bsValue)]="searchCallStartDateTo" value="{{searchCallStartDateTo | date:'yyyy/MM/dd'}}">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </div>
-              <span class="text-center inner-text">～</span>
-              <div class="date-div">
-                <div class="input-group">
-                  <!--<input type="text" class="form-control">-->
-                  <input name="searchIncidentEndDateTime" type="text" class="form-control" [(ngModel)]="searchIncidentEndDateTime">
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-input-support">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5 label-padding">
@@ -105,28 +102,22 @@
             <div class="col-lg-9 col-md-8 col-sm-8 col-xs-7">
               <div class="checkbox">
                 <label class="input-item">
-                  <!--<input type="checkbox" value="" > 障害-->
-                  <input name="searchIncidentType1" type="checkbox" value="" [(ngModel)]="searchIncidentType1"> 障害
+                  <input name="searchIncidentType1" type="checkbox" value="1" [(ngModel)]="searchIncidentType1"> 障害
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 事故-->
-                  <input name="searchIncidentType2" type="checkbox" value="" [(ngModel)]="searchIncidentType2"> 事故
+                  <input name="searchIncidentType2" type="checkbox" value="2" [(ngModel)]="searchIncidentType2"> 事故
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> クレーム-->
-                  <input name="searchIncidentType3" type="checkbox" value="" [(ngModel)]="searchIncidentType3"> クレーム
+                  <input name="searchIncidentType3"  type="checkbox" value="3" [(ngModel)]="searchIncidentType3"> クレーム
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 問合せ-->
-                  <input name="searchIncidentType4" type="checkbox" value="" [(ngModel)]="searchIncidentType4"> 問合せ
+                  <input name="searchIncidentType4"  type="checkbox" value="4" [(ngModel)]="searchIncidentType4"> 問合せ
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 情報-->
-                  <input name="searchIncidentType5" type="checkbox" value="" [(ngModel)]="searchIncidentType5"> 情報
+                  <input name="searchIncidentType5"  type="checkbox" value="5" [(ngModel)]="searchIncidentType5"> 情報
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> その他-->
-                  <input name="searchIncidentType6" type="checkbox" value="" [(ngModel)]="searchIncidentType6"> その他
+                  <input name="searchIncidentType6"  type="checkbox" value="6" [(ngModel)]="searchIncidentType6"> その他
                 </label>
               </div>
             </div>
@@ -142,16 +133,13 @@
             <div class="col-lg-9 col-md-8 col-sm-8 col-xs-7">
               <div class="checkbox">
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 受付済-->
-                  <input name="searchIncidentStatus1" type="checkbox" value="" [(ngModel)]="searchIncidentStatus1"> 受付済
+                  <input name="searchIncidentStatus1" type="checkbox" value="1" [(ngModel)]="searchIncidentStatus1"> 受付済
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 対応入力済-->
-                  <input name="searchIncidentStatus2" type="checkbox" value="" [(ngModel)]="searchIncidentStatus2"> 受付済
+                  <input name="searchIncidentStatus2" type="checkbox" value="2" [(ngModel)]="searchIncidentStatus2"> 対応入力済
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 処置入力済-->
-                  <input name="searchIncidentStatus3" type="checkbox" value="" [(ngModel)]="searchIncidentStatus3"> 受付済
+                  <input name="searchIncidentStatus3" type="checkbox" value="3" [(ngModel)]="searchIncidentStatus3"> 処置入力済
                 </label>
               </div>
             </div>
@@ -159,19 +147,19 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 search-result-info">
-              検索結果：　100件
+              検索結果：　{{bigTotalItems}}件
             </div>
           </div>
 
           <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
-              <pagination name="paging1" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
-                class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+              <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+                <pagination name="paging1" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
+                  class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
+              </div>
+              <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                <input name="itemperPage" [(ngModel)]="itemsPerPage" type="text" class="itemsPerPage" (input)="pageChanged()"> 件/頁
+              </div>
             </div>
-            <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-4">
-              <input name="itemperPage" [(ngModel)]="itemsPerPage" type="text" class="itemsPerPage"> 件/頁
-            </div>
-          </div>
 
           <div class="row" id="search-list">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -191,19 +179,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let data of incidentList">
+                    <tr *ngFor="let data of incidentList | slice: start: end">
                       <td class="code-list">
-                        <button type="button" class="btn btn-danger btn-mini">
+                        <button type="button" class="btn btn-danger btn-mini" (click)="onSelect(data?.incidentNo)">
                           選択
                         </button>
                       </td>
                       <td class="code-list">{{data.incidentNo}}</td>
-                      <td class="char-list">{{data?.memo | slice: 0:20 }}
-                        <span *ngIf="data?.memo.length >= 20">…</span>
+                      <td class="char-list">{{data?.callContent | slice: 0:20 }}
+                        <span *ngIf="data?.callContent.length >= 20">…</span>
                       </td>
                       <td class="date-list">{{data.callDate}}</td>
-                      <td class="status-list">{{data.incidentType}}</td>
-                      <td class="status-list">{{data.incidentStatus}}</td>
+                      <td class="status-list">{{data.incidentTypeString}}</td>
+                      <td class="status-list">{{data.incidentStatusString}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -212,11 +200,11 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
-              <pagination name="paging2" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
-                class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+              <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+                <pagination name="paging2" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
+                  class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
+              </div>
             </div>
-          </div>
 
         </form>
       </div>

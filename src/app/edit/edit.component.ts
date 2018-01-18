@@ -140,6 +140,30 @@ export class EditComponent implements OnInit {
 
   }
 
+
+  // 親インシデント番号
+  onIncidentSearchSelected($event: any){
+    if($event){
+      this.parentIncidentNo = $event["incidentNo"]; // 親インシデント番号
+    }
+  }
+
+  // プロジェクト
+  onProjectSearchSelected($event: any){
+    if($event){
+      this.deliveryPjId = $event["pjNo"]; //納入プロジェクトID
+      this.deliveryPjNm = $event["consumerNm"]; //納入プロジェクト名
+    }
+  }
+
+  // 顧客（取引先）
+  onCustomerSearchSelected($event: any){
+    if($event){
+      this.custId = $event["customerCd"]; //顧客ID 
+      this.custNm = $event["customerNm"]; //顧客名
+    }
+  }
+
   // 営業担当者選択
   onSalesUserSelected($event: any) {
     if ($event) {

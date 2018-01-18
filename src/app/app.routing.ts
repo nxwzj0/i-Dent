@@ -12,7 +12,7 @@ import { ProjectComponent } from './project/project.component';
 const myRoutes = [
   { path: 'detail/:incidentId', component: DetailComponent, data: { category:'detail'}},
   { path: 'edit', component: EditComponent, data: { category:'edit'}},
-  { path: 'list', component: ListComponent, data: { category:'list'}},
+  { path: 'list/:condId', component: ListComponent, data: { category:'list'}},
   { path: 'top', component: TopComponent, data: { category:'top'}},
   { path: 'project', component: ProjectComponent, data: { category:'project'}},
   { path: 'mr2', component: Mr2Component, data: { category:'mr2'}},

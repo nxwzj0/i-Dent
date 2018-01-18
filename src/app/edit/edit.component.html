@@ -9,7 +9,7 @@
 //*****************************************************************************
 -->
 <my-header></my-header>
-<incidentSearch-modal #incident></incidentSearch-modal>
+<incidentSearch-modal #incident (incidentSearchSelect)="onIncidentSearchSelected($event)"></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
 <userSearch-modal #salesUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
 <userSearch-modal #skanUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
@@ -21,8 +21,8 @@
 <sectionSearch-modal #callSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <sectionSearch-modal #taioSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <sectionSearch-modal #actSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
-<projectSearch-modal #project></projectSearch-modal>
-<customerSearch-modal #customer></customerSearch-modal>
+<projectSearch-modal #project (projectSearchSelect)="onProjectSearchSelected($event)"></projectSearch-modal>
+<customerSearch-modal #customer (customerSearchSelect) = "onCustomerSearchSelected($event)"></customerSearch-modal>
 <equipmentSearch-modal #equipment></equipmentSearch-modal>
 
 <div id="editApp">
