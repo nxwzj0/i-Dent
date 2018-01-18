@@ -8,11 +8,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { JsonpService } from '../jsonp.service';
 import { isNullOrUndefined } from 'util';
 import { $, element } from 'protractor';
-import { CheckboxControlValueAccessor } from '@angular/forms/src/directives/checkbox_value_accessor';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'incidentSearch-modal',
   templateUrl: './incidentSearch.modal.component.html',
+  providers: [DatePipe],
   styleUrls: ['./modal.component.css']
 })
 export class IncidentSearchModalComponent {
@@ -26,7 +27,7 @@ export class IncidentSearchModalComponent {
   // 営業担当者イベント(親コンポーネントのメソッド呼び出し)
   @Output() incidentSearchSelect: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: BsModalService,private jsonpService: JsonpService) { }
+  constructor(private modalService: BsModalService,private jsonpService: JsonpService,private datePipe: DatePipe) { }
 
   // 検索条件
   searchIncidentNo = "";
@@ -91,11 +92,11 @@ export class IncidentSearchModalComponent {
 search() {
   // 検索パラメータの作成
   let ps = new URLSearchParams();
-
+  
   ps.set("incidentNo", this.searchIncidentNo);
   ps.set("callContent", this.searchCallContent);
-  ps.set("callStartDateFrom", this.searchCallStartDateFrom);
-  ps.set("callStartDateTo", this.searchCallStartDateTo);
+  ps.set("callStartDateFrom", this.datePipe.transform(this.searchCallStartDateFrom,'yyyy/MM/dd'));
+  ps.set("callStartDateTo", this.datePipe.transform(this.searchCallStartDateTo,'yyyy/MM/dd'));
   ps.set("incidentType", this.searchIncidentType);
   ps.set("incidentType1", this.searchIncidentType1);
   ps.set("incidentType2", this.searchIncidentType2);

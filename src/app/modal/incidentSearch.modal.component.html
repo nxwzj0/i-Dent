@@ -68,31 +68,32 @@
                 </label>
               </div>
             </div>
+            <!-- col-lg-6 col-md-6 col-sm-7 col-xs-7 -->
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-7">
-              <div class="date-div">
-                <div class="input-group">
-                  <!--<input type="text" class="form-control">-->
-                  <input name="searchIncidentStartDateTime" type="text" class="form-control" [(ngModel)]="searchCallStartDateFrom">
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-input-support">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
+                <div class="date-div">
+                  <div class="input-group">
+                    <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                      [(bsValue)]="searchCallStartDateFrom" value="{{searchCallStartDateFrom | date:'yyyy/MM/dd'}}">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <span class="text-center inner-text">～</span>
+                <div class="date-div">
+                  <div class="input-group">
+                    <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                      [(bsValue)]="searchCallStartDateTo" value="{{searchCallStartDateTo | date:'yyyy/MM/dd'}}">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </div>
-              <span class="text-center inner-text">～</span>
-              <div class="date-div">
-                <div class="input-group">
-                  <!--<input type="text" class="form-control">-->
-                  <input name="searchIncidentEndDateTime" type="text" class="form-control" [(ngModel)]="searchCallStartDateTo">
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-input-support">
-                      <i class="fa fa-calendar"></i>
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5 label-padding">
