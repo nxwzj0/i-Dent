@@ -3,7 +3,7 @@
 //	システム名　　　：インシデント管理システム
 //	サブシステム名　：
 //	画面名　　　　　：インシデントモーダル部品
-//	作成日付・作成者：2017.12.06 ADF)S.Yoshida
+//	作成日付・作成者：2018-01-18 · newtouch
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
@@ -24,7 +24,6 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 transition-button text-right">
-              <!--<button type="button" class="btn btn-danger btn-mini">-->
               <button type="button" class="btn btn-danger btn-mini" (click)="clearIncidentSearch()">
                 リセット
               </button>
@@ -43,7 +42,6 @@
               </div>
             </div>
             <div class="col-lg-5 col-md-4 col-sm-6 col-xs-5">
-              <!--<input type="text" class="form-control" >-->
               <input name="searchIncidentNo" type="text" class="form-control" [(ngModel)]="searchIncidentNo">
             </div>
           </div>
@@ -56,7 +54,6 @@
               </div>
             </div>
             <div class="col-lg-5 col-md-4 col-sm-6 col-xs-5">
-              <!--<input type="text" class="form-control">-->
               <input name="searchCallContent" type="text" class="form-control" [(ngModel)]="searchCallContent">
             </div>
           </div>
@@ -68,7 +65,6 @@
                 </label>
               </div>
             </div>
-            <!-- col-lg-6 col-md-6 col-sm-7 col-xs-7 -->
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-7">
                 <div class="date-div">
                   <div class="input-group">
@@ -106,27 +102,21 @@
             <div class="col-lg-9 col-md-8 col-sm-8 col-xs-7">
               <div class="checkbox">
                 <label class="input-item">
-                  <!--<input type="checkbox" value="" > 障害-->
                   <input name="searchIncidentType1" type="checkbox" value="1" [(ngModel)]="searchIncidentType1"> 障害
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 事故-->
                   <input name="searchIncidentType2" type="checkbox" value="2" [(ngModel)]="searchIncidentType2"> 事故
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> クレーム-->
                   <input name="searchIncidentType3"  type="checkbox" value="3" [(ngModel)]="searchIncidentType3"> クレーム
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 問合せ-->
                   <input name="searchIncidentType4"  type="checkbox" value="4" [(ngModel)]="searchIncidentType4"> 問合せ
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 情報-->
                   <input name="searchIncidentType5"  type="checkbox" value="5" [(ngModel)]="searchIncidentType5"> 情報
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> その他-->
                   <input name="searchIncidentType6"  type="checkbox" value="6" [(ngModel)]="searchIncidentType6"> その他
                 </label>
               </div>
@@ -143,15 +133,12 @@
             <div class="col-lg-9 col-md-8 col-sm-8 col-xs-7">
               <div class="checkbox">
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 受付済-->
                   <input name="searchIncidentStatus1" type="checkbox" value="1" [(ngModel)]="searchIncidentStatus1"> 受付済
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 対応入力済-->
                   <input name="searchIncidentStatus2" type="checkbox" value="2" [(ngModel)]="searchIncidentStatus2"> 対応入力済
                 </label>
                 <label class="input-item">
-                  <!--<input type="checkbox" value=""> 処置入力済-->
                   <input name="searchIncidentStatus3" type="checkbox" value="3" [(ngModel)]="searchIncidentStatus3"> 処置入力済
                 </label>
               </div>
@@ -194,7 +181,7 @@
                   <tbody>
                     <tr *ngFor="let data of incidentList | slice: start: end">
                       <td class="code-list">
-                        <button type="button" class="btn btn-danger btn-mini" (click)="onSelect(data?.incidentNo, data?.memo, data?.callDate, data?.incidentType, data?.incidentStatus)">
+                        <button type="button" class="btn btn-danger btn-mini" (click)="onSelect(data?.incidentNo)">
                           選択
                         </button>
                       </td>
@@ -203,8 +190,8 @@
                         <span *ngIf="data?.callContent.length >= 20">…</span>
                       </td>
                       <td class="date-list">{{data.callDate}}</td>
-                      <td class="status-list">{{data.incidentType}}</td>
-                      <td class="status-list">{{data.incidentStatus}}</td>
+                      <td class="status-list">{{data.incidentTypeString}}</td>
+                      <td class="status-list">{{data.incidentStatusString}}</td>
                     </tr>
                   </tbody>
                 </table>

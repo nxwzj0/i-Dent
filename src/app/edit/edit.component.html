@@ -22,7 +22,7 @@
 <sectionSearch-modal #taioSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <sectionSearch-modal #actSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <projectSearch-modal #project (projectSearchSelect)="onProjectSearchSelected($event)"></projectSearch-modal>
-<customerSearch-modal #customer></customerSearch-modal>
+<customerSearch-modal #customer (customerSearchSelect) = "onCustomerSearchSelected($event)"></customerSearch-modal>
 <equipmentSearch-modal #equipment></equipmentSearch-modal>
 
 <div id="editApp">

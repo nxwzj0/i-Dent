@@ -156,6 +156,14 @@ export class EditComponent implements OnInit {
     }
   }
 
+  // 顧客（取引先）
+  onCustomerSearchSelected($event: any){
+    if($event){
+      this.custId = $event["customerCd"]; //顧客ID 
+      this.custNm = $event["customerNm"]; //顧客名
+    }
+  }
+
   // 営業担当者選択
   onSalesUserSelected($event: any) {
     if ($event) {

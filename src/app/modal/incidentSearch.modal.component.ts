@@ -6,8 +6,6 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
-import { isNullOrUndefined } from 'util';
-import { $, element } from 'protractor';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -21,10 +19,7 @@ export class IncidentSearchModalComponent {
   template;
   modalRef: BsModalRef;
 
-  // モーダルのタイプ　親コンポーネントからの値受け取り
-  modalType: any;
-
-  // 営業担当者イベント(親コンポーネントのメソッド呼び出し)
+  // インシデント検索イベント
   @Output() incidentSearchSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService,private jsonpService: JsonpService,private datePipe: DatePipe) { }
@@ -146,10 +141,10 @@ setDspParam(data) {
   this.incidentList = data;
 }
 
-// 選択ボタンクリック data?.incidentNo, data?.memo, data?.callDate, data?.incidentType, data?.incidentStatus
-onSelect(incidentNo: any, memo: any,callDate:any,incidentType:any,incidentStatus:any) {
+// 選択ボタンクリック
+onSelect(incidentNo: any) {
   // インシデント情報 
-  this.incidentSearchSelect.emit({"incidentNo": incidentNo, "memo": memo,"callDate":callDate,"incidentType":incidentType,"incidentStatus":incidentStatus });
+  this.incidentSearchSelect.emit({"incidentNo": incidentNo});
   // モーダルの非表示
   this.template.hide();
 }
