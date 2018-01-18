@@ -108,7 +108,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                   <!-- <div class="input-group"> -->
                   <!-- <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)]="incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}"> -->
-                  <input name="txt_incidentStartTime" type="text" class="form-control" value="10:00">
+                  <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)] = "incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}">
                   <!-- <input name="txt_incidentStartTime" type="text" class="form-control" value="{{incidentStartTime | date:'shortTime'}}" readonly>
                     <ng-template #popIncidentStartTime>
                       <timepicker name='txt_incidentStartTime' [(ngModel)]='incidentStartTime' [showMeridian]='ismeridian'></timepicker>

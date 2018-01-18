@@ -145,6 +145,11 @@ export class EditComponent implements OnInit {
   onIncidentSearchSelected($event: any){
     if($event){
       this.parentIncidentNo = $event["incidentNo"]; // 親インシデント番号
+      this.incidentTypeCd = $event["incidentType"]; // インシデント分類CD
+      this.incidentStatusCd = $event["incidentStatus"]; // インシデントステータスCD
+      this.incidentStatusNm = $event["incidentStatusString"]; // インシデントステータス名
+      this.incidentStartDate = $event["callDate"]; // 発生日
+      this.incidentStartTime = $event["callDateTime"]; // 発生時刻
     }
   }
 

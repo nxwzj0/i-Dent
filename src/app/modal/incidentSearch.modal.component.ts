@@ -82,7 +82,6 @@ export class IncidentSearchModalComponent {
     this.searchIncidentStatusTaio = "";
     this.searchIncidentStatusAct = "";
   }
-
   // 検索処理
 search() {
   // 検索パラメータの作成
@@ -142,9 +141,16 @@ setDspParam(data) {
 }
 
 // 選択ボタンクリック
-onSelect(incidentNo: any) {
+onSelect(incidentNo: any,incidentType: any,incidentStatus :any,incidentStatusString :any,callDate:any) {
   // インシデント情報 
-  this.incidentSearchSelect.emit({"incidentNo": incidentNo});
+  this.incidentSearchSelect.emit({
+    "incidentNo": incidentNo
+    ,"incidentType":incidentType
+    ,"incidentStatus":incidentStatus
+    ,"incidentStatusString":incidentStatusString
+    ,"callDate":  this.datePipe.transform(callDate,'yyyy/MM/dd')
+    ,"callDateTime": this.datePipe.transform(callDate,'HH:mm')
+  });
   // モーダルの非表示
   this.template.hide();
 }
