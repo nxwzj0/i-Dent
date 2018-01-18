@@ -30,16 +30,16 @@ export class IncidentSearchModalComponent {
   searchCallStartDateFrom = "";
   searchCallStartDateTo = "";
   searchIncidentType = "";
-  searchIncidentType1 = "";
-  searchIncidentType2 = "";
-  searchIncidentType3 = "";
-  searchIncidentType4 = "";
-  searchIncidentType5 = "";
-  searchIncidentType6 = "";
+  searchIncidentTypeSyougai = "";
+  searchIncidentTypeJiko = "";
+  searchIncidentTypeClaim = "";
+  searchIncidentTypeToiawase = "";
+  searchIncidentTypeInfo = "";
+  searchIncidentTypeOther = "";
   searchIncidentStatus = "";
-  searchIncidentStatus1 = "";
-  searchIncidentStatus2 = "";
-  searchIncidentStatus3 = "";
+  searchIncidentStatusCall = "";
+  searchIncidentStatusTaio = "";
+  searchIncidentStatusAct = "";
 
   // ページングの設定
   maxSize: number = 5; // ページングの表示ページ数
@@ -71,16 +71,16 @@ export class IncidentSearchModalComponent {
     this.searchCallStartDateFrom = "";
     this.searchCallStartDateTo = "";
     this.searchIncidentType = "";
-    this.searchIncidentType1 = "";
-    this.searchIncidentType2 = "";
-    this.searchIncidentType3 = "";
-    this.searchIncidentType4 = "";
-    this.searchIncidentType5 = "";
-    this.searchIncidentType6 = "";
+    this.searchIncidentTypeSyougai = "";
+    this.searchIncidentTypeJiko = "";
+    this.searchIncidentTypeClaim = "";
+    this.searchIncidentTypeToiawase = "";
+    this.searchIncidentTypeInfo = "";
+    this.searchIncidentTypeOther = "";
     this.searchIncidentStatus = "";
-    this.searchIncidentStatus1 = "";
-    this.searchIncidentStatus2 = "";
-    this.searchIncidentStatus3 = "";
+    this.searchIncidentStatusCall = "";
+    this.searchIncidentStatusTaio = "";
+    this.searchIncidentStatusAct = "";
   }
 
   // 検索処理
@@ -93,16 +93,16 @@ search() {
   ps.set("callStartDateFrom", this.datePipe.transform(this.searchCallStartDateFrom,'yyyy/MM/dd'));
   ps.set("callStartDateTo", this.datePipe.transform(this.searchCallStartDateTo,'yyyy/MM/dd'));
   ps.set("incidentType", this.searchIncidentType);
-  ps.set("incidentType1", this.searchIncidentType1);
-  ps.set("incidentType2", this.searchIncidentType2);
-  ps.set("incidentType3", this.searchIncidentType3);
-  ps.set("incidentType4", this.searchIncidentType4);
-  ps.set("incidentType5", this.searchIncidentType5);
-  ps.set("incidentType6", this.searchIncidentType6);
+  ps.set("incidentType1", this.searchIncidentTypeSyougai);
+  ps.set("incidentType2", this.searchIncidentTypeJiko);
+  ps.set("incidentType3", this.searchIncidentTypeClaim);
+  ps.set("incidentType4", this.searchIncidentTypeToiawase);
+  ps.set("incidentType5", this.searchIncidentTypeInfo);
+  ps.set("incidentType6", this.searchIncidentTypeOther);
   ps.set("incidentStatus", this.searchIncidentStatus);
-  ps.set("incidentStatus1", this.searchIncidentStatus1);
-  ps.set("incidentStatus2", this.searchIncidentStatus2);
-  ps.set("incidentStatus3", this.searchIncidentStatus3);
+  ps.set("incidentStatus1", this.searchIncidentStatusCall);
+  ps.set("incidentStatus2", this.searchIncidentStatusTaio);
+  ps.set("incidentStatus3", this.searchIncidentStatusAct);
 
   // 検索
   this.jsonpService.commonRequestGet('IncidentListDataGet.php', ps)
