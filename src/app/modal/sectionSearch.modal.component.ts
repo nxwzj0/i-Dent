@@ -20,7 +20,7 @@ export class SectionSearchModalComponent {
   // モーダルのタイプ　親コンポーネントからの値受け取り
   modalType: any;
 
-  // 営業担当者イベント(親コンポーネントのメソッド呼び出し)
+  // 部門情報イベント(親コンポーネントのメソッド呼び出し)
   @Output() salesSectionSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
@@ -99,19 +99,19 @@ export class SectionSearchModalComponent {
       );
   }
 
-  // ユーザ検索結果リスト
+  // 部門情報 検索結果リスト
   deptList = [];
   // 画面表示パラメータのセット処理
   setDspParam(data) {
     // ページングの設定
     this.bigTotalItems = data.length;
-    // ユーザリストをセット
+    // 部門情報 リストをセット
     this.deptList = data;
   }
 
-  // 選択ボタンクリック data?.postCd, data?.sectionNm
+  // 選択ボタンクリック
   onSelect(postCd: any, sectionNm: any) {
-    // 営業担当者
+    // 部門情報
     this.salesSectionSelect.emit({"sectionSearchType":this.modalType,"postCd": postCd, "sectionNm": sectionNm });
     // モーダルの非表示
     this.template.hide();
