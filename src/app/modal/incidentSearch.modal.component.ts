@@ -92,16 +92,16 @@ search() {
   ps.set("callStartDateFrom", this.datePipe.transform(this.searchCallStartDateFrom,'yyyy/MM/dd'));
   ps.set("callStartDateTo", this.datePipe.transform(this.searchCallStartDateTo,'yyyy/MM/dd'));
   ps.set("incidentType", this.searchIncidentType);
-  ps.set("incidentType1", this.searchIncidentTypeSyougai);
-  ps.set("incidentType2", this.searchIncidentTypeJiko);
-  ps.set("incidentType3", this.searchIncidentTypeClaim);
-  ps.set("incidentType4", this.searchIncidentTypeToiawase);
-  ps.set("incidentType5", this.searchIncidentTypeInfo);
-  ps.set("incidentType6", this.searchIncidentTypeOther);
+  ps.set("incidentTypeSyougai", this.searchIncidentTypeSyougai);
+  ps.set("incidentTypeJiko", this.searchIncidentTypeJiko);
+  ps.set("incidentTypeClaim", this.searchIncidentTypeClaim);
+  ps.set("incidentTypeToiawase", this.searchIncidentTypeToiawase);
+  ps.set("incidentTypeInfo", this.searchIncidentTypeInfo);
+  ps.set("incidentTypeOther", this.searchIncidentTypeOther);
   ps.set("incidentStatus", this.searchIncidentStatus);
-  ps.set("incidentStatus1", this.searchIncidentStatusCall);
-  ps.set("incidentStatus2", this.searchIncidentStatusTaio);
-  ps.set("incidentStatus3", this.searchIncidentStatusAct);
+  ps.set("incidentStatusCall", this.searchIncidentStatusCall);
+  ps.set("incidentStatusTaio", this.searchIncidentStatusTaio);
+  ps.set("incidentStatusAct", this.searchIncidentStatusAct);
 
   // 検索
   this.jsonpService.commonRequestGet('IncidentListDataGet.php', ps)
