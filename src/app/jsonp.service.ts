@@ -60,4 +60,28 @@ export class JsonpService {
       );
   }
 
+  /**
+ *  PSCAPI サーバ通信処理
+ *   pram: url アクションのurl
+ *   return: Observable オブジェクト 
+ */
+  pscApiRequestGet(url: string, ps: URLSearchParams): Observable<any> {
+    ps.set('callback', 'JSONP_CALLBACK'); // コールバック関数名は固定
+
+    url = environment.mr2ApiPath + url; // 環境に合わせたURLを作成する
+
+    return this.jsonp.get(url, { params: ps })
+      .map(
+      response => {
+        return response.json() || {};
+      }
+      )
+      .catch(
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        return Observable.throw(error.statusText);
+      }
+      );
+  }
+
 }

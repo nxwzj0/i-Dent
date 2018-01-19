@@ -86,7 +86,7 @@ export class ConditionDeleteModalComponent {
       var li = "<li _ngcontent-c2=''><a _ngcontent-c2='' onclick='window.location.reload();' routerlinkactive='current' ng-reflect-router-link='/list/" + data[i]['COND_ID'] + 
       "' ng-reflect-router-link-active-options='[object Object]' ng-reflect-router-link-active='current' href='#/list/" + data[i]['COND_ID'] + 
       "' class='current'>" + data[i]['COND_NM'] + "</a></li>"
-      s.insertAdjacentHTML('afterbegin',li);
+      s.insertAdjacentHTML('beforeend',li);
     }
   }
 

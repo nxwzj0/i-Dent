@@ -35,7 +35,7 @@
                   <tbody>
                     <tr *ngFor="let data of condList">
                       <td class="status-list"><input #rdoSel type="radio" name="rdoCondNm" value={{data?.COND_NM}} [(ngModel)]="rdoCondNm"></td>
-                      <td class="status-list">{{data?.COND_NM}}</td>
+                      <td class="char-list">{{data?.COND_NM}}</td>
                       <td class="status-list">{{data?.INS_DATE}}</td>
                     </tr>
                   </tbody>

@@ -20,6 +20,7 @@ import { EditComponent } from './edit/edit.component';
 import { Mr2Component } from './mr2/mr2.component';
 import { ProjectComponent } from './project/project.component';
 
+import { CommonModalComponent } from './modal/common.modal.component';
 import { RelateUserAddModalComponent } from './modal/relateUserAdd.modal.component';
 import { IncidentSearchModalComponent } from './modal/incidentSearch.modal.component';
 import { KijoSearchModalComponent } from './modal/kijoSearch.modal.component';
@@ -47,6 +48,7 @@ import { OrderByPipe } from './pipe/order.by.pipe';
     EditComponent,
     Mr2Component,
     ProjectComponent,
+    CommonModalComponent,
     RelateUserAddModalComponent,
     IncidentSearchModalComponent,
     KijoSearchModalComponent,

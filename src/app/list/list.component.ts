@@ -1,5 +1,4 @@
-
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
@@ -21,6 +20,8 @@ import { OrderByParam } from '../pipe/order.by.pipe';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  @ViewChild('header')
+  header;
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) {
     this.bsConfig = Object.assign({}, { locale: this.locale });
@@ -195,7 +196,6 @@ export class ListComponent implements OnInit {
     return true;
   }
 
-
   // 検索項目取得処理
   getCondition(){
     var conditionArray = new Array();
@@ -269,6 +269,12 @@ export class ListComponent implements OnInit {
     }
 
     return conditionArray;
+  }
+
+  // 登録している検索条件が変更された
+  changeCondition() {
+    // ヘッダーの検索条件名の表示を更新する
+    this.header.searchConditionName();
   }
 
   // 最大文字数チェック
@@ -468,7 +474,7 @@ export class ListComponent implements OnInit {
             this.setConditionShowAndVal(condFld,condVal);
           }
         }
-        
+
         if (data[0]) {
           let list = data[0];
           if (list.result !== '' && list.result == true) {
@@ -661,7 +667,7 @@ export class ListComponent implements OnInit {
   //       this.("#newTable").hide();
   //   }
   // });
-  
+
   // 設置「検索条件を削除」Flg
   setShowDelFlg($event: any) {
     if ($event) {

@@ -8,8 +8,8 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
-<my-header></my-header>
-<conditionSave-modal #conditionSaveModal (conDelButtonshowDelFlg)="setShowDelFlg($event)"></conditionSave-modal>
+<my-header #header></my-header>
+<conditionSave-modal #conditionSaveModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionSave-modal>
 <conditionDelete-modal #conditionDeleteModal (conDelButtonshowDelFlg)="setShowDelFlg($event)"></conditionDelete-modal>
 
 <div id="listApp" ng-cloak>

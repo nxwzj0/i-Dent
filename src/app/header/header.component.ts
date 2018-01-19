@@ -30,7 +30,7 @@ export class HeaderComponent {
       data => {
         // 通信成功時
         console.log('成功。');
-       
+
         // 画面表示パラメータのセット処理
         this.setDspParam(data);
       },
@@ -53,7 +53,7 @@ export class HeaderComponent {
       console.log("キーワード検索処理");
       console.log(value);
     }
-  
+
     // ログアウト処理
     logout(){
       console.log("ログアウト処理");

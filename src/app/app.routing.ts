@@ -15,7 +15,7 @@ const myRoutes = [
   { path: 'list/:condId', component: ListComponent, data: { category:'list'}},
   { path: 'top', component: TopComponent, data: { category:'top'}},
   { path: 'project', component: ProjectComponent, data: { category:'project'}},
-  { path: 'mr2', component: Mr2Component, data: { category:'mr2'}},
+  { path: 'mr2/:mkbId', component: Mr2Component, data: { category:'mr2'}},
   { path: '', component: TopComponent, data: { category:'top'}},
   { path: '**', component: ErrorComponent },
 ];
