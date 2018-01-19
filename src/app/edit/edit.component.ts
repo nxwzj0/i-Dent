@@ -56,8 +56,8 @@ export class EditComponent implements OnInit {
   }
 
   // インシデント登録処理
-  onEntry() {
-    console.log('登録処理スタート');
+  entryIncident() {
+
   }
 
   //新しいウィンドウを開く(パターン1)
@@ -141,7 +141,7 @@ export class EditComponent implements OnInit {
   }
 
 
-    // 親インシデント番号
+  // 親インシデント番号
   onIncidentSearchSelected($event: any){
     if($event){
       this.parentIncidentNo = $event["incidentNo"]; // 親インシデント番号
@@ -152,14 +152,16 @@ export class EditComponent implements OnInit {
       this.incidentStartTime = $event["callDateTime"]; // 発生時刻
     }
   }
-  // プロジェクト  onProjectSearchSelected($event: any){
+
+  // プロジェクト選択
+  onProjectSearchSelected($event: any){
     if($event){
       this.deliveryPjId = $event["pjNo"]; //納入プロジェクトID
       this.deliveryPjNm = $event["consumerNm"]; //納入プロジェクト名
     }
   }
 
-  // 営業担当者選択
+  //  ユーザ選択
   onSalesUserSelected($event: any) {
     if ($event) {
       switch($event["userSearchType"]){
