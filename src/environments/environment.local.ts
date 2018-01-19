@@ -9,4 +9,5 @@ export const environment = {
   envCommonPath: 'http://localhost/COMMONAPI/',
   jikoPath: 'http://localhost/JIKO/',
   hiyoPath: 'http://localhost/WORKFLOW/',
+  mr2ApiPath: 'http://localhost/wbc-psc-api/PSC/',
 };

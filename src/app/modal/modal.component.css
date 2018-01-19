@@ -79,3 +79,31 @@
 .incident-no-th {
     width:102px;
 }
+
+/* 共通モーダルのボタングループ */
+.common-btn-group {
+    text-align: center;
+}
+
+/* 共通モーダルのボタン */
+.common-btn {
+    text-align: center;
+    width: 100px;
+}
+
+/* 共通モーダルのメッセージ */
+.common-mes {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* 共通モーダル 処理ボタン表示 */
+.common-enter-btn-show {
+    display: inline;    
+}
+
+/* 共通モーダル 処理ボタン非表示 */
+.common-enter-btn-hide {
+    display: none;    
+}

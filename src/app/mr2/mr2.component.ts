@@ -23,27 +23,62 @@ export class Mr2Component implements OnInit {
 
     this.route.data.subscribe(obj => console.log(obj['category']));
 
-    // // 画面表示パラメータの取得処理
-    // this.jsonpService.requestGet('IncidentListDataGet.php', new URLSearchParams())
-    // .subscribe(
-    // data => {
-    //   // 通信成功時
-    //   if (data[0]) {
-    //     let list = data[0];
-    //     if (list[0].result !== '' && list[0].result == true) {
-    //       // 画面表示パラメータのセット処理
-    //       this.setDspParam(list.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
-    //     }
-    //   }
-    // },
-    // error => {
-    //   // 通信失敗もしくは、コールバック関数内でエラー
-    //   console.log(error);
-    //   console.log('サーバとのアクセスに失敗しました。');
-    //   return false;
-    // }
-    // );
+    let ps = new URLSearchParams();
+    let mkbId = this.route.snapshot.paramMap.get('mkbId');
+    if (mkbId) {
+      ps.set('callNo', mkbId); // TODO API TEST用
+      ps.set('mkbId', mkbId);
+    }
+
+    // 画面表示パラメータの取得処理
+    this.jsonpService.pscApiRequestGet('mr2HeadData', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.log("受付番号成功");
+        console.log(data);
+        // if (data[0]) {
+        //   let list = data[0];
+        //   if (list[0].result !== '' && list[0].result == true) {
+        //     // 画面表示パラメータのセット処理
+        //     this.setDspParam(list.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+        //   }
+        // }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log("受付番号失敗");
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+      );
+
+    // 画面表示パラメータの取得処理
+    this.jsonpService.pscApiRequestGet('mr2HeadData', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.log("MKBID成功");
+        console.log(data);
+        // if (data[0]) {
+        //   let list = data[0];
+        //   if (list[0].result !== '' && list[0].result == true) {
+        //     // 画面表示パラメータのセット処理
+        //     this.setDspParam(list.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+        //   }
+        // }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log("MKBID失敗");
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+      );
   }
+
 
   // 画面表示パラメータのセット処理
   setDspParam(data) {

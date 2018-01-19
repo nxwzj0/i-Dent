@@ -17,8 +17,9 @@ export class ConditionSaveModalComponent {
 
   // listイベント(親コンポーネントのメソッド呼び出し)
   @Output() conDelButtonshowDelFlg: EventEmitter<any> = new EventEmitter();
+  @Output() changeCondition: EventEmitter<any> = new EventEmitter();
 
-  constructor(private route: ActivatedRoute, private jsonpService: JsonpService) {}
+  constructor(private route: ActivatedRoute, private jsonpService: JsonpService) { }
 
   modalRef: BsModalRef;
 
@@ -42,7 +43,7 @@ export class ConditionSaveModalComponent {
   incidentStartDateTime = null;
   callDate = null;
   industryTypeCd = null;
-  kijoNm 　= null;
+  kijoNm = null;
   jigyosyutaiNm = null;
   setubiNm = null;
   prefCd = null;
@@ -54,19 +55,19 @@ export class ConditionSaveModalComponent {
 
   // 検索項目保存処理
   conditionSave() {
-    if(this.condNm == null || this.condNm == ""){
-        alert("検索条件名は必須入力。");
-        return false;
+    if (this.condNm == null || this.condNm == "") {
+      alert("検索条件名は必須入力。");
+      return false;
     }
-    if(this.condNm.length > 50){
-        alert("検索条件名の最大文字数は50です。");
-        return false;
+    if (this.condNm.length > 50) {
+      alert("検索条件名の最大文字数は50です。");
+      return false;
     }
     if (confirm("検索条件を保存します。よろしいですか？")) {
-        this.conditionSaveTrue();
+      this.conditionSaveTrue();
     }
     else {
-        window.close();
+      window.close();
     }
   }
 
@@ -149,12 +150,12 @@ export class ConditionSaveModalComponent {
         // 通信成功時
         console.log('成功。');
         console.log(data);
-        if(data[0]['resultFlg'] == true){
+        if (data[0]['resultFlg'] == true) {
           alert(data[1]['resultMsg']);
-          this.conDelButtonshowDelFlg.emit({ "showDelFlg": true});
-          this.delULElement();
+          this.conDelButtonshowDelFlg.emit({ "showDelFlg": true });
+          this.changeCondition.emit(""); // 検索条件が変更された
           this.template.hide();
-        }else{
+        } else {
           alert(data[1]['resultMsg']);
         }
       },
@@ -168,53 +169,15 @@ export class ConditionSaveModalComponent {
 
   }
 
-  // 削除検索条件名メニュー
-  delULElement() {
-    var list = document.getElementById("condNmUl");
-    var t=list.childNodes.length;
-    for (var i=t-1;i>=0;i--){
-      list.removeChild(list.childNodes[i]);
-    }
-    // パラメータの作成
-    let ps = new URLSearchParams();
-    // 検索項目の検索
-    this.jsonpService.requestGet('IncidentListConditionDelete.php', ps)
-    .subscribe(
-    data => {
-      // 通信成功時
-      console.log('成功。');
-      this.addULElement(data);
-    },
-    error => {
-      // 通信失敗もしくは、コールバック関数内でエラー
-      console.log(error);
-      console.log('サーバとのアクセスに失敗しました。');
-      return false;
-    }
-    );
-  }
-
-  // 増加検索条件名メニュー
-  addULElement(data)
-  {
-    var s=document.getElementById('condNmUl');
-    for(var i=0;i<data.length;i++){
-      var li = "<li _ngcontent-c2=''><a _ngcontent-c2='' onclick='window.location.reload();' routerlinkactive='current' ng-reflect-router-link='/list/" + data[i]['COND_ID'] + 
-      "' ng-reflect-router-link-active-options='[object Object]' ng-reflect-router-link-active='current' href='#/list/" + data[i]['COND_ID'] + 
-      "' class='current'>" + data[i]['COND_NM'] + "</a></li>"
-      s.insertAdjacentHTML('afterbegin',li);
-    }
-  }
-
   // 日付型を日付フォーマット文字列に変更
   getDateStringFromDate(date) {
 
-    if(date && date.getFullYear()){
-      var y:number = date.getFullYear();
-      var m:number = date.getMonth();
+    if (date && date.getFullYear()) {
+      var y: number = date.getFullYear();
+      var m: number = date.getMonth();
       m++;
-      var d:number = date.getDate();
-      return  y + "-" + m + "-" + d + " 00:00:00";
+      var d: number = date.getDate();
+      return y + "-" + m + "-" + d + " 00:00:00";
     } else {
       // 日付型でない値の場合
       return null;

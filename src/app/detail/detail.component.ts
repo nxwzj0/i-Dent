@@ -68,7 +68,7 @@ export class DetailComponent implements OnInit {
   // 関連MR2表示処理
   showMr2() {
     if (this.SUB_WIN) this.SUB_WIN.close();
-    this.SUB_WIN = this.CMN_openNewWindow1("./#/mr2", "sub_mr2", 1000, 760);
+    this.SUB_WIN = this.CMN_openNewWindow1("./#/mr2/0", "sub_mr2", 1000, 760);
   }
 
   // 関連プロジェクト表示処理
