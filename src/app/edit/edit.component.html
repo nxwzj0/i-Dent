@@ -9,6 +9,7 @@
 //*****************************************************************************
 -->
 <my-header></my-header>
+<common-modal #common (commonEnter)="onEntry($event)"></common-modal>
 <incidentSearch-modal #incident (incidentSearchSelect)="onIncidentSearchSelected($event)"></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
 <userSearch-modal #salesUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
@@ -22,7 +23,7 @@
 <sectionSearch-modal #taioSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <sectionSearch-modal #actSection (salesSectionSelect)="onSalesSectionSelected($event)"></sectionSearch-modal>
 <projectSearch-modal #project (projectSearchSelect)="onProjectSearchSelected($event)"></projectSearch-modal>
-<customerSearch-modal #customer (customerSearchSelect) = "onCustomerSearchSelected($event)"></customerSearch-modal>
+<customerSearch-modal #customer></customerSearch-modal>
 <equipmentSearch-modal #equipment></equipmentSearch-modal>
 
 <div id="editApp">
@@ -34,7 +35,7 @@
                 -->
     <div class="text-right transition-button">
       <span>
-        <button type="button" class="btn btn-danger" (click)="entryIncident()">登録</button>
+        <button type="button" class="btn btn-danger" (click)="common.openModal('確認','編集内容を登録します。宜しいですか？','OK','キャンセル')">登録</button>
       </span>
       <span>
         <button type="button" class="btn btn-danger" routerLink="/detail" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
@@ -108,7 +109,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                   <!-- <div class="input-group"> -->
                   <!-- <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)]="incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}"> -->
-                  <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)] = "incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}">
+                  <input name="txt_incidentStartTime" type="text" class="form-control" value="10:00">
                   <!-- <input name="txt_incidentStartTime" type="text" class="form-control" value="{{incidentStartTime | date:'shortTime'}}" readonly>
                     <ng-template #popIncidentStartTime>
                       <timepicker name='txt_incidentStartTime' [(ngModel)]='incidentStartTime' [showMeridian]='ismeridian'></timepicker>
@@ -226,7 +227,7 @@
                   </div>
                   <div class="col-lg-10 col-md-9 col-sm-9 col-xs-9">
                     <div class="input-group">
-                      <input name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
+                      <input #txt_kijoNm="ngModel" name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
                       <input name="hid_kijoId" type="hidden" [(ngModel)]="kijoId">
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-input-support" (click)="kijo.openModal()">
@@ -234,7 +235,9 @@
                         </button>
                       </span>
                     </div>
-                  </div>
+                    <span class="text-danger" *ngIf="txt_kijoNm.errors?.required&& txt_kijoNm.dirty">
+                      機場は必須入力です。
+                    </span>                  </div>
                 </div>
                 <!-- <div class="row">
                   <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
