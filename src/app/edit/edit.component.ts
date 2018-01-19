@@ -56,8 +56,8 @@ export class EditComponent implements OnInit {
   }
 
   // インシデント登録処理
-  entryIncident() {
-
+  onEntry() {
+    console.log('登録処理スタート');
   }
 
   //新しいウィンドウを開く(パターン1)
@@ -139,7 +139,6 @@ export class EditComponent implements OnInit {
   showRelateIncident() {
 
   }
-
 
   // 親インシデント番号
   onIncidentSearchSelected($event: any){
