@@ -9,7 +9,7 @@
 //*****************************************************************************
 -->
 <my-header></my-header>
-<common-modal #common (commonEnter)="onEntry($event)"></common-modal>
+<common-modal #common (commonEnter)="onEntry($event, iFile.files)"></common-modal>
 <incidentSearch-modal #incident (incidentSearchSelect)="onIncidentSearchSelected($event)"></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
 <userSearch-modal #salesUser (salesUserSelect)="onSalesUserSelected($event)"></userSearch-modal>
@@ -95,7 +95,7 @@
                     <strong>発生日時：</strong>
                   </label>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 form-group">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                   <div class="input-group">
                     <input name="txt_incidentStartDate" type="text" class="form-control" #dpIncidentStartDate="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
                       [(bsValue)]="incidentStartDate" value="{{incidentStartDate | date:'yyyy/MM/dd'}}">
@@ -107,19 +107,15 @@
                   </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                  <!-- <div class="input-group"> -->
-                  <!-- <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)]="incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}"> -->
-                  <input name="txt_incidentStartTime" type="text" class="form-control" [(ngModel)] = "incidentStartTime" value="{{incidentStartTime | date:'HH:mm'}}">
-                  <!-- <input name="txt_incidentStartTime" type="text" class="form-control" value="{{incidentStartTime | date:'shortTime'}}" readonly>
-                    <ng-template #popIncidentStartTime>
-                      <timepicker name='txt_incidentStartTime' [(ngModel)]='incidentStartTime' [showMeridian]='ismeridian'></timepicker>
-                    </ng-template>
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-input-support" [popover]="popIncidentStartTime" [outsideClick]="true">
-                        <i class="fa fa-clock-o"></i>
-                      </button>
-                    </span> -->
-                  <!-- </div> -->
+                  <div class="input-group">
+                    <select name="sel_incidentStartTime" class="search-dropdown" [(ngModel)]="incidentStartTime">
+                      <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                    </select>
+                    :
+                    <select name="sel_incidentStartMinite" class="search-dropdown" [(ngModel)]="incidentStartMinite">
+                      <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -175,7 +171,7 @@
                   </label>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                  <input name="incidentFile" type="file">
+                  <input #iFile name="incidentFile" type="file" [(ngModel)]="incidentFile">
                 </div>
               </div>
               <!-- <div class="row">
@@ -227,7 +223,7 @@
                   </div>
                   <div class="col-lg-10 col-md-9 col-sm-9 col-xs-9">
                     <div class="input-group">
-                      <input #txt_kijoNm="ngModel" name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm">
+                      <input #txt_kijoNm="ngModel" name="txt_kijoNm" type="text" class="form-control" [(ngModel)]="kijoNm" required>
                       <input name="hid_kijoId" type="hidden" [(ngModel)]="kijoId">
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-input-support" (click)="kijo.openModal()">
@@ -237,7 +233,8 @@
                     </div>
                     <span class="text-danger" *ngIf="txt_kijoNm.errors?.required&& txt_kijoNm.dirty">
                       機場は必須入力です。
-                    </span>                  </div>
+                    </span>
+                  </div>
                 </div>
                 <!-- <div class="row">
                   <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
@@ -502,19 +499,15 @@
                     </label>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="callStartDate" type="text" class="form-control" [(ngModel)]="callStartDate"> -->
-                    <input name="callStartDate" type="text" class="form-control" value="10:00">
-                    <!-- <input name="txt_callStartDate" type="text" class="form-control" value="{{callStartDate | date:'shortTime'}}" readonly>
-                      <ng-template #popCallStartDate>
-                        <timepicker name='txt_callStartDate' [(ngModel)]='callStartDate' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popCallStartDate" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_callStartTime" class="search-dropdown" [(ngModel)]="callStartTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_callStartMinite" class="search-dropdown" [(ngModel)]="callStartMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -524,19 +517,15 @@
                     </label>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="callEndDate" type="text" class="form-control" [(ngModel)]="callEndDate"> -->
-                    <input name="callEndDate" type="text" class="form-control" value="10:30">
-                    <!-- <input name="txt_callEndDate" type="text" class="form-control" value="{{callEndDate | date:'shortTime'}}" readonly>
-                      <ng-template #popCallEndDate>
-                        <timepicker name='txt_callEndDate' [(ngModel)]='callEndDate' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popCallEndDate" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_callEndTime" class="search-dropdown" [(ngModel)]="callEndTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_callEndMinite" class="search-dropdown" [(ngModel)]="callEndMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -629,19 +618,15 @@
                     </label>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="taioStartDate" type="text" class="form-control" [(ngModel)]="taioStartDate"> -->
-                    <input name="taioStartDate" type="text" class="form-control" value="10:00">
-                    <!-- <input name="txt_taioStartDate" type="text" class="form-control" value="{{taioStartDate | date:'shortTime'}}" readonly>
-                      <ng-template #popTaioStartDate>
-                        <timepicker name='txt_taioStartDate' [(ngModel)]='taioStartDate' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popTaioStartDate" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_taioStartTime" class="search-dropdown" [(ngModel)]="taioStartTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_taioStartMinite" class="search-dropdown" [(ngModel)]="taioStartMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -651,19 +636,15 @@
                     </label>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="taioEndDate" type="text" class="form-control" [(ngModel)]="taioEndDate"> -->
-                    <input name="taioEndDate" type="text" class="form-control" value="10:30">
-                    <!-- <input name="txt_taioEndDate" type="text" class="form-control" value="{{taioEndDate | date:'shortTime'}}" readonly>
-                      <ng-template #popTaioEndDate>
-                        <timepicker name='txt_taioEndDate' [(ngModel)]='taioEndDate' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popTaioEndDate" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_taioEndTime" class="search-dropdown" [(ngModel)]="taioEndTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_taioEndMinite" class="search-dropdown" [(ngModel)]="taioEndMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -780,19 +761,15 @@
                     </div>
                   </div>
                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="txt_actStartTime" type="text" class="form-control" [(ngModel)]="actStartTime"> -->
-                    <input name="txt_actStartTime" type="text" class="form-control" value="10:00">
-                    <!-- <input name="txt_actStartTime" type="text" class="form-control" value="{{actStartTime | date:'shortTime'}}" readonly>
-                      <ng-template #popActStartTime>
-                        <timepicker name='txt_actStartTime' [(ngModel)]='actStartTime' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popActStartTime" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_actStartTime" class="search-dropdown" [(ngModel)]="actStartTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_actStartMinite" class="search-dropdown" [(ngModel)]="actStartMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -813,19 +790,15 @@
                     </div>
                   </div>
                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                    <!-- <div class="input-group"> -->
-                    <!-- <input name="txt_actEndTime" type="text" class="form-control" [(ngModel)]="actEndTime"> -->
-                    <input name="txt_actEndTime" type="text" class="form-control" value="10:30">
-                    <!-- <input name="txt_actEndTime" type="text" class="form-control" value="{{actEndTime | date:'shortTime'}}" readonly>
-                      <ng-template #popActEndTime>
-                        <timepicker name='txt_actEndTime' [(ngModel)]='actEndTime' [showMeridian]='ismeridian'></timepicker>
-                      </ng-template>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-input-support" [popover]="popActEndTime" [outsideClick]="true">
-                          <i class="fa fa-clock-o"></i>
-                        </button>
-                      </span> -->
-                    <!-- </div> -->
+                    <div class="input-group">
+                      <select name="sel_actEndTime" class="search-dropdown" [(ngModel)]="actEndTime">
+                        <option *ngFor="let data of timeList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                      :
+                      <select name="sel_actEndMinite" class="search-dropdown" [(ngModel)]="actEndMinite">
+                        <option *ngFor="let data of miniteList" [value]="data.val">{{data.label}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="row">

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
+import { Http, Headers, RequestOptions } from "@angular/http";
 
 // datepikerの設定
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -20,14 +21,20 @@ import { environment } from '../../environments/environment.local';
 })
 export class EditComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private jsonpService: JsonpService) {
+  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private http: Http) {
     this.bsConfig = Object.assign({}, { locale: this.locale });
   }
 
   ngOnInit() {
     this.route.data.subscribe(obj => console.log(obj['category']));
+
+    let ps = new URLSearchParams();
+    let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
+    if (prmIncientId) {
+      ps.set('incidentId', prmIncientId);
+    }
     // 画面表示パラメータの取得処理
-    this.jsonpService.requestGet('IncidentDataGet.php', new URLSearchParams())
+    this.jsonpService.requestGet('IncidentDataGet.php', ps)
       .subscribe(
       data => {
         // 通信成功時
@@ -53,11 +60,6 @@ export class EditComponent implements OnInit {
   jigyosyutaiClear() {
     this.jigyosyutaiId = ""; //事業主体ID
     this.jigyosyutaiNm = ""; //事業主体名
-  }
-
-  // インシデント登録処理
-  onEntry() {
-    console.log('登録処理スタート');
   }
 
   //新しいウィンドウを開く(パターン1)
@@ -231,8 +233,25 @@ export class EditComponent implements OnInit {
   locales = listLocales();
   bsConfig: Partial<BsDatepickerConfig>;
 
+  // 時間配列
+  timeList = [
+    { val: 0, label: "00" }, { val: 1, label: "01" }, { val: 2, label: "02" }, { val: 3, label: "03" }, { val: 4, label: "04" }, { val: 5, label: "05" }, { val: 6, label: "06" }, { val: 7, label: "07" }, { val: 8, label: "08" }, { val: 9, label: "09" }, { val: 10, label: "10" },
+    { val: 11, label: "11" }, { val: 12, label: "12" }, { val: 13, label: "13" }, { val: 14, label: "14" }, { val: 15, label: "15" }, { val: 16, label: "16" }, { val: 17, label: "17" }, { val: 18, label: "18" }, { val: 19, label: "19" }, { val: 20, label: "20" },
+    { val: 21, label: "21" }, { val: 22, label: "22" }, { val: 23, label: "23" },
+  ];
+  // 分配列
+  miniteList = [
+    { val: 0, label: "00" }, { val: 1, label: "01" }, { val: 2, label: "02" }, { val: 3, label: "03" }, { val: 4, label: "04" }, { val: 5, label: "05" }, { val: 6, label: "06" }, { val: 7, label: "07" }, { val: 8, label: "08" }, { val: 9, label: "09" }, { val: 10, label: "10" },
+    { val: 11, label: "11" }, { val: 12, label: "12" }, { val: 13, label: "13" }, { val: 14, label: "14" }, { val: 15, label: "15" }, { val: 16, label: "16" }, { val: 17, label: "17" }, { val: 18, label: "18" }, { val: 19, label: "19" }, { val: 20, label: "20" },
+    { val: 21, label: "21" }, { val: 22, label: "22" }, { val: 23, label: "23" }, { val: 24, label: "24" }, { val: 25, label: "25" }, { val: 26, label: "26" }, { val: 27, label: "27" }, { val: 28, label: "28" }, { val: 29, label: "29" }, { val: 30, label: "30" },
+    { val: 31, label: "31" }, { val: 32, label: "32" }, { val: 33, label: "33" }, { val: 34, label: "34" }, { val: 35, label: "35" }, { val: 36, label: "36" }, { val: 37, label: "37" }, { val: 38, label: "38" }, { val: 39, label: "39" }, { val: 40, label: "40" },
+    { val: 41, label: "41" }, { val: 42, label: "42" }, { val: 43, label: "43" }, { val: 44, label: "44" }, { val: 45, label: "45" }, { val: 46, label: "46" }, { val: 47, label: "47" }, { val: 48, label: "48" }, { val: 49, label: "49" }, { val: 50, label: "50" },
+    { val: 51, label: "51" }, { val: 52, label: "52" }, { val: 53, label: "53" }, { val: 54, label: "54" }, { val: 55, label: "55" }, { val: 56, label: "56" }, { val: 57, label: "57" }, { val: 58, label: "58" }, { val: 59, label: "59" },
+  ];
+
   // 画面表示パラメータの初期化
   // １－１．ヘッダー
+  incidentId = ""; // インシデントID
   incidentNo = ""; // インシデント番号
   incidentStatusCd = ""; // インシデントステータスCD
   incidentStatusNm = ""; // インシデントステータス名
@@ -246,7 +265,8 @@ export class EditComponent implements OnInit {
   parentIncidentId = ""; // 親インシデントID
   parentIncidentNo = ""; // 親インシデント番号
   incidentStartDate: Date; // 発生日
-  incidentStartTime: Date; // 発生時刻
+  incidentStartTime; // 発生時刻(時間)
+  incidentStartMinite; // 発生時刻(分)
   industryTypeCd = ""; // 業種区分CD
   infoSourceCd = ""; // 情報提供元CD
   infoSourceNm = ""; // 情報提供元名
@@ -281,11 +301,14 @@ export class EditComponent implements OnInit {
   skanDeptNm = ""; //主管部門名
   skanUserId = ""; //主管担当者ID
   skanUserNm = ""; //主管担当者名
+  incidentFile: any; // 添付ファイル
 
   // １－３．受付情報
   callDate: Date; //受付日
-  callStartDate: Date; //受付開始時刻
-  callEndDate = ""; //受付終了時刻
+  callStartTime; //受付開始時刻(時間)
+  callStartMinite; //受付開始時刻(分)
+  callEndTime; //受付終了時刻(時間)
+  callEndMinite; //受付終了時刻(分)
   callDeptCd = ""; //受付部署CD
   callDeptNm = ""; //受付部署名
   callUserId = ""; //受付者ID
@@ -296,8 +319,10 @@ export class EditComponent implements OnInit {
 
   // １－４．対応情報
   taioDate: Date; //対応日
-  taioStartDate: Date; //対応開始時刻
-  taioEndDate: Date; //対応終了時刻
+  taioStartTime; //対応開始時刻(時間)
+  taioStartMinite; //対応開始時刻(分)
+  taioEndTime; //対応終了時刻(時間)
+  taioEndMinite; //対応終了時刻(分)
   taioDeptCd = ""; //対応部署CD
   taioDeptNm = ""; //対応部署名
   taioUserId = ""; //対応者ID
@@ -309,10 +334,12 @@ export class EditComponent implements OnInit {
   // １－５．処置情報
   actDate: Date; //処置予定日
   actTypeCd = ""; //処置区分CD
-  actStartDate: Date; //処置開始日
-  actStartTime: Date; //処置開始時刻
-  actEndDate: Date; //処置終了日
-  actEndTime: Date; //処置終了時刻
+  actStartDate; //処置開始日
+  actStartTime; //処置開始時刻(時間)
+  actStartMinite; //処置開始時刻(分)
+  actEndDate; //処置終了日
+  actEndTime; //処置終了時刻(時間)
+  actEndMinite; //処置終了時刻(分)
   actDeptCd = ""; //処置部署CD
   actDeptNm = ""; //処置部署名
   actUserId = ""; //処置者ID
@@ -348,8 +375,9 @@ export class EditComponent implements OnInit {
     // １－２．メイン情報    
     this.parentIncidentId = data.parentIncidentId; // 親インシデントID
     this.parentIncidentNo = data.parentIncidentNo; // 親インシデント番号
-    this.incidentStartDate = new Date(data.incidentStartDate); // 発生日
-    this.incidentStartTime = new Date(data.incidentStartTime); // 発生時刻
+    this.incidentStartDate = this.getJsDate(data.incidentStartDateTime); // 発生日
+    this.incidentStartTime = this.getHours(this.getJsDate(data.incidentStartDateTime)); // 発生時刻(時間)
+    this.incidentStartMinite = this.getMinutes(this.getJsDate(data.incidentStartDateTime)); // 発生時刻(分)
     this.industryTypeCd = data.industryTypeCd; // 業種区分CD
     this.infoSourceCd = data.infoSourceCd; // 情報提供元CD
     this.infoSourceNm = data.infoSourceNm; // 情報提供元名
@@ -386,9 +414,11 @@ export class EditComponent implements OnInit {
     this.skanUserNm = data.skanUserNm; //主管担当者名
 
     // １－３．受付情報
-    this.callDate = new Date(data.callDate); //受付日
-    this.callStartDate = new Date(data.callStartDate); //受付開始時刻
-    this.callEndDate = data.callEndDate; //受付終了時刻
+    this.callDate = this.getJsDate(data.callStartDate); // 受付日
+    this.callStartTime = this.getHours(this.getJsDate(data.callStartDate)); // 受付開始時刻(時間)
+    this.callStartMinite = this.getMinutes(this.getJsDate(data.callStartDate)); // 受付開始時刻(分)
+    this.callEndTime = this.getHours(this.getJsDate(data.callEndDate)); // 受付終了時刻(時間)
+    this.callEndMinite = this.getMinutes(this.getJsDate(data.callEndDate)); // 受付終了時刻(分)
     this.callDeptCd = data.callDeptCd; //受付部署CD
     this.callDeptNm = data.callDeptNm; //受付部署名
     this.callUserId = data.callUserId; //受付者ID
@@ -398,9 +428,11 @@ export class EditComponent implements OnInit {
     this.callContent = data.callContent; //受付内容
 
     // １－４．対応情報
-    this.taioDate = new Date(data.taioDate); //対応日
-    this.taioStartDate = new Date(data.taioStartDate); //対応開始時刻
-    this.taioEndDate = new Date(data.taioEndDate); //対応終了時刻
+    this.taioDate = this.getJsDate(data.taioStartDate); // 対応日
+    this.taioStartTime = this.getHours(this.getJsDate(data.taioStartDate)); // 対応開始時刻(時間)
+    this.taioStartMinite = this.getMinutes(this.getJsDate(data.taioStartDate)); // 対応開始時刻(分)
+    this.taioEndTime = this.getHours(this.getJsDate(data.taioEndDate)); // 対応終了時刻(時間)
+    this.taioEndMinite = this.getMinutes(this.getJsDate(data.taioEndDate)); // 対応終了時刻(分)
     this.taioDeptCd = data.taioDeptCd; //対応部署CD
     this.taioDeptNm = data.taioDeptNm; //対応部署名
     this.taioUserId = data.taioUserId; //対応者ID
@@ -410,12 +442,14 @@ export class EditComponent implements OnInit {
     this.taioContent = data.taioContent; //対応内容
 
     // １－５．処置情報
-    this.actDate = new Date(data.actDate); //処置予定日
+    this.actDate = this.getJsDate(data.actDate); // 処置予定日
     this.actTypeCd = data.actTypeCd; //処置区分CD
-    this.actStartDate = new Date(data.actStartDate); //処置開始日
-    this.actStartTime = new Date(data.actStartTime); //処置開始時刻
-    this.actEndDate = new Date(data.actEndDate); //処置終了日
-    this.actEndTime = new Date(data.actEndTime); //処置終了時刻
+    this.actStartDate = this.getJsDate(data.actStartDateTime); // 処置開始日
+    this.actStartTime = this.getHours(this.getJsDate(data.actStartDateTime)); // 処置開始時刻(時間)
+    this.actStartMinite = this.getMinutes(this.getJsDate(data.actStartDateTime)); // 処置開始時刻(分)
+    this.actEndDate = this.getJsDate(data.actEndDateTime); // 処置終了日
+    this.actEndTime = this.getHours(this.getJsDate(data.actEndDateTime)); // 処置終了時刻(時間)
+    this.actEndMinite = this.getMinutes(this.getJsDate(data.actEndDateTime)); // 処置終了時刻(分)
     this.actDeptCd = data.actDeptCd; //処置部署CD
     this.actDeptNm = data.actDeptNm; //処置部署名
     this.actUserId = data.actUserId; //処置者ID
@@ -435,6 +469,216 @@ export class EditComponent implements OnInit {
     this.productGensyoNm = data.productGensyoNm; //障害状況現象名
     this.productStatusCd = data.productStatusCd; //障害状況状態CD
     this.productStatusNm = data.productStatusNm; //障害状況状態名
+  }
+
+  // インシデント登録処理
+  onEntry(event, files: any) {
+    console.log('登録処理スタート');
+
+    // TODO ファイルアップロード
+    // console.log(files);
+    // if(files){
+    //   let file = files[0];
+    //   let data = new FormData();
+    //   data.append('incidentFile', file, file.name);
+    //   console.log(data);
+
+    //   this.http.post('http://172.20.108.34/INCIDENT/upload.php', data)
+    //   .subscribe(
+    //     data => console.log(data),
+    //     error => console.log(error)
+    //   );
+    // }
+
+    // // 画面表示パラメータの取得処理
+    let ps = new URLSearchParams();
+    ps.set('incidentId', this.incidentId);
+    ps.set('incidentNo', this.incidentNo);
+    ps.set('incidentStatusCd', this.incidentStatusCd);
+    ps.set('incidentStatusNm', this.incidentStatusNm);
+    ps.set('incidentTypeCd', this.incidentTypeCd);
+    ps.set('insDate', this.insDate);
+    ps.set('insUserNm', this.insUserNm);
+    ps.set('updDate', this.updDate);
+    ps.set('updUserNm', this.updUserNm);
+    ps.set('parentIncidentId', this.parentIncidentId);
+    ps.set('parentIncidentNo', this.parentIncidentNo);
+    var incidentStartDateStr = this.getDateStringFromDateAndTime(this.incidentStartDate, this.incidentStartTime, this.incidentStartMinite);
+    ps.set('incidentStartDate', incidentStartDateStr);
+    ps.set('industryTypeCd', this.industryTypeCd);
+    ps.set('infoSourceCd', this.infoSourceCd);
+    ps.set('infoSourceNm', this.infoSourceNm);
+    ps.set('infoProvider', this.infoProvider);
+    ps.set('infoProvidedTel', this.infoProvidedTel);
+    ps.set('memo', this.memo);
+    ps.set('kijoId', this.kijoId);
+    ps.set('kijoNm', this.kijoNm);
+    ps.set('jigyosyutaiId', this.jigyosyutaiId);
+    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+    ps.set('setubiId', this.setubiId);
+    ps.set('setubiNm', this.setubiNm);
+    ps.set('prefId', this.prefId);
+    ps.set('prefNm', this.prefNm);
+    ps.set('custId', this.custId);
+    ps.set('custNm', this.custNm);
+    ps.set('custTypeCd', this.custTypeCd);
+    ps.set('custTypeNm', this.custTypeNm);
+    ps.set('salesDeptCd', this.salesDeptCd);
+    ps.set('salesDeptNm', this.salesDeptNm);
+    ps.set('salesUserId', this.salesUserId);
+    ps.set('salesUserNm', this.salesUserNm);
+    ps.set('deliveryPjId', this.deliveryPjId);
+    ps.set('deliveryPjNm', this.deliveryPjNm);
+    ps.set('custDept', this.custDept);
+    ps.set('requester', this.requester);
+    ps.set('contactTel', this.contactTel);
+    ps.set('contactFax', this.contactFax);
+    ps.set('contactMail', this.contactMail);
+    ps.set('skanDeptCd', this.skanDeptCd);
+    ps.set('skanDeptNm', this.skanDeptNm);
+    ps.set('skanUserId', this.skanUserId);
+    ps.set('skanUserNm', this.skanUserNm);
+    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+
+    var callStartDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callStartTime, this.callStartMinite);
+    ps.set('callStartDate', callStartDateStr);
+    var callEndDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callEndTime, this.callEndMinite);
+    ps.set('callEndDate', callEndDateStr);
+    ps.set('callDeptCd', this.callDeptCd);
+    ps.set('callDeptNm', this.callDeptNm);
+    ps.set('callUserId', this.callUserId);
+    ps.set('callUserNm', this.callUserNm);
+    ps.set('callTel', this.callTel);
+    ps.set('callMail', this.callMail);
+    ps.set('callContent', this.callContent);
+
+    var taioStartDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioStartTime, this.taioStartMinite);
+    ps.set('taioStartDate', taioStartDateStr);
+    var taioEndDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioEndTime, this.taioEndMinite);
+    ps.set('taioEndDate', taioEndDateStr);
+    ps.set('taioDeptCd', this.taioDeptCd);
+    ps.set('taioDeptNm', this.taioDeptNm);
+    ps.set('taioUserId', this.taioUserId);
+    ps.set('taioUserNm', this.taioUserNm);
+    ps.set('taioTel', this.taioTel);
+    ps.set('taioMail', this.taioMail);
+    ps.set('taioContent', this.taioContent);
+
+    var actDateStr = this.getDateStringFromDate(this.actDate);
+    ps.set('actDate', actDateStr);
+    ps.set('actTypeCd', this.actTypeCd);
+    var actStartDateStr = this.getDateStringFromDateAndTime(this.actStartDate, this.actStartTime, this.actStartMinite);
+    ps.set('actStartDate', actStartDateStr);
+    var actEndDateStr = this.getDateStringFromDateAndTime(this.actEndDate, this.actEndTime, this.actEndMinite);
+    ps.set('actEndDate', actEndDateStr);
+    ps.set('actDeptCd', this.actDeptCd);
+    ps.set('actDeptNm', this.actDeptNm);
+    ps.set('actUserId', this.actUserId);
+    ps.set('actUserNm', this.actUserNm);
+    ps.set('actTel', this.actTel);
+    ps.set('actMail', this.actMail);
+    ps.set('actContent', this.actContent);
+
+    ps.set('productTypeCd', this.productTypeCd);
+    ps.set('productTypeNm', this.productTypeNm);
+    ps.set('productTriggerCd', this.productTriggerCd);
+    ps.set('productTriggerNm', this.productTriggerNm);
+    ps.set('productHindoCd', this.productHindoCd);
+    ps.set('productHindoNm', this.productHindoNm);
+    ps.set('productGensyoCd', this.productGensyoCd);
+    ps.set('productGensyoNm', this.productGensyoNm);
+    ps.set('productStatusCd', this.productStatusCd);
+    ps.set('productStatusNm', this.productStatusNm);
+
+    // 登録処理通信処理
+    this.jsonpService.requestGet('IncidentEntry.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.log(data);
+        if (data[0]) {
+          let one = data[0];
+          if (one.result !== '' && one.result == true) {
+            // 画面表示パラメータのセット処理
+            this.setDspParam(one);
+          }
+        }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+      );
+  }
+
+  // サーバから取得した日付をJavascriptのDate型に変更する（失敗時は、nullを返す）
+  getJsDate(date) {
+    if (date && new Date(date)) {
+      return new Date(date);
+    }
+    return null;
+  }
+
+  // 日付型を日付フォーマット文字列に変更
+  getDateStringFromDate(date) {
+    if (date && date.getFullYear()) {
+      var y: number = date.getFullYear();
+      var m: number = date.getMonth();
+      m++;
+      var d: number = date.getDate();
+      return y + "-" + m + "-" + d + " 00:00:00";
+    } else {
+      // 日付型でない値の場合
+      return null;
+    }
+  }
+
+  // Date型から時間を返す
+  getHours(date) {
+    if (date && date.getFullYear()) {
+      var hours: number = date.getHours();
+      return hours;
+    } else {
+      // 日付型でない値の場合
+      return null;
+    }
+  }
+
+  // Date型から分を返す
+  getMinutes(date) {
+    if (date && date.getFullYear()) {
+      var minutes: number = date.getMinutes();
+      return minutes;
+    } else {
+      // 日付型でない値の場合
+      return null;
+    }
+  }
+
+  // 日付と時刻から日付フォーマット文字列を作成
+  getDateStringFromDateAndTime(date, time, minite) {
+    var timeStr = "00";
+    var miniteStr = "00";
+    if (date && date.getFullYear()) {
+      var y: number = date.getFullYear();
+      var m: number = date.getMonth();
+      m++;
+      var d: number = date.getDate();
+      if (time) {
+        timeStr = time;
+      }
+      if (minite) {
+        miniteStr = minite;
+      }
+      return y + "-" + m + "-" + d + " " + timeStr + ":" + miniteStr + ":00";
+    } else {
+      // 日付型でない値の場合
+      return null;
+    }
   }
 
   // インシデント分類セレクト情報

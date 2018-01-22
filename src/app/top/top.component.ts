@@ -50,4 +50,20 @@ export class TopComponent implements OnInit {
     this.incidentList = data;
   }
 
+  // キーワードを入力してエンターを押した
+  onKeyWordEnter(value: string) {
+    console.log("キーワード検索処理");
+    console.log(value);
+    value= this.encodeUnicode(value);
+    window.location.href='http://localhost:4200/#/list/k/'+value;
+  }
+
+  // コードは16位に変換する
+  encodeUnicode(str) {
+    var res = [];  
+    for ( var i=0; i<str.length; i++ ) {
+      res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
+    }
+    return res.join("\\u");
+  }
 }

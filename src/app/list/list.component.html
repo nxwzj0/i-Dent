@@ -10,7 +10,7 @@
 -->
 <my-header #header></my-header>
 <conditionSave-modal #conditionSaveModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionSave-modal>
-<conditionDelete-modal #conditionDeleteModal (conDelButtonshowDelFlg)="setShowDelFlg($event)"></conditionDelete-modal>
+<conditionDelete-modal #conditionDeleteModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionDelete-modal>
 
 <div id="listApp" ng-cloak>
   <div ng-controller="ListController as main" class="container-fluid">
@@ -65,7 +65,23 @@
                         </div>
                     </div>
                     -->
-      <div class="row">
+
+    <div class="row"  *ngIf="showKeywordFlg">
+        <span>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
+            <div class="row">
+              <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
+                キーワード
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <input name="txt_keyword" type="text" (keyup.enter)="onKeyWordEnter()" class="form-control" [(ngModel)]="keyword" placeholder="キーワードを入力">
+          </div>
+        </span>
+      </div>
+
+      <div class="row" *ngIf="!showKeywordFlg">
         <span [class.condition-show]="incidentNoShow" [class.condition-hide]="!incidentNoShow">
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
@@ -100,7 +116,7 @@
         </span>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!showKeywordFlg">
         <span [class.condition-show]="kijoNmShow" [class.condition-hide]="!kijoNmShow">
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
@@ -135,7 +151,7 @@
         </span>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!showKeywordFlg">
         <span [class.condition-show]="prefCdShow" [class.condition-hide]="!prefCdShow">
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
@@ -243,7 +259,7 @@
         </span>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!showKeywordFlg">
         <span [class.condition-show]="incidentTypeShow" [class.condition-hide]="!incidentTypeShow">
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
@@ -280,7 +296,7 @@
           </div>
         </span>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="!showKeywordFlg">
         <span [class.condition-show]="incidentStsShow" [class.condition-hide]="!incidentStsShow">
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
@@ -309,7 +325,7 @@
         </span>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!showKeywordFlg">
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -353,8 +369,10 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 transition-button text-right">
               <button type="button" (click)="excelOutput()" class="btn btn-warning">
                 <i class="fa fa-download"></i> EXCEL出力</button>
-              <button type="button" (click)="search()" class="btn btn-danger">
+              <button type="button" (click)="search()" class="btn btn-danger" *ngIf="!showKeywordFlg">
                 <i class="fa fa-search"></i> 検索</button>
+              <button type="button" (click)="searchByKeyword()" class="btn btn-danger" *ngIf="showKeywordFlg">
+                  <i class="fa fa-search"></i> 検索</button>
             </div>
           </div>
         </div>

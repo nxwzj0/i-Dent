@@ -119,7 +119,9 @@ export class ConditionSaveModalComponent {
     // 設備
     ps.set("setubiNm", this.hidden_condition[26]);
     // 都道府県
-    ps.set("prefCd", this.hidden_condition[27]);
+    if(this.hidden_condition[27] != 0){
+      ps.set("prefCd", this.hidden_condition[27]);
+    }
     // 顧客
     ps.set("custNm", this.hidden_condition[28]);
     // 顧客分類
@@ -150,19 +152,20 @@ export class ConditionSaveModalComponent {
         // 通信成功時
         console.log('成功。');
         console.log(data);
-        if (data[0]['resultFlg'] == true) {
-          alert(data[1]['resultMsg']);
-          this.conDelButtonshowDelFlg.emit({ "showDelFlg": true });
+        if(data[0]['resultFlg'] == '0'){
+          alert(data[0]['resultMsg']);
+          this.conDelButtonshowDelFlg.emit({ "showDelFlg": true});
           this.changeCondition.emit(""); // 検索条件が変更された
           this.template.hide();
-        } else {
-          alert(data[1]['resultMsg']);
+        }else{
+          alert(data[0]['resultMsg']);
         }
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        alert('登録に失敗しました');
         return false;
       }
       );
@@ -173,10 +176,10 @@ export class ConditionSaveModalComponent {
   getDateStringFromDate(date) {
 
     if (date && date.getFullYear()) {
-      var y: number = date.getFullYear();
-      var m: number = date.getMonth();
+      var y:number = date.getFullYear();
+      var m:number = date.getMonth();
       m++;
-      var d: number = date.getDate();
+      var d:number = date.getDate();
       return y + "-" + m + "-" + d + " 00:00:00";
     } else {
       // 日付型でない値の場合
@@ -184,6 +187,5 @@ export class ConditionSaveModalComponent {
     }
 
   }
-
 
 }

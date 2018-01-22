@@ -45,14 +45,14 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="nav navbar-nav">
               <li id = "dropListDown" class="dropdown" dropdown>
-                <a routerLink="/list/0" (click)="reload()" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }"
+                <a routerLink="/list" (click)="reload()" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }"
                 class="header-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                  インシデント検索
                  <span class="caret"></span>
                 </a>
                 <ul id="condNmUl" class="dropdown-menu">
                   <li *ngFor="let data of condList">
-                    <a (click)="reload()" routerLink="/list/{{data?.COND_ID}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">{{data?.COND_NM}}</a>
+                    <a (click)="reload()" routerLink="/list/c/{{data?.condId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">{{data?.condNm}}</a>
                   </li>
                 </ul>
               </li>

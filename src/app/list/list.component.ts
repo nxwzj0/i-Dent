@@ -36,7 +36,28 @@ export class ListComponent implements OnInit {
     this.sectionName = "secName";
     // 検索条件のデフォルト設定
     this.setDefaultShow();
-    this.searchCondition();
+    let condId = this.route.snapshot.paramMap.get('condId');
+    let keyword = this.route.snapshot.paramMap.get('keyword');
+    if (keyword != null) {
+      this.showKeywordFlg = true;
+      this.keyword = this.transCodeToStr(keyword);
+      this.searchByKeyword(keyword);
+    } else if(condId != null) {
+      this.searchCondition(condId);
+    } else {
+      this.searchCondition(0);
+    }
+  }
+
+  // コードは16位から正常に変換する
+  transCodeToStr(data) {
+    if (data == '') return '';
+    data = data.split('\\u');
+    var str ='';
+    for (var i = 0; i < data.length; i++) {
+      str+=String.fromCharCode(parseInt(data[i],16));
+    }
+    return str;
   }
 
   // 検索項目削除処理
@@ -143,7 +164,7 @@ export class ListComponent implements OnInit {
     if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（開始）",this.incidentStartDateTimeFrom,20)) {
       return false;
     }
-    if(this.incidentStartDateTimeFrom != null){
+    if (this.incidentStartDateTimeFrom != null) {
       if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（開始）",this.incidentStartDateTimeFrom)) {
         return false;
       }
@@ -151,7 +172,7 @@ export class ListComponent implements OnInit {
     if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（終了）",this.incidentStartDateTimeTo,20)) {
       return false;
     }
-    if(this.incidentStartDateTimeTo != null){
+    if (this.incidentStartDateTimeTo != null) {
       if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（終了）",this.incidentStartDateTimeTo)) {
         return false;
       }
@@ -159,7 +180,7 @@ export class ListComponent implements OnInit {
     if (this.callDateShow && !this.lengthCheck("受付日（開始）",this.callStartDateFrom,20)) {
       return false;
     }
-    if(this.callStartDateFrom != null){
+    if (this.callStartDateFrom != null) {
       if (this.callDateShow && !this.dateFormatCheck("受付日（開始）",this.callStartDateFrom)) {
         return false;
       }
@@ -167,7 +188,7 @@ export class ListComponent implements OnInit {
     if (this.callDateShow && !this.lengthCheck("受付日（終了）",this.callStartDateTo,20)) {
       return false;
     }
-    if(this.callStartDateTo != null){
+    if (this.callStartDateTo != null) {
       if (this.callDateShow && !this.dateFormatCheck("受付日（終了）",this.callStartDateTo)) {
         return false;
       }
@@ -278,18 +299,18 @@ export class ListComponent implements OnInit {
   }
 
   // 最大文字数チェック
-  lengthCheck(name,val,length){
-    if(val != null && val.length > length){
+  lengthCheck(name,val,length) {
+    if (val != null && val.length > length) {
       alert(name + "の最大文字数は"　+ length + "です。");
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
   // 日付フォーマットチェック
-  dateFormatCheck(name,date){
-    if(this.getDateStringFromDate(date) == null){
+  dateFormatCheck(name,date) {
+    if (this.getDateStringFromDate(date) == null) {
       alert(name + "は日付型でない。");
       return false;
     }
@@ -342,7 +363,7 @@ export class ListComponent implements OnInit {
   industryTypeWBC = null;
   industryTypeOther = null;
   jigyosyutaiNm = null;
-  prefCd = null;
+  prefCd = '0';
   custNm = null;
   custTypeNenkan = null;
   custTypeTenken = null;
@@ -447,15 +468,15 @@ export class ListComponent implements OnInit {
       );
   }
 
+  keyword = null;
+  showKeywordFlg = false;
   showDelFlg = true;
   condFld = null;
   conditionShowArray = [];
   // 検索処理
-  searchCondition() {
+  searchCondition(condId) {
     // 検索パラメータの作成
     let ps = new URLSearchParams();
-    this.route.data.subscribe(obj => console.log(obj['category']));
-    let condId = this.route.snapshot.paramMap.get('condId');
     ps.set("condId", condId);
 
     // 検索
@@ -464,13 +485,13 @@ export class ListComponent implements OnInit {
       data => {
         // 通信成功時
         console.log(data);
-        if(condId != '0'){
+        if (condId != '0'){
           this.conditionShowArray = data[data.length - 1];
-          for(var i=0;i<this.conditionShowArray.length;i++){
+          for (var i = 0; i < this.conditionShowArray.length; i++) {
             var condFld = null;
             var condVal = null;
-            condFld = this.conditionShowArray[i]['COND_FLD'];
-            condVal = this.conditionShowArray[i]['COND_VAL'];
+            condFld = this.conditionShowArray[i]['condFld'];
+            condVal = this.conditionShowArray[i]['condVal'];
             this.setConditionShowAndVal(condFld,condVal);
           }
         }
@@ -492,10 +513,8 @@ export class ListComponent implements OnInit {
       );
   }
 
-  // 都道府県Array
-  prefCdArray = [];
   // 設置表示条件と条件値
-  setConditionShowAndVal(condFld,condVal){
+  setConditionShowAndVal(condFld,condVal) {
     switch (condFld)
     {
     case "incidentTypeSyougai":// インシデント分類（障害）
@@ -626,12 +645,15 @@ export class ListComponent implements OnInit {
   // 日付型を日付フォーマット文字列に変更
   getDateStringFromDate(date) {
 
-    if(date && date.getFullYear()){
+    if (date && date.getFullYear()) {
       var y:number = date.getFullYear();
       var m:number = date.getMonth();
       m++;
       var d:number = date.getDate();
-      return  y + "-" + m + "-" + d + " 00:00:00";
+      // 2018.01.20 Newtouch更新 start
+      // return  y + "-" + m + "-" + d + " 00:00:00";
+      return  y + "-" + m + "-" + d;
+      // 2018.01.20 Newtouch更新 end
     } else {
       // 日付型でない値の場合
       return null;
@@ -682,12 +704,12 @@ export class ListComponent implements OnInit {
     'incidentNoDesc': false // インシデント番号のソートアイコン　降順
   };
   // 並び替え処理(並び順指定)
-  sort(column: string) {  // ←イベント発火地点
+  sort(column: string) { // ←イベント発火地点
     var columnAsc = column + 'Asc';
     var columnDesc = column + 'Desc';
     this.changeOrderBy(columnAsc, columnDesc);
     var orderBy = this.getOrderBy(columnAsc, columnDesc);
-    this.order.set(column, orderBy);  // ←ソートを行う
+    this.order.set(column, orderBy); // ←ソートを行う
 
     // 切り替え処理
     for (var key in this.orderByParamArray) {
@@ -745,4 +767,38 @@ export class ListComponent implements OnInit {
     let tmpItemsPerPage: number = +this.itemsPerPage;
     this.end = tmpStart + tmpItemsPerPage;
   }
+
+  // キーワードを入力してエンターを押した
+  onKeyWordEnter() {
+    console.log("キーワード検索処理");
+    this.searchByKeyword(this.keyword);
+  }
+
+  searchByKeyword(keyword){
+    // 検索パラメータの作成
+    let ps = new URLSearchParams();
+    ps.set("keyword", this.keyword);
+    // 検索
+    this.jsonpService.requestGet('IncidentListDataGetByKeyword.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.log(data);
+        if (data[0]) {
+          let list = data[0];
+          if (list.result !== '' && list.result == true) {
+            // 画面表示パラメータのセット処理
+            this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+          }
+        }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+      );
+  }
+
 }

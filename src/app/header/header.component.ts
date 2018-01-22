@@ -18,7 +18,7 @@ export class HeaderComponent {
 
     condList = [];
 
-    // 检索条件名の検索
+    // 検索条件名の検索
     searchConditionName() {
 
       // パラメータの作成
@@ -29,10 +29,14 @@ export class HeaderComponent {
       .subscribe(
       data => {
         // 通信成功時
-        console.log('成功。');
-
-        // 画面表示パラメータのセット処理
-        this.setDspParam(data);
+        console.log(data);
+        if (data[0]) {
+          let list = data[0];
+          if (list.result !== '' && list.result == true) {
+            // 画面表示パラメータのセット処理
+            this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+          }
+        }
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -55,7 +59,7 @@ export class HeaderComponent {
     }
 
     // ログアウト処理
-    logout(){
+    logout() {
       console.log("ログアウト処理");
     }
 

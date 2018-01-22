@@ -19,17 +19,17 @@ export class ConditionDeleteModalComponent {
 
   // listイベント(親コンポーネントのメソッド呼び出し)
   @Output() conDelButtonshowDelFlg: EventEmitter<any> = new EventEmitter();
+  @Output() changeCondition: EventEmitter<any> = new EventEmitter();
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) {}
 
   modalRef: BsModalRef;
 
   condList = [];
-  condNm = "";
-  rdoCondNm = "";
+  rdoCondId = "";
   showDelFlg = false;
   // モーダル表示
-  openModal(condName) {
+  openModal(condId) {
 
     // パラメータの作成
     let ps = new URLSearchParams();
@@ -37,26 +37,32 @@ export class ConditionDeleteModalComponent {
     this.jsonpService.requestGet('IncidentListConditionDelete.php', ps)
     .subscribe(
     data => {
-      // 通信成功時
-      console.log('成功。');
-      console.log(data);
-      if(data.length == 0 ){
-        this.showDelFlg = false;
-        this.conDelButtonshowDelFlg.emit({ "showDelFlg": this.showDelFlg});
-        this.delULElement(data);
-        this.template.hide();
-      }else{
-        this.template.show();
-        // 画面表示パラメータのセット処理
-        this.setDspParam(data);
-        if (condName == null || condName == "") {
-          this.rdoCondNm = data[0].COND_NM;
-        } else {
-          this.rdoCondNm = condName;
+      if (data[0]) {
+        let list = data[0];
+        if (list.result !== '' && list.result == true) {
+          data = data.slice(1); // 配列1つ目は、サーバ処理成功フラグなので除外
+          // 通信成功時
+          console.log('成功。');
+          console.log(data);
+          if (data.length == 0 ) {
+            this.showDelFlg = false;
+            this.conDelButtonshowDelFlg.emit({ "showDelFlg": this.showDelFlg});
+            this.changeCondition.emit(""); // 検索条件が変更された
+            this.template.hide();
+          } else {
+            this.template.show();
+            // 画面表示パラメータのセット処理
+            this.setDspParam(data);
+            if (condId == null || condId == "") {
+              this.rdoCondId = data[0].condId;
+            } else {
+              this.rdoCondId = condId;
+            }
+            this.showDelFlg = true;
+            this.conDelButtonshowDelFlg.emit({ "showDelFlg": this.showDelFlg});
+            this.changeCondition.emit(""); // 検索条件が変更された
+          }
         }
-        this.showDelFlg = true;
-        this.conDelButtonshowDelFlg.emit({ "showDelFlg": this.showDelFlg});
-        this.delULElement(data);
       }
     },
     error => {
@@ -68,31 +74,9 @@ export class ConditionDeleteModalComponent {
     );
   }
 
-  // 削除検索条件名メニュー
-  delULElement(data) {
-    var list = document.getElementById("condNmUl");
-    var t=list.childNodes.length;
-    for (var i=t-1;i>=0;i--){
-      list.removeChild(list.childNodes[i]);
-    }
-    this.addULElement(data);
-  }
-
-  // 増加検索条件名メニュー
-  addULElement(data)
-  {
-    var s=document.getElementById('condNmUl');
-    for(var i=0;i<data.length;i++){
-      var li = "<li _ngcontent-c2=''><a _ngcontent-c2='' onclick='window.location.reload();' routerlinkactive='current' ng-reflect-router-link='/list/" + data[i]['COND_ID'] + 
-      "' ng-reflect-router-link-active-options='[object Object]' ng-reflect-router-link-active='current' href='#/list/" + data[i]['COND_ID'] + 
-      "' class='current'>" + data[i]['COND_NM'] + "</a></li>"
-      s.insertAdjacentHTML('beforeend',li);
-    }
-  }
-
   // 画面表示パラメータのセット処理
   setDspParam(data) {
-      this.condList = data;
+    this.condList = data;
   }
 
   // 検索項目削除処理
@@ -101,7 +85,7 @@ export class ConditionDeleteModalComponent {
       this.conditionDeleteTrue();
     }
     else {
-        window.close();
+      window.close();
     }
   }
 
@@ -110,15 +94,19 @@ export class ConditionDeleteModalComponent {
 
     // 検索パラメータの作成
     let ps = new URLSearchParams();
-    ps.set("condNm", this.rdoCondNm);
+    ps.set("condId", this.rdoCondId);
     // 検索項目削除
     this.jsonpService.requestGet('IncidentListConditionDeleteRun.php', ps)
       .subscribe(
       data => {
-        // 通信成功時
-        console.log('成功。');
-        alert("削除完了");
-        this.openModal(null);
+        if (data[0]['resultFlg'] == '0') {
+          // 通信成功時
+          console.log('成功。');
+          alert(data[0]['resultMsg']);
+          this.openModal(null);
+        }else{
+          alert(data[0]['resultMsg']);
+        }
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -130,4 +118,5 @@ export class ConditionDeleteModalComponent {
       );
 
   }
+
 }

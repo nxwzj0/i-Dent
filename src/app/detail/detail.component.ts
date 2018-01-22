@@ -163,6 +163,7 @@ export class DetailComponent implements OnInit {
   // 画面表示パラメータの初期化
   // １．メインパネル
   // １－１．ヘッダー
+  incidentId: string; // インシデントID
   incidentNo = ""; // インシデント番号
   incidentStatusCd = ""; // インシデントステータスCD
   incidentStatusNm = ""; // インシデントステータス名
@@ -256,6 +257,7 @@ export class DetailComponent implements OnInit {
 
   // 画面表示パラメータのセット処理
   setDspParam(data) {
+    this.incidentId = data.incidentId; // インシデントID
     this.incidentNo = data.incidentNo; // インシデント番号
     this.incidentStatusCd = data.incidentStatusCd; // インシデントステータスCD
     this.incidentStatusNm = data.incidentStatusNm; // インシデントステータス名
