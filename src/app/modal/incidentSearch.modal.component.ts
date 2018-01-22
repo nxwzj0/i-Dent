@@ -104,7 +104,7 @@ search() {
   ps.set("incidentStatusAct", this.searchIncidentStatusAct);
 
   // 検索
-  this.jsonpService.commonRequestGet('IncidentListDataGet.php', ps)
+  this.jsonpService.requestGet('IncidentListDataGetCommon.php', ps)
     .subscribe(
     data => {
       // 通信成功時
