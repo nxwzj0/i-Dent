@@ -109,9 +109,9 @@ setDspParam(data) {
 }
 
 // 選択ボタンクリック
-onSelect(pjNo: any, inqNo: any,consumerNm:any,summaryNm:any) {
+onSelect(pjId : any,pjNo: any,summaryNm:any) {
   // プロジェクト
-  this.projectSearchSelect.emit({"pjNo": pjNo, "inqNo": inqNo,"consumerNm":consumerNm,"summaryNm":summaryNm });
+  this.projectSearchSelect.emit({"pjId":pjId,"pjNo": pjNo,"summaryNm":summaryNm });
   // モーダルの非表示
   this.template.hide();
 }

@@ -153,8 +153,8 @@ export class EditComponent implements OnInit {
   // プロジェクト選択
   onProjectSearchSelected($event: any){
     if($event){
-      this.deliveryPjId = $event["pjNo"]; //納入プロジェクトID
-      this.deliveryPjNm = $event["consumerNm"]; //納入プロジェクト名
+      this.deliveryPjId = $event["pjId"]; //納入プロジェクトID
+      this.deliveryPjNm = $event["summaryNm"]; //納入プロジェクト名
     }
   }
 
