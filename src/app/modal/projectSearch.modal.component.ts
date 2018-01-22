@@ -20,7 +20,7 @@ export class ProjectSearchModalComponent {
   // モーダルのタイプ　親コンポーネントからの値受け取り
   modalType: any;
 
-  // 営業担当者イベント(親コンポーネントのメソッド呼び出し)
+  // プロジェクトイベント(親コンポーネントのメソッド呼び出し)
   @Output() projectSearchSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService,private jsonpService: JsonpService) { }
@@ -98,32 +98,21 @@ search() {
     );
 }
 
-// ユーザ検索結果リスト
+// プロジェクト検索結果リスト
 projList = [];
 // 画面表示パラメータのセット処理
 setDspParam(data) {
   // ページングの設定
   this.bigTotalItems = data.length;
-  // ユーザリストをセット
+  // プロジェクトリストをセット
   this.projList = data;
 }
 
-// 選択ボタンクリック data?.postCd, data?.sectionNm
+// 選択ボタンクリック
 onSelect(pjNo: any, inqNo: any,consumerNm:any,summaryNm:any) {
-  // 営業担当者
+  // プロジェクト
   this.projectSearchSelect.emit({"pjNo": pjNo, "inqNo": inqNo,"consumerNm":consumerNm,"summaryNm":summaryNm });
   // モーダルの非表示
   this.template.hide();
 }
-
-
-  // TODO 一時表示用　固定インシデント情報 
-  projectList = [
-    {
-      "pjNo": "1",
-      "inqNo": "2",
-      "consumerNm": "3",
-      "summaryNm": "4"
-    }
-  ];
 }
