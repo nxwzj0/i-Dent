@@ -116,38 +116,4 @@ export class SectionSearchModalComponent {
     // モーダルの非表示
     this.template.hide();
   }
-
-  // TODO 一時表示用　固定部門情報 
-  incidentList = [
-    {
-      "postCd": "65000", "sectionNm": "機器）シス機器）神戸", "companyNm": "FES神戸",
-    },
-    {
-      "postCd": "65100", "sectionNm": "機器）シス機器）神戸）配電盤設計", "companyNm": "FES神戸",
-    },
-    {
-      "postCd": "KOUNO", "sectionNm": "河野設計室", "companyNm": "河野設計室",
-    },
-    {
-      "postCd": "Q1000", "sectionNm": "生産)東京工場", "companyNm": "FES東工",
-    },
-    {
-      "postCd": "Q1100", "sectionNm": "生産)東工)生産部", "companyNm": "FES東工",
-    },
-    {
-      "postCd": "Q110C", "sectionNm": "生産)東工)生産部)資材課", "companyNm": "FES東工",
-    },
-    {
-      "postCd": "Q110D", "sectionNm": "生産)東工)生産部)作業研究課", "companyNm": "FES東工",
-    },
-    {
-      "postCd": "Q110F", "sectionNm": "生産)東工)生産部)技能ソリューC", "companyNm": "FES東工",
-    },
-    {
-      "postCd": "R5005", "sectionNm": "関西）総務部)大阪", "companyNm": "富士電機システムズ（株）",
-    },
-    {
-      "postCd": "R5006", "sectionNm": "関西）総務部)神戸", "companyNm": "富士電機システムズ（株）",
-    },
-  ];
 }
