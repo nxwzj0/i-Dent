@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild,Output,EventEmitter  } from '@angular/core';
+import { Component, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
@@ -22,7 +22,7 @@ export class IncidentSearchModalComponent {
   // インシデント検索イベント
   @Output() incidentSearchSelect: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: BsModalService,private jsonpService: JsonpService,private datePipe: DatePipe) { }
+  constructor(private modalService: BsModalService, private jsonpService: JsonpService, private datePipe: DatePipe) { }
 
   // 検索条件
   searchIncidentNo = "";
@@ -83,69 +83,69 @@ export class IncidentSearchModalComponent {
     this.searchIncidentStatusAct = "";
   }
   // 検索処理
-search() {
-  // 検索パラメータの作成
-  let ps = new URLSearchParams();
-  
-  ps.set("incidentNo", this.searchIncidentNo);
-  ps.set("callContent", this.searchCallContent);
-  ps.set("callStartDateFrom", this.datePipe.transform(this.searchCallStartDateFrom,'yyyy/MM/dd'));
-  ps.set("callStartDateTo", this.datePipe.transform(this.searchCallStartDateTo,'yyyy/MM/dd'));
-  ps.set("incidentType", this.searchIncidentType);
-  ps.set("incidentTypeSyougai", this.searchIncidentTypeSyougai);
-  ps.set("incidentTypeJiko", this.searchIncidentTypeJiko);
-  ps.set("incidentTypeClaim", this.searchIncidentTypeClaim);
-  ps.set("incidentTypeToiawase", this.searchIncidentTypeToiawase);
-  ps.set("incidentTypeInfo", this.searchIncidentTypeInfo);
-  ps.set("incidentTypeOther", this.searchIncidentTypeOther);
-  ps.set("incidentStatus", this.searchIncidentStatus);
-  ps.set("incidentStatusCall", this.searchIncidentStatusCall);
-  ps.set("incidentStatusTaio", this.searchIncidentStatusTaio);
-  ps.set("incidentStatusAct", this.searchIncidentStatusAct);
+  search() {
+    // 検索パラメータの作成
+    let ps = new URLSearchParams();
 
-  // 検索
-  this.jsonpService.requestGet('IncidentListDataGet.php', ps)
-    .subscribe(
-    data => {
-      // 通信成功時
-      console.group("IncidentSearchModalComponent.search() success");
-      console.log(data);
-      console.groupEnd();
-      if (data[0]) {
-        let list = data[0];
-        if (list.result !== '' && list.result == true) {
-          // 画面表示パラメータのセット処理
-          this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+    ps.set("incidentNo", this.searchIncidentNo);
+    ps.set("callContent", this.searchCallContent);
+    ps.set("callStartDateFrom", this.datePipe.transform(this.searchCallStartDateFrom, 'yyyy/MM/dd'));
+    ps.set("callStartDateTo", this.datePipe.transform(this.searchCallStartDateTo, 'yyyy/MM/dd'));
+    ps.set("incidentType", this.searchIncidentType);
+    ps.set("incidentTypeSyougai", this.searchIncidentTypeSyougai);
+    ps.set("incidentTypeJiko", this.searchIncidentTypeJiko);
+    ps.set("incidentTypeClaim", this.searchIncidentTypeClaim);
+    ps.set("incidentTypeToiawase", this.searchIncidentTypeToiawase);
+    ps.set("incidentTypeInfo", this.searchIncidentTypeInfo);
+    ps.set("incidentTypeOther", this.searchIncidentTypeOther);
+    ps.set("incidentStatus", this.searchIncidentStatus);
+    ps.set("incidentStatusCall", this.searchIncidentStatusCall);
+    ps.set("incidentStatusTaio", this.searchIncidentStatusTaio);
+    ps.set("incidentStatusAct", this.searchIncidentStatusAct);
+
+    // 検索
+    this.jsonpService.requestGet('IncidentListDataGet.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.group("IncidentSearchModalComponent.search() success");
+        console.log(data);
+        console.groupEnd();
+        if (data[0]) {
+          let list = data[0];
+          if (list.result !== '' && list.result == true) {
+            // 画面表示パラメータのセット処理
+            this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+          }
         }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.group("IncidentSearchModalComponent.search() fail");
+        console.log('サーバとのアクセスに失敗しました。');
+        console.log(error);
+        console.groupEnd();
+        return false;
       }
-    },
-    error => {
-      // 通信失敗もしくは、コールバック関数内でエラー
-      console.group("IncidentSearchModalComponent.search() fail");
-      console.log('サーバとのアクセスに失敗しました。');
-      console.log(error);
-      console.groupEnd();
-      return false;
-    }
-    );
-}
+      );
+  }
 
-// インシデント情報検索結果リスト
-incidentList = [];
-// 画面表示パラメータのセット処理
-setDspParam(data) {
-  // ページングの設定
-  this.bigTotalItems = data.length;
-  // インシデント情報 リストをセット
-  this.incidentList = data;
-}
+  // インシデント情報検索結果リスト
+  incidentList = [];
+  // 画面表示パラメータのセット処理
+  setDspParam(data) {
+    // ページングの設定
+    this.bigTotalItems = data.length;
+    // インシデント情報 リストをセット
+    this.incidentList = data;
+  }
 
-// 選択ボタンクリック
-onSelect(incidentId: any,incidentNo: any) {
-  // インシデント情報 
-  this.incidentSearchSelect.emit({"incidentId": incidentId,"incidentNo":incidentNo});
-  // モーダルの非表示
-  this.template.hide();
-}
+  // 選択ボタンクリック
+  onSelect(incidentId: any, incidentNo: any) {
+    // インシデント情報 
+    this.incidentSearchSelect.emit({ "incidentId": incidentId, "incidentNo": incidentNo });
+    // モーダルの非表示
+    this.template.hide();
+  }
 
 }

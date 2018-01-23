@@ -112,7 +112,7 @@ export class SectionSearchModalComponent {
   // 選択ボタンクリック
   onSelect(postCd: any, sectionNm: any) {
     // 部門情報
-    this.salesSectionSelect.emit({"sectionSearchType":this.modalType,"postCd": postCd, "sectionNm": sectionNm });
+    this.salesSectionSelect.emit({ "sectionSearchType": this.modalType, "postCd": postCd, "sectionNm": sectionNm });
     // モーダルの非表示
     this.template.hide();
   }

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild,Output,EventEmitter } from '@angular/core';
+import { Component, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
@@ -23,7 +23,7 @@ export class ProjectSearchModalComponent {
   // プロジェクトイベント(親コンポーネントのメソッド呼び出し)
   @Output() projectSearchSelect: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: BsModalService,private jsonpService: JsonpService) { }
+  constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
   // 検索条件
   searchPjNo = "";
@@ -62,57 +62,57 @@ export class ProjectSearchModalComponent {
     this.searchSummaryNm = "";
   }
 
-// 検索処理
-search() {
-  // 検索パラメータの作成
-  let ps = new URLSearchParams();
-  ps.set("pjNo", this.searchPjNo);
-  ps.set("inqNo", this.searchInqNo);
-  ps.set("consumerNm", this.searchConsumerNm);
-  ps.set("summaryNm", this.searchSummaryNm);
+  // 検索処理
+  search() {
+    // 検索パラメータの作成
+    let ps = new URLSearchParams();
+    ps.set("pjNo", this.searchPjNo);
+    ps.set("inqNo", this.searchInqNo);
+    ps.set("consumerNm", this.searchConsumerNm);
+    ps.set("summaryNm", this.searchSummaryNm);
 
-  // 検索
-  this.jsonpService.commonRequestGet('ProjListDataGet.php', ps)
-    .subscribe(
-    data => {
-      // 通信成功時
-      console.group("ProjectSearchModalComponent.search() success");
-      console.log(data);
-      console.groupEnd();
-      if (data[0]) {
-        let list = data[0];
-        if (list.result !== '' && list.result == true) {
-          // 画面表示パラメータのセット処理
-          this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+    // 検索
+    this.jsonpService.commonRequestGet('ProjListDataGet.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.group("ProjectSearchModalComponent.search() success");
+        console.log(data);
+        console.groupEnd();
+        if (data[0]) {
+          let list = data[0];
+          if (list.result !== '' && list.result == true) {
+            // 画面表示パラメータのセット処理
+            this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+          }
         }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.group("ProjectSearchModalComponent.search() fail");
+        console.error(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        console.groupEnd();
+        return false;
       }
-    },
-    error => {
-      // 通信失敗もしくは、コールバック関数内でエラー
-      console.group("ProjectSearchModalComponent.search() fail");
-      console.error(error);
-      console.log('サーバとのアクセスに失敗しました。');
-      console.groupEnd();
-      return false;
-    }
-    );
-}
+      );
+  }
 
-// プロジェクト検索結果リスト
-projList = [];
-// 画面表示パラメータのセット処理
-setDspParam(data) {
-  // ページングの設定
-  this.bigTotalItems = data.length;
-  // プロジェクトリストをセット
-  this.projList = data;
-}
+  // プロジェクト検索結果リスト
+  projList = [];
+  // 画面表示パラメータのセット処理
+  setDspParam(data) {
+    // ページングの設定
+    this.bigTotalItems = data.length;
+    // プロジェクトリストをセット
+    this.projList = data;
+  }
 
-// 選択ボタンクリック
-onSelect(pjId : any,pjNo: any,summaryNm:any) {
-  // プロジェクト
-  this.projectSearchSelect.emit({"pjId":pjId,"pjNo": pjNo,"summaryNm":summaryNm });
-  // モーダルの非表示
-  this.template.hide();
-}
+  // 選択ボタンクリック
+  onSelect(pjId: any, pjNo: any, summaryNm: any) {
+    // プロジェクト
+    this.projectSearchSelect.emit({ "pjId": pjId, "pjNo": pjNo, "summaryNm": summaryNm });
+    // モーダルの非表示
+    this.template.hide();
+  }
 }

@@ -66,30 +66,30 @@
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-7">
-                <div class="date-div">
-                  <div class="input-group">
-                    <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
-                      [(bsValue)]="searchCallStartDateFrom" value="{{searchCallStartDateFrom | date:'yyyy/MM/dd'}}">
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
-                        <i class="fa fa-calendar"></i>
-                      </button>
-                    </span>
-                  </div>
-                </div>
-                <span class="text-center inner-text">～</span>
-                <div class="date-div">
-                  <div class="input-group">
-                    <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
-                      [(bsValue)]="searchCallStartDateTo" value="{{searchCallStartDateTo | date:'yyyy/MM/dd'}}">
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
-                        <i class="fa fa-calendar"></i>
-                      </button>
-                    </span>
-                  </div>
+              <div class="date-div">
+                <div class="input-group">
+                  <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                    [(bsValue)]="searchCallStartDateFrom" value="{{searchCallStartDateFrom | date:'yyyy/MM/dd'}}">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
                 </div>
               </div>
+              <span class="text-center inner-text">～</span>
+              <div class="date-div">
+                <div class="input-group">
+                  <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                    [(bsValue)]="searchCallStartDateTo" value="{{searchCallStartDateTo | date:'yyyy/MM/dd'}}">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-5 label-padding">
@@ -108,16 +108,16 @@
                   <input name="searchIncidentTypeJiko" type="checkbox" value="2" [(ngModel)]="searchIncidentTypeJiko"> 事故
                 </label>
                 <label class="input-item">
-                  <input name="searchIncidentTypeClaim"  type="checkbox" value="3" [(ngModel)]="searchIncidentTypeClaim"> クレーム
+                  <input name="searchIncidentTypeClaim" type="checkbox" value="3" [(ngModel)]="searchIncidentTypeClaim"> クレーム
                 </label>
                 <label class="input-item">
-                  <input name="searchIncidentTypeToiawase"  type="checkbox" value="4" [(ngModel)]="searchIncidentTypeToiawase"> 問合せ
+                  <input name="searchIncidentTypeToiawase" type="checkbox" value="4" [(ngModel)]="searchIncidentTypeToiawase"> 問合せ
                 </label>
                 <label class="input-item">
-                  <input name="searchIncidentTypeInfo"  type="checkbox" value="5" [(ngModel)]="searchIncidentTypeInfo"> 情報
+                  <input name="searchIncidentTypeInfo" type="checkbox" value="5" [(ngModel)]="searchIncidentTypeInfo"> 情報
                 </label>
                 <label class="input-item">
-                  <input name="searchIncidentTypeOther"  type="checkbox" value="6" [(ngModel)]="searchIncidentTypeOther"> その他
+                  <input name="searchIncidentTypeOther" type="checkbox" value="6" [(ngModel)]="searchIncidentTypeOther"> その他
                 </label>
               </div>
             </div>
@@ -152,14 +152,15 @@
           </div>
 
           <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
-                <pagination name="paging1" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
-                  class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
-              </div>
-              <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                <input name="itemperPage" [(ngModel)]="itemsPerPage" type="text" class="itemsPerPage" (input)="pageChanged()"> 件/頁
-              </div>
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+              <pagination name="paging1" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                [itemsPerPage]="itemsPerPage" class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
             </div>
+            <div class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-4">
+              <input name="itemperPage" [(ngModel)]="itemsPerPage" type="text" class="itemsPerPage" (input)="pageChanged()"> 件/頁
+            </div>
+          </div>
 
           <div class="row" id="search-list">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -200,11 +201,12 @@
           </div>
 
           <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
-                <pagination name="paging2" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage"
-                  class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
-              </div>
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-8">
+              <pagination name="paging2" [boundaryLinks]="true" [totalItems]="bigTotalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                [itemsPerPage]="itemsPerPage" class="pagination-sm" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;" (click)="pageChanged($event)"></pagination>
             </div>
+          </div>
 
         </form>
       </div>
