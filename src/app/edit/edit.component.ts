@@ -30,6 +30,7 @@ export class EditComponent implements OnInit {
 
     let ps = new URLSearchParams();
     let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
+    this.incidentId = prmIncientId;
     if (prmIncientId) {
       ps.set('incidentId', prmIncientId);
     }
