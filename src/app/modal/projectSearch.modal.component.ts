@@ -96,6 +96,8 @@ export class ProjectSearchModalComponent {
         return false;
       }
       );
+      this.currentPage = 1;
+      this.pageChanged(null);
   }
 
   // プロジェクト検索結果リスト

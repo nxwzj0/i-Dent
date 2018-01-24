@@ -96,6 +96,8 @@ export class UserSearchModalComponent {
         return false;
       }
       );
+      this.currentPage = 1;
+      this.pageChanged(null);
   }
 
   // ユーザ検索結果リスト

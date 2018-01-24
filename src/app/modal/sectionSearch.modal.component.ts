@@ -97,6 +97,8 @@ export class SectionSearchModalComponent {
         return false;
       }
       );
+      this.currentPage = 1;
+      this.pageChanged(null);
   }
 
   // 部門情報 検索結果リスト

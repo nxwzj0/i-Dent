@@ -128,6 +128,8 @@ export class IncidentSearchModalComponent {
         return false;
       }
       );
+      this.currentPage = 1;
+      this.pageChanged(null);
   }
 
   // インシデント情報検索結果リスト
