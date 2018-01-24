@@ -73,7 +73,7 @@ export class SectionSearchModalComponent {
     ps.set("companyNm", this.searchCompanyNm);
 
     // 検索
-    this.jsonpService.commonRequestGet('DeptListDataGet.php', ps)
+    this.jsonpService.commonRequestGet('SectionListDataGet.php', ps)
       .subscribe(
       data => {
         // 通信成功時
