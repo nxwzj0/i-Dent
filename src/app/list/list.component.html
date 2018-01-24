@@ -399,20 +399,42 @@
                   インシデント番号 
                   <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentNoAsc']" [class.fa-caret-down]="orderByParamArray['incidentNoDesc']"></i>
                 </th>
-                <th class="table-header-list" width="25%" (click)='sort("callContent")'> 受付内容</th>
-                <th class="table-header-list" (click)='sort("kijoNm")'>機場</th>
-                <th class="table-header-list" (click)='sort("setubiNm")'>設備</th>
-                <th class="table-header-list" (click)='sort("prefNm")'>都道府県</th>
-                <th class="table-header-list" (click)='sort("incidentStartDateTime")'>発生日時</th>
-                <th class="table-header-list" (click)='sort("callDate")'>受付日
-                  <i class="fa fa-caret-down"></i>
+                <th class="table-header-list" width="25%" (click)='sort("callContent")'> 受付内容
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['callContentAsc']" [class.fa-caret-down]="orderByParamArray['callContentDesc']"></i>
                 </th>
-                <th class="table-header-list" (click)='sort("incidentTypeNm")'>分類</th>
-                <th class="table-header-list" (click)='sort("incidentStatusNm")'>ステータス</th>
-                <th class="table-header-list relate-th" popover="関連プロジェクト" triggers="mouseenter:mouseleave" (click)='sort("relatePj")'>関連PJ</th>
-                <th class="table-header-list relate-th" popover="事故クレーム連絡" triggers="mouseenter:mouseleave" (click)='sort("relateJiko")'>事ク連絡</th>
-                <th class="table-header-list relate-th" popover="現地出動（MR2）" triggers="mouseenter:mouseleave" (click)='sort("relateMr2")'>現地出動</th>
-                <th class="table-header-list relate-th" (click)='sort("relateHiyo")'>費用決済</th>
+                <th class="table-header-list" (click)='sort("kijoNm")'>機場
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['kijoNmAsc']" [class.fa-caret-down]="orderByParamArray['kijoNmDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("setubiNm")'>設備
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['setubiNmAsc']" [class.fa-caret-down]="orderByParamArray['setubiNmDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("prefNm")'>都道府県
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['prefNmAsc']" [class.fa-caret-down]="orderByParamArray['prefNmDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("incidentStartDateTime")'>発生日時
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStartDateTimeAsc']" [class.fa-caret-down]="orderByParamArray['incidentStartDateTimeDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("callDate")'>受付日
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['callDateAsc']" [class.fa-caret-down]="orderByParamArray['callDateDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("incidentTypeNm")'>分類
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentTypeNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentTypeNmDesc']"></i>
+                </th>
+                <th class="table-header-list" (click)='sort("incidentStatusNm")'>ステータス
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStatusNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentStatusNmDesc']"></i>
+                </th>
+                <th class="table-header-list relate-th" popover="関連プロジェクト" triggers="mouseenter:mouseleave" (click)='sort("relatePj")'>関連PJ
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relatePjAsc']" [class.fa-caret-down]="orderByParamArray['relatePjDesc']"></i>
+                </th>
+                <th class="table-header-list relate-th" popover="事故クレーム連絡" triggers="mouseenter:mouseleave" (click)='sort("relateJiko")'>事ク連絡
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateJikoAsc']" [class.fa-caret-down]="orderByParamArray['relateJikoDesc']"></i>
+                </th>
+                <th class="table-header-list relate-th" popover="現地出動（MR2）" triggers="mouseenter:mouseleave" (click)='sort("relateMr2")'>現地出動
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateMr2Asc']" [class.fa-caret-down]="orderByParamArray['relateMr2Desc']"></i>
+                </th>
+                <th class="table-header-list relate-th" (click)='sort("relateHiyo")'>費用決済
+                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateHiyoAsc']" [class.fa-caret-down]="orderByParamArray['relateHiyoDesc']"></i>
+                </th>
               </tr>
             </thead>
             <tbody>

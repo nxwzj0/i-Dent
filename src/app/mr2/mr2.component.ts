@@ -31,7 +31,7 @@ export class Mr2Component implements OnInit {
     }
 
     // 画面表示パラメータの取得処理
-    this.jsonpService.pscApiRequestGet('mr2HeadData', ps)
+    this.jsonpService.requestGet('mr2ListDataGet.php', ps)
       .subscribe(
       data => {
         // 通信成功時
@@ -55,7 +55,7 @@ export class Mr2Component implements OnInit {
       );
 
     // 画面表示パラメータの取得処理
-    this.jsonpService.pscApiRequestGet('mr2HeadData', ps)
+    this.jsonpService.requestGet('mr2DataGet.php', ps)
       .subscribe(
       data => {
         // 通信成功時

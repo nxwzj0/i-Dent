@@ -47,6 +47,7 @@ export class ListComponent implements OnInit {
     } else {
       this.searchCondition(0);
     }
+    this.sort("incidentNo");
   }
 
   // コードは16位から正常に変換する
@@ -701,7 +702,31 @@ export class ListComponent implements OnInit {
   order = new OrderByParam();
   orderByParamArray = { // true:ソート有り false:ソート無し [column名 + 「Asc」or「Desc」]
     'incidentNoAsc': false, // インシデント番号のソートアイコン　昇順
-    'incidentNoDesc': false // インシデント番号のソートアイコン　降順
+    'incidentNoDesc': false, // インシデント番号のソートアイコン　降順
+    'callContentAsc': false, // 受付内容のソートアイコン　昇順
+    'callContentDesc': false, // 受付内容のソートアイコン　降順
+    'kijoNmAsc': false, // 機場のソートアイコン　昇順
+    'kijoNmDesc': false, // 機場のソートアイコン　降順
+    'setubiNmAsc': false, // 設備のソートアイコン　昇順
+    'setubiNmDesc': false, // 設備のソートアイコン　降順
+    'prefNmAsc': false, // 都道府県のソートアイコン　昇順
+    'prefNmDesc': false, // 都道府県のソートアイコン　降順
+    'incidentStartDateTimeAsc': false, // 発生日時のソートアイコン　昇順
+    'incidentStartDateTimeDesc': false, // 発生日時のソートアイコン　降順
+    'callDateAsc': false, // 受付日のソートアイコン　昇順
+    'callDateDesc': false, // 受付日のソートアイコン　降順
+    'incidentTypeNmAsc': false, // 分類のソートアイコン　昇順
+    'incidentTypeNmDesc': false, // 分類のソートアイコン　降順
+    'incidentStatusNmAsc': false, // ステータスのソートアイコン　昇順
+    'incidentStatusNmDesc': false, // ステータスのソートアイコン　降順
+    'relatePjAsc': false, // 関連PJのソートアイコン　昇順
+    'relatePjDesc': false, // 関連PJのソートアイコン　降順
+    'relateJikoAsc': false, // 事ク連絡のソートアイコン　昇順
+    'relateJikoDesc': false, // 事ク連絡のソートアイコン　降順
+    'relateMr2Asc': false, // 現地出動のソートアイコン　昇順
+    'relateMr2Desc': false, // 現地出動のソートアイコン　降順
+    'relateHiyoAsc': false, // 費用決済のソートアイコン　昇順
+    'relateHiyoDesc': false // 費用決済のソートアイコン　降順
   };
   // 並び替え処理(並び順指定)
   sort(column: string) { // ←イベント発火地点

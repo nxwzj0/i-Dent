@@ -686,8 +686,8 @@ export class EditComponent implements OnInit {
   incidentTypeArray = [
     { label: '障害', value: 1 },
     { label: '事故', value: 2 },
-    { label: '問合せ', value: 3 },
-    { label: 'クレーム', value: 4 },
+    { label: 'クレーム', value: 3 },
+    { label: '問合せ', value: 4 },
     { label: '情報', value: 5 },
     { label: 'その他', value: 6 }
   ];

@@ -72,7 +72,7 @@ export class ProjectSearchModalComponent {
     ps.set("summaryNm", this.searchSummaryNm);
 
     // 検索
-    this.jsonpService.commonRequestGet('ProjListDataGet.php', ps)
+    this.jsonpService.commonRequestGet('ProjectListDataGet.php', ps)
       .subscribe(
       data => {
         // 通信成功時
