@@ -30,7 +30,7 @@ export class HeaderComponent {
       .subscribe(
       data => {
         // 通信成功時
-        console.log(data);
+        //console.log(data);
         if (data[0]) {
           let list = data[0];
           if (list.result !== '' && list.result == true) {

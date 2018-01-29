@@ -414,8 +414,6 @@ export class DetailComponent implements OnInit {
   // インシデント関係者 
   initRelateUserList(relateUserList: Array<any>) {
     let length = relateUserList.length;
-    console.log(relateUserList);
-    let resultList = [];
     if (relateUserList.length > 0) {
       for (let i = 0; i < length; i++) {
         let sectionObj = {};
@@ -433,7 +431,7 @@ export class DetailComponent implements OnInit {
             let userObj = {};
             let user = relateUserList[j];
             if (!this.isEmpty(user.relateUserId)) {
-              if (user.relateUserSectionCd == section.relateUserSectionCd) {
+              if (user.relateUserSectionCd == section.relateUserSectionCd && user.relateUserSectionNm == section.relateUserSectionNm) {
                 userObj["relateUserId"] = user.relateUserId;
                 userObj["relateUserNm"] = user.relateUserNm;
                 userObj["kidokuDate"] = user.kidokuDate;
@@ -443,14 +441,10 @@ export class DetailComponent implements OnInit {
           }
 
           sectionObj["relateUsers"] = userList;
-          resultList.push(sectionObj);
-
+          this.txtList.push(sectionObj);
         }
       }
     }
-    console.log("txtList:" + this.txtList);
-    console.log(resultList);
-    this.txtList = resultList;
   }
 
 
