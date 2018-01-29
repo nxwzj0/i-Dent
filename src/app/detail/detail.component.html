@@ -368,6 +368,7 @@
       </div>
       <!-- /.panel -->
 
+<!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch -->
       <h4 class="panel-header text-primary">
         <strong>▼関係者</strong>
       </h4>
@@ -378,18 +379,19 @@
               <i class="fa fa-dot-circle-o" aria-hidden="true"></i> 変更を通知する／
               <i class="fa fa-circle-o" aria-hidden="true"></i> 変更を通知しない
             </strong>
-            <a class="relate-user-add-link" (click)="relateUser.openModal()">
-              <u>関係者を追加</u>
-            </a>
+            <button class="" (click)="relateUser.openModal()">
+              関係者を追加
+              <i class="fa fa-user"></i>
+            </button>
           </h5>
           <div class="context-margin">
             <ul *ngFor="let item of txtList;let i = index;" style="list-style:none;padding-left: 0px;">
               <div>{{item.relateUserSectionNm}}</div>
               <li *ngFor="let data of item.relateUsers;let j = index;">
-                  <span class="context-margin relate-user-nm"> {{data.relateUserNm}} <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span></span>
-                  <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)">
-                    <i class="fa fa-trash"></i>
-                  </button>
+                <span class="context-margin relate-user-nm"> {{data.relateUserNm}} <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span></span>
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)">
+                  <i class="fa fa-trash"></i>
+                </button>
               </li>
             </ul>
           </div>
@@ -397,6 +399,7 @@
         <!-- /.panel-body -->
       </div>
       <!-- /.panel -->
+<!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch -->
 
       <h4 class="panel-header text-primary">
         <strong>▼関連リンク</strong>
