@@ -118,6 +118,8 @@ export class IncidentSearchModalComponent {
             this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
+        this.currentPage = 1;
+        this.pageChanged(null);
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -128,8 +130,6 @@ export class IncidentSearchModalComponent {
         return false;
       }
       );
-      this.currentPage = 1;
-      this.pageChanged(null);
   }
 
   // インシデント情報検索結果リスト

@@ -38,7 +38,7 @@
         <button type="button" class="btn btn-danger" (click)="common.openModal('確認','編集内容を登録します。宜しいですか？','OK','キャンセル')">登録</button>
       </span>
       <span>
-        <button type="button" class="btn btn-danger" routerLink="/detail" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
+        <button type="button" class="btn btn-danger" routerLink="/detail/{{incidentId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }" *ngIf="incidentId">
           閲覧へ戻る
         </button>
       </span>

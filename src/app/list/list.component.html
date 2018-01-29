@@ -8,7 +8,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
-<my-header #header></my-header>
+<my-header #header (headerSearch)="reloadSearch($event)"></my-header>
 <conditionSave-modal #conditionSaveModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionSave-modal>
 <conditionDelete-modal #conditionDeleteModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionDelete-modal>
 
@@ -86,7 +86,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="incidentNoShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('incidentNo');searchClear('incidentNo');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -102,7 +102,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="callContentShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('callContent');searchClear('callContent');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -121,7 +121,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="kijoNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('kijoNm');searchClear('kijoNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -137,7 +137,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="setubiNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('setubiNm');searchClear('setubiNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -156,7 +156,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="prefCdShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('prefCd');searchClear('prefCd');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -221,7 +221,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="callDateShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('callDate');searchClear('callDate');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -264,7 +264,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="incidentTypeShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('incidentType');searchClear('incidentType');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -302,7 +302,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="incidentStsShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('incidentSts');searchClear('incidentSts');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -331,7 +331,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="industryTypeShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('industryType');searchClear('industryType');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -372,7 +372,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="custTypeShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('custType');searchClear('custType');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -407,7 +407,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="parentIncidentNoShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('parentIncidentNo');searchClear('parentIncidentNo');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -423,11 +423,11 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="incidentStartDateTimeShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('incidentStartDateTime');searchClear('incidentStartDateTime');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
-                発生日
+                発生日時
               </label>
             </div>
           </div>
@@ -464,7 +464,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="salesDeptNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('salesDeptNm');searchClear('salesDeptNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -480,7 +480,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="salesUserNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('salesUserNm');searchClear('salesUserNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -499,7 +499,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="jigyosyutaiNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('jigyosyutaiNm');searchClear('jigyosyutaiNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -515,7 +515,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="custNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('custNm');searchClear('custNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -534,7 +534,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 label-padding">
             <div class="row">
               <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                <button type="button" (click)="relateUserNmShow = false;" class="btn btn-danger btn-close">&times;</button>
+                <button type="button" (click)="searchHide('relateUserNm');searchClear('relateUserNm');" class="btn btn-danger btn-close">&times;</button>
               </div>
               <div class=""></div>
               <label class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 bg-warning text-center input-label">
@@ -594,6 +594,7 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 transition-button text-right">
               <button type="button" (click)="excelOutput()" class="btn btn-warning">
                 <i class="fa fa-download"></i> EXCEL出力</button>
+              <button type="button" (click)="searchClear('all')" class="btn"> リセット</button>
               <button type="button" (click)="search()" class="btn btn-danger" *ngIf="!showKeywordFlg">
                 <i class="fa fa-search"></i> 検索</button>
               <button type="button" (click)="searchByKeyword()" class="btn btn-danger" *ngIf="showKeywordFlg">
@@ -623,48 +624,49 @@
               <tr>
                 <th class="table-header-list incident-no-th" (click)='sort("incidentNo")'>
                   インシデント番号
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentNoAsc']" [class.fa-caret-down]="orderByParamArray['incidentNoDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentNoAsc']" [class.fa-caret-down]="orderByParamArray['incidentNoDesc']"></i> -->
                 </th>
                 <th class="table-header-list" width="25%" (click)='sort("callContent")'> 受付内容
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['callContentAsc']" [class.fa-caret-down]="orderByParamArray['callContentDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['callContentAsc']" [class.fa-caret-down]="orderByParamArray['callContentDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("kijoNm")'>機場
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['kijoNmAsc']" [class.fa-caret-down]="orderByParamArray['kijoNmDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['kijoNmAsc']" [class.fa-caret-down]="orderByParamArray['kijoNmDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("setubiNm")'>設備
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['setubiNmAsc']" [class.fa-caret-down]="orderByParamArray['setubiNmDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['setubiNmAsc']" [class.fa-caret-down]="orderByParamArray['setubiNmDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("prefNm")'>都道府県
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['prefNmAsc']" [class.fa-caret-down]="orderByParamArray['prefNmDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['prefNmAsc']" [class.fa-caret-down]="orderByParamArray['prefNmDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("incidentStartDateTime")'>発生日時
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStartDateTimeAsc']" [class.fa-caret-down]="orderByParamArray['incidentStartDateTimeDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStartDateTimeAsc']" [class.fa-caret-down]="orderByParamArray['incidentStartDateTimeDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("callDate")'>受付日
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['callDateAsc']" [class.fa-caret-down]="orderByParamArray['callDateDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['callDateAsc']" [class.fa-caret-down]="orderByParamArray['callDateDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("incidentTypeNm")'>分類
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentTypeNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentTypeNmDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentTypeNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentTypeNmDesc']"></i> -->
                 </th>
                 <th class="table-header-list" (click)='sort("incidentStatusNm")'>ステータス
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStatusNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentStatusNmDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['incidentStatusNmAsc']" [class.fa-caret-down]="orderByParamArray['incidentStatusNmDesc']"></i> -->
                 </th>
                 <th class="table-header-list relate-th" popover="関連プロジェクト" triggers="mouseenter:mouseleave" (click)='sort("relatePj")'>関連PJ
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relatePjAsc']" [class.fa-caret-down]="orderByParamArray['relatePjDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['relatePjAsc']" [class.fa-caret-down]="orderByParamArray['relatePjDesc']"></i> -->
                 </th>
                 <th class="table-header-list relate-th" popover="事故クレーム連絡" triggers="mouseenter:mouseleave" (click)='sort("relateJiko")'>事ク連絡
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateJikoAsc']" [class.fa-caret-down]="orderByParamArray['relateJikoDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['relateJikoAsc']" [class.fa-caret-down]="orderByParamArray['relateJikoDesc']"></i> -->
                 </th>
                 <th class="table-header-list relate-th" popover="現地出動（MR2）" triggers="mouseenter:mouseleave" (click)='sort("relateMr2")'>現地出動
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateMr2Asc']" [class.fa-caret-down]="orderByParamArray['relateMr2Desc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['relateMr2Asc']" [class.fa-caret-down]="orderByParamArray['relateMr2Desc']"></i> -->
                 </th>
                 <th class="table-header-list relate-th" (click)='sort("relateHiyo")'>費用決済
-                  <i class="fa" [class.fa-caret-up]="orderByParamArray['relateHiyoAsc']" [class.fa-caret-down]="orderByParamArray['relateHiyoDesc']"></i>
+                  <!-- <i class="fa" [class.fa-caret-up]="orderByParamArray['relateHiyoAsc']" [class.fa-caret-down]="orderByParamArray['relateHiyoDesc']"></i> -->
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of incidentList | orderBy:order | slice: start: end">
+              <!-- <tr *ngFor="let data of incidentList | orderBy:order | slice: start: end"> -->
+              <tr *ngFor="let data of incidentList | slice: start: end">
                 <td class="code-list">
                   <a routerLink="/detail/{{data?.incidentId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
                     <u>{{data?.incidentNo}}</u>

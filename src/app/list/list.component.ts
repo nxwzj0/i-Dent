@@ -47,7 +47,27 @@ export class ListComponent implements OnInit {
     } else {
       this.searchCondition(0);
     }
-    this.defaultSort("callDate");
+    // this.defaultSort("callDate");
+  }
+
+  // 画面再表示処理
+  reloadSearch($event) {
+    if ($event) {
+      this.searchClear('all');
+      // 検索条件のデフォルト設定
+      let condId = $event["condId"];
+      let keyword = $event["keyword"];
+      this.setDefaultShow();
+      if (keyword != null) {
+        this.showKeywordFlg = true;
+        this.keyword = this.transCodeToStr(keyword);
+        this.searchByKeyword(keyword);
+      } else if (condId != null) {
+        this.searchCondition(condId);
+      } else {
+        this.searchCondition(0);
+      }
+    }
   }
 
   // コードは16位から正常に変換する
@@ -468,6 +488,8 @@ export class ListComponent implements OnInit {
             this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
+        this.currentPage = 1;
+        this.pageChanged(null);
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -851,4 +873,181 @@ export class ListComponent implements OnInit {
       );
   }
 
+  // 検索条件非表示
+  searchHide(keyword) {
+    switch (keyword) {
+      case "incidentNo": // インシデント番号
+        this.incidentNoShow = false;
+        break;
+      case "callContent": // 受付内容
+        this.callContentShow = false;
+        break;
+      case "kijoNm": // 機場
+        this.kijoNmShow = false;
+        break;
+      case "setubiNm": // 設備
+        this.setubiNmShow = false;
+        break;
+      case "prefCd": // 都道府県
+        this.prefCdShow = false;
+        break;
+      case "callDate": // 受付日
+        this.callDateShow = false;
+        break;
+      case "incidentType": // インシデント分類
+        this.incidentTypeShow = false;
+        break;
+      case "incidentSts": // ステータス
+        this.incidentStsShow = false;
+        break;
+      case "industryType": // 業種区分
+        this.industryTypeShow = false;
+        break;
+      case "custType": // 顧客分類
+        this.custTypeShow = false;
+        break;
+      case "parentIncidentNo": // 親インシデント番号
+        this.parentIncidentNoShow = false;
+        break;
+      case "incidentStartDateTime": // 発生日時
+        this.incidentStartDateTimeShow = false;
+        break;
+      case "salesDeptNm": // 営業部門
+        this.salesDeptNmShow = false;
+        break;
+      case "salesUserNm": // 営業担当者
+        this.salesUserNmShow = false;
+        break;
+      case "jigyosyutaiNm": // 事業主体
+        this.jigyosyutaiNmShow = false;
+        break;
+      case "custNm": // 顧客
+        this.custNmShow = false;
+        break;
+      case "relateUserNm": // 関係者
+        this.relateUserNmShow = false;
+        break;
+      default:
+        break;
+    }
+  }
+  // 検索条件クリア
+  searchClear(keyword) {
+    switch (keyword) {
+      case "all": //　全クリア
+        this.keyword = "";
+        this.incidentNo = "";
+        this.callContent = "";
+        this.parentIncidentNo = "";
+        this.kijoNm = "";
+        this.jigyosyutaiNm = "";
+        this.setubiNm = "";
+        this.custNm = "";
+        this.salesDeptNm = "";
+        this.salesUserNm = "";
+        this.relateUserNm = "";
+        this.incidentStartDateTimeFrom = "";
+        this.incidentStartDateTimeTo = "";
+        this.callStartDateFrom = "";
+        this.callStartDateTo = "";
+        this.prefCd = "0";
+        this.incidentTypeSyougai = false;
+        this.incidentTypeJiko = false;
+        this.incidentTypeClaim = false;
+        this.incidentTypeToiawase = false;
+        this.incidentTypeInfo = false;
+        this.incidentTypeOther = false;
+        this.incidentStatusCall = false;
+        this.incidentStatusTaio = false;
+        this.incidentStatusAct = false;
+        this.industryTypeMachinery = false;
+        this.industryTypeElectricalMachinery = false;
+        this.industryTypeInstrumentation = false;
+        this.industryTypeInfo = false;
+        this.industryTypeEnvironment = false;
+        this.industryTypeWBC = false;
+        this.industryTypeOther = false;
+        this.custTypeNenkan = false;
+        this.custTypeTenken = false;
+        this.custTypeNasi = false;
+        this.custTypeKasi = false;
+        this.custTypeOther = false;
+        break;
+      case "keyword": // キーワード
+        this.keyword = "";
+        break;
+      case "incidentNo": // インシデント番号
+        this.incidentNo = "";
+        break;
+      case "callContent": // 受付内容
+        this.callContent = "";
+        break;
+      case "kijoNm": // 機場
+        this.kijoNm = "";
+        break;
+      case "setubiNm": // 設備
+        this.setubiNm = "";
+        break;
+      case "prefCd": // 都道府県
+        this.prefCd = "0";
+        break;
+      case "callDate": // 受付日
+        this.callStartDateFrom = "";
+        this.callStartDateTo = "";
+        break;
+      case "incidentType": // インシデント分類
+        this.incidentTypeSyougai = false;
+        this.incidentTypeJiko = false;
+        this.incidentTypeClaim = false;
+        this.incidentTypeToiawase = false;
+        this.incidentTypeInfo = false;
+        this.incidentTypeOther = false;
+        break;
+      case "incidentSts": // ステータス
+        this.incidentStatusCall = false;
+        this.incidentStatusTaio = false;
+        this.incidentStatusAct = false;
+        break;
+      case "industryType": // 業種区分
+        this.industryTypeMachinery = false;
+        this.industryTypeElectricalMachinery = false;
+        this.industryTypeInstrumentation = false;
+        this.industryTypeInfo = false;
+        this.industryTypeEnvironment = false;
+        this.industryTypeWBC = false;
+        this.industryTypeOther = false;
+        break;
+      case "custType": // 顧客分類
+        this.custTypeNenkan = false;
+        this.custTypeTenken = false;
+        this.custTypeNasi = false;
+        this.custTypeKasi = false;
+        this.custTypeOther = false;
+        break;
+      case "parentIncidentNo": // 親インシデント番号
+        this.parentIncidentNo = "";
+        break;
+      case "incidentStartDateTime": // 発生日時
+        this.incidentStartDateTimeFrom = "";
+        this.incidentStartDateTimeTo = "";
+        break;
+      case "salesDeptNm": // 営業部門
+        this.salesDeptNm = "";
+        break;
+      case "salesUserNm": // 営業担当者
+        this.salesUserNm = "";
+        break;
+      case "jigyosyutaiNm": // 事業主体
+        this.jigyosyutaiNm = "";
+        break;
+      case "custNm": // 顧客
+        this.custNm = "";
+        break;
+      case "relateUserNm": // 関係者
+        this.relateUserNm = "";
+        break;
+      default:
+        break;
+    }
+  }
 }

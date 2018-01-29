@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
 import { JsonpService } from '../jsonp.service';
@@ -11,26 +11,31 @@ import { JsonpService } from '../jsonp.service';
 })
 export class HeaderComponent {
 
-    constructor(private route: ActivatedRoute, private jsonpService: JsonpService) {}
+  // ヘッダーイベント(親コンポーネントのメソッド呼び出し)
+  @Output() headerSearch: EventEmitter<any> = new EventEmitter();
 
-    ngOnInit() {
-      this.searchConditionName();
-    }
+  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private router: Router) { }
 
-    condList = [];
+  ngOnInit() {
+    this.route.data.subscribe(obj => this.category = obj['category']);
+    this.searchConditionName();
+  }
 
-    // 検索条件名の検索
-    searchConditionName() {
+  category;
+  condList = [];
 
-      // パラメータの作成
-      let ps = new URLSearchParams();
+  // 検索条件名の検索
+  searchConditionName() {
 
-      // 検索項目の検索
-      this.jsonpService.requestGet('IncidentListConditionDelete.php', ps)
+    // パラメータの作成
+    let ps = new URLSearchParams();
+
+    // 検索項目の検索
+    this.jsonpService.requestGet('IncidentListConditionDelete.php', ps)
       .subscribe(
       data => {
         // 通信成功時
-        //console.log(data);
+        console.log(data);
         if (data[0]) {
           let list = data[0];
           if (list.result !== '' && list.result == true) {
@@ -46,38 +51,52 @@ export class HeaderComponent {
         return false;
       }
       );
-    }
+  }
 
-    // 画面表示パラメータのセット処理
-    setDspParam(data) {
-      this.condList = data;
-    }
+  // 画面表示パラメータのセット処理
+  setDspParam(data) {
+    this.condList = data;
+  }
 
-    // ログアウト処理
-    logout() {
-      console.log("ログアウト処理");
-    }
+  // ログアウト処理
+  logout() {
+    console.log("ログアウト処理");
+  }
 
-    // リロード
-    reload() {
-      window.location.reload();
+  // リロード(検索)
+  reload() {
+    if (this.category == 'list') {
+      // // 検索画面の場合 listComponentの処理を実行
+      this.headerSearch.emit({});
     }
+  }
 
-    // ヘッダーのキーワードを入力してエンターを押した
-    onKeyWordEnter(value: string) {
-      console.log("キーワード検索処理");
-      console.log(value);
-      value= this.encodeUnicode(value);
-      window.location.href = window.location.protocol + '//' + window.location.host + '/#/list/k/'+value;
-      window.location.reload();
+  // リロード(条件検索)
+  reloadCondId(condId) {
+    if (this.category == 'list/c') {
+      // // 検索画面の場合 listComponentの処理を実行
+      this.headerSearch.emit({ 'condId': condId });
     }
+  }
 
-    // コードは16位に変換する
-    encodeUnicode(str) {
-      var res = [];
-      for ( var i=0; i<str.length; i++ ) {
-        res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
-      }
-      return res.join("\\u");
+  // ヘッダーのキーワードを入力してエンターを押した
+  onKeyWordEnter(value: string) {
+    // URLに表示できる値に変換 
+    value = this.encodeUnicode(value);
+    if (this.category == 'list/k') {
+      // 検索画面の場合 listComponentの処理を実行
+      this.headerSearch.emit({ 'keyword': value });
+    } else {
+      this.router.navigate(['/list/k/' + value]);
     }
+  }
+
+  // コードは16位に変換する
+  encodeUnicode(str) {
+    var res = [];
+    for (var i = 0; i < str.length; i++) {
+      res[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
+    }
+    return res.join("\\u");
+  }
 }

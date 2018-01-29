@@ -87,6 +87,8 @@ export class SectionSearchModalComponent {
             this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
+        this.currentPage = 1;
+        this.pageChanged(null);
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -97,18 +99,16 @@ export class SectionSearchModalComponent {
         return false;
       }
       );
-      this.currentPage = 1;
-      this.pageChanged(null);
   }
 
   // 部門情報 検索結果リスト
-  deptList = [];
+  sectionList = [];
   // 画面表示パラメータのセット処理
   setDspParam(data) {
     // ページングの設定
     this.bigTotalItems = data.length;
     // 部門情報 リストをセット
-    this.deptList = data;
+    this.sectionList = data;
   }
 
   // 選択ボタンクリック

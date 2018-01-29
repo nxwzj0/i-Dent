@@ -19,6 +19,7 @@ import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { Mr2Component } from './mr2/mr2.component';
 import { ProjectComponent } from './project/project.component';
+import { CommonComponent } from './common/common.component';
 
 import { CommonModalComponent } from './modal/common.modal.component';
 import { RelateUserAddModalComponent } from './modal/relateUserAdd.modal.component';
@@ -59,6 +60,7 @@ import { OrderByPipe } from './pipe/order.by.pipe';
     ProjectSearchModalComponent,
     CustomerSearchModalComponent,
     EquipmentSearchModalComponent,
+    CommonComponent,
     OrderByPipe
   ],
   imports: [

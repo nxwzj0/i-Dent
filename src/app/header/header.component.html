@@ -52,7 +52,7 @@
                 </a>
                 <ul id="condNmUl" class="dropdown-menu">
                   <li *ngFor="let data of condList">
-                    <a (click)="reload()" routerLink="/list/c/{{data?.condId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">{{data?.condNm}}</a>
+                    <a (click)="reloadCondId(data?.condId)" routerLink="/list/c/{{data?.condId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">{{data?.condNm}}</a>
                   </li>
                 </ul>
               </li>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 import { Http, Headers, RequestOptions } from "@angular/http";
 
@@ -21,7 +21,7 @@ import { environment } from '../../environments/environment.local';
 })
 export class EditComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private http: Http) {
+  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private http: Http, private router: Router) {
     this.bsConfig = Object.assign({}, { locale: this.locale });
   }
 
@@ -144,16 +144,16 @@ export class EditComponent implements OnInit {
   }
 
   // 親インシデント番号
-  onIncidentSearchSelected($event: any){
-    if($event){
+  onIncidentSearchSelected($event: any) {
+    if ($event) {
       this.parentIncidentId = $event["incidentId"]; // 親インシデントID
       this.parentIncidentNo = $event["incidentNo"]; // 親インシデント番号
     }
   }
 
   // プロジェクト選択
-  onProjectSearchSelected($event: any){
-    if($event){
+  onProjectSearchSelected($event: any) {
+    if ($event) {
       this.deliveryPjId = $event["pjId"]; //納入プロジェクトID
       this.deliveryPjNm = $event["summaryNm"]; //納入プロジェクト名
     }
@@ -162,7 +162,7 @@ export class EditComponent implements OnInit {
   //  ユーザ選択
   onSalesUserSelected($event: any) {
     if ($event) {
-      switch($event["userSearchType"]){
+      switch ($event["userSearchType"]) {
         case 'salesUser':
           this.salesUserId = $event["userId"];
           this.salesUserNm = $event["userNm"];
@@ -199,9 +199,9 @@ export class EditComponent implements OnInit {
   }
 
   // 部門検索
-  onSalesSectionSelected($event: any){
+  onSalesSectionSelected($event: any) {
     if ($event) {
-      switch($event["sectionSearchType"]){
+      switch ($event["sectionSearchType"]) {
         case 'salesSection':
           this.salesDeptCd = $event["postCd"];
           this.salesDeptNm = $event["sectionNm"];
@@ -602,8 +602,12 @@ export class EditComponent implements OnInit {
         if (data[0]) {
           let one = data[0];
           if (one.result !== '' && one.result == true) {
-            // 画面表示パラメータのセット処理
-            this.setDspParam(one);
+            
+            if(!this.incidentId){
+              // 新規登録の場合は、取得したIDを使う
+              this.incidentId = data.slice(1)[0].incidentId;
+            }
+            this.router.navigate(['/common', 'インシデント情報を登録しました', '/detail/' + this.incidentId]);
           }
         }
       },
