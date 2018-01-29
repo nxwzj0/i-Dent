@@ -14,13 +14,14 @@ import { environment } from '../../environments/environment.local';
 export class DetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) { }
-
+  
   ngOnInit() {
     this.route.data.subscribe(obj => console.log(obj['category']));
 
     let ps = new URLSearchParams();
     let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
     if (prmIncientId) {
+      this.pageIncidentId = prmIncientId;
       ps.set('incidentId', prmIncientId);
     }
 
@@ -288,7 +289,6 @@ export class DetailComponent implements OnInit {
   productStatusCd = ""; //障害状況状態CD
   productStatusNm = ""; //障害状況状態名
 
-
   // 画面表示パラメータのセット処理
   setDspParam(data) {
     this.incidentId = data.incidentId; // インシデントID
@@ -444,6 +444,8 @@ export class DetailComponent implements OnInit {
   chanegeRev = ""; // 配列で保持
 
   // ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add Start newtouch
+  pageIncidentId;
+
   // それが空であるかどうかを判断する
   isEmpty(str: any) {
     return str == null || str == undefined || str == "" ? true : false;
@@ -485,12 +487,6 @@ export class DetailComponent implements OnInit {
     }
   }
 
-
-  onConfirm($event: any) {
-    if ($event) {
-
-    }
-  }
   // インシデント関係者の追加
   onRelateUserSelected($event) {
     if ($event) {
@@ -585,15 +581,55 @@ export class DetailComponent implements OnInit {
     return index;
   }
 
+  // 削除待ちの部門座標
+  delSectionIdx;
+  // 削除待ちのユーザー座標
+  delUserIdx;
+  //
+  delSectionCd;
+  delUserId;
+  setDeleteInfo(relateUserSectionCd:any,relateUserId:any,deptIdx :number,userIdx : number){
+    this.delSectionIdx = deptIdx;
+    this.delUserIdx = userIdx;
+    this.delSectionCd = relateUserSectionCd;
+    this.delUserId = relateUserId;
+  }
+
   // インシデント関係者の削除
-  delete(relateUserSectionCd: any, relateUserSectionNm: any, relateUserId: any, relateUserNm: any, i: number, j: number) {
-    let relateUsers = this.txtList[i].relateUsers;
-    // 関連するユーザーを削除する
-    relateUsers.splice(j,1);
-    // 最後に関連付けられたユーザーの場合は、部門を削除します
-    if (relateUsers.length == 0) {
-      this.txtList.splice(i,1);
-    }
+  relateUserDelete() {
+    
+    let ps = new URLSearchParams();
+    ps.set('incidentId', this.pageIncidentId);
+    ps.set('relateUserSectionCd',this.delSectionCd);
+    ps.set('relateUserId',this.delUserId);
+
+    // 検索
+    this.jsonpService.requestGet('IncidentRelateUserDelete.php', ps)
+      .subscribe(
+      data => {
+        if (data[0]['resultFlg'] == '0') {
+          // 通信成功時 
+          console.log('成功。');
+          // ================= フロントデスク削除処理 ================= 
+          let relateUsers = this.txtList[this.delSectionIdx].relateUsers;
+          // 関連するユーザーを削除する
+          relateUsers.splice(this.delUserIdx,1);
+          // 最後に関連付けられたユーザーの場合は、部門を削除します
+          if (relateUsers.length == 0) {
+            this.txtList.splice(this.delSectionIdx,1);
+          }
+          // ================= フロントデスク削除処理 ================= 
+        }else{
+          alert(data[0]['resultMsg']);
+        }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+      );
   }
   // ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add End   newtouch
 }

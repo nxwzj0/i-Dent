@@ -10,7 +10,7 @@
 -->
 <my-header></my-header>
 <relateUserAdd-modal #relateUser (relateUserSelect)="onRelateUserSelected($event)"></relateUserAdd-modal>
-<common-modal #common (commonEnter)="onConfirm($event)"></common-modal>
+<common-modal #relateUserCommon (commonEnter)="relateUserDelete()"></common-modal>
 
 <div ng-cloak>
   <div class="container-fluid">
@@ -385,11 +385,15 @@
             </button>
           </h5>
           <div class="context-margin">
-            <ul *ngFor="let item of txtList;let i = index;" style="list-style:none;padding-left: 0px;">
+            <ul *ngFor="let item of txtList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
               <div>{{item.relateUserSectionNm}}</div>
-              <li *ngFor="let data of item.relateUsers;let j = index;">
-                <span class="context-margin relate-user-nm"> {{data.relateUserNm}} <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span></span>
-                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)">
+              <li *ngFor="let data of item.relateUsers;let userIdx = index;">
+                <span class="context-margin relate-user-nm"> 
+                  {{data.relateUserNm}} 
+                  <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span>
+                </span>
+                <!-- delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)  setDeleteUserId(data?.relateUserId);-->
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(item?.relateUserSectionCd,data?.relateUserId,deptIdx,userIdx);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
                   <i class="fa fa-trash"></i>
                 </button>
               </li>
