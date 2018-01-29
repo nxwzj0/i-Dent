@@ -42,21 +42,21 @@ export class ListComponent implements OnInit {
       this.showKeywordFlg = true;
       this.keyword = this.transCodeToStr(keyword);
       this.searchByKeyword(keyword);
-    } else if(condId != null) {
+    } else if (condId != null) {
       this.searchCondition(condId);
     } else {
       this.searchCondition(0);
     }
-    this.sort("incidentNo");
+    this.defaultSort("callDate");
   }
 
   // コードは16位から正常に変換する
   transCodeToStr(data) {
     if (data == '') return '';
     data = data.split('\\u');
-    var str ='';
+    var str = '';
     for (var i = 0; i < data.length; i++) {
-      str+=String.fromCharCode(parseInt(data[i],16));
+      str += String.fromCharCode(parseInt(data[i], 16));
     }
     return str;
   }
@@ -146,80 +146,90 @@ export class ListComponent implements OnInit {
         // 検索項目プルダウンを初期化
         this.selCondition = "0";
         break;
+      case 'incidentTypeShow':
+        this.incidentTypeShow = true;
+        // 検索項目プルダウンを初期化
+        this.selCondition = "0";
+        break;
+      case 'incidentStsShow':
+        this.incidentStsShow = true;
+        // 検索項目プルダウンを初期化
+        this.selCondition = "0";
+        break;
       default:
-      break;
+        break;
     }
   }
 
   // 検索項目チェック
   inputCheck() {
-    if (this.incidentNoShow && !this.lengthCheck("インシデント番号",this.incidentNo,50)) {
+    if (this.incidentNoShow && !this.lengthCheck("インシデント番号", this.incidentNo, 50)) {
       return false;
     }
-    if (this.callContentShow && !this.lengthCheck("受付内容",this.callContent,100)) {
+    if (this.callContentShow && !this.lengthCheck("受付内容", this.callContent, 100)) {
       return false;
     }
-    if (this.parentIncidentNoShow && !this.lengthCheck("親インシデント番号",this.parentIncidentNo,50)) {
+    if (this.parentIncidentNoShow && !this.lengthCheck("親インシデント番号", this.parentIncidentNo, 50)) {
       return false;
     }
-    if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（開始）",this.incidentStartDateTimeFrom,20)) {
+    if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（開始）", this.incidentStartDateTimeFrom, 20)) {
       return false;
     }
     if (this.incidentStartDateTimeFrom != null) {
-      if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（開始）",this.incidentStartDateTimeFrom)) {
+      if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（開始）", this.incidentStartDateTimeFrom)) {
         return false;
       }
     }
-    if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（終了）",this.incidentStartDateTimeTo,20)) {
+    if (this.incidentStartDateTimeShow && !this.lengthCheck("発生日時（終了）", this.incidentStartDateTimeTo, 20)) {
       return false;
     }
     if (this.incidentStartDateTimeTo != null) {
-      if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（終了）",this.incidentStartDateTimeTo)) {
+      if (this.incidentStartDateTimeShow && !this.dateFormatCheck("発生日時（終了）", this.incidentStartDateTimeTo)) {
         return false;
       }
     }
-    if (this.callDateShow && !this.lengthCheck("受付日（開始）",this.callStartDateFrom,20)) {
+    if (this.callDateShow && !this.lengthCheck("受付日（開始）", this.callStartDateFrom, 20)) {
       return false;
     }
     if (this.callStartDateFrom != null) {
-      if (this.callDateShow && !this.dateFormatCheck("受付日（開始）",this.callStartDateFrom)) {
+      if (this.callDateShow && !this.dateFormatCheck("受付日（開始）", this.callStartDateFrom)) {
         return false;
       }
     }
-    if (this.callDateShow && !this.lengthCheck("受付日（終了）",this.callStartDateTo,20)) {
+    if (this.callDateShow && !this.lengthCheck("受付日（終了）", this.callStartDateTo, 20)) {
       return false;
     }
     if (this.callStartDateTo != null) {
-      if (this.callDateShow && !this.dateFormatCheck("受付日（終了）",this.callStartDateTo)) {
+      if (this.callDateShow && !this.dateFormatCheck("受付日（終了）", this.callStartDateTo)) {
         return false;
       }
     }
-    if (this.kijoNmShow && !this.lengthCheck("機場",this.kijoNm,50)) {
+    if (this.kijoNmShow && !this.lengthCheck("機場", this.kijoNm, 50)) {
       return false;
     }
-    if (this.jigyosyutaiNmShow && !this.lengthCheck("事業主体",this.jigyosyutaiNm,50)) {
+    if (this.jigyosyutaiNmShow && !this.lengthCheck("事業主体", this.jigyosyutaiNm, 50)) {
       return false;
     }
-    if (this.setubiNmShow && !this.lengthCheck("設備",this.setubiNm,50)) {
+    if (this.setubiNmShow && !this.lengthCheck("設備", this.setubiNm, 50)) {
       return false;
     }
-    if (this.custNmShow && !this.lengthCheck("顧客",this.custNm,50)) {
+    if (this.custNmShow && !this.lengthCheck("顧客", this.custNm, 50)) {
       return false;
     }
-    if (this.salesDeptNmShow && !this.lengthCheck("営業部門",this.salesDeptNm,50)) {
+    if (this.salesDeptNmShow && !this.lengthCheck("営業部門", this.salesDeptNm, 50)) {
       return false;
     }
-    if (this.salesUserNmShow && !this.lengthCheck("営業担当者",this.salesUserNm,50)) {
+    if (this.salesUserNmShow && !this.lengthCheck("営業担当者", this.salesUserNm, 50)) {
       return false;
     }
-    if (this.relateUserNmShow && !this.lengthCheck("関係者",this.relateUserNm,50)) {
+    if (this.relateUserNmShow && !this.lengthCheck("関係者", this.relateUserNm, 50)) {
       return false;
     }
     return true;
   }
 
   // 検索項目取得処理
-  getCondition(){
+  getCondition() {
     var conditionArray = new Array();
     if (this.inputCheck()) {
       conditionArray[0] = true;
@@ -285,7 +295,6 @@ export class ListComponent implements OnInit {
       conditionArray[39] = this.sectionCd;
       // sectionName
       conditionArray[40] = this.sectionName;
-
     } else {
       conditionArray[0] = false;
     }
@@ -300,9 +309,9 @@ export class ListComponent implements OnInit {
   }
 
   // 最大文字数チェック
-  lengthCheck(name,val,length) {
+  lengthCheck(name, val, length) {
     if (val != null && val.length > length) {
-      alert(name + "の最大文字数は"　+ length + "です。");
+      alert(name + "の最大文字数は" + length + "です。");
       return false;
     } else {
       return true;
@@ -310,7 +319,7 @@ export class ListComponent implements OnInit {
   }
 
   // 日付フォーマットチェック
-  dateFormatCheck(name,date) {
+  dateFormatCheck(name, date) {
     if (this.getDateStringFromDate(date) == null) {
       alert(name + "は日付型でない。");
       return false;
@@ -377,7 +386,7 @@ export class ListComponent implements OnInit {
 
   // 検索条件のデフォルト設定
   setDefaultShow() {
-    //インシデント分類
+    // インシデント分類
     this.incidentTypeShow = true;
     // ステータス
     this.incidentStsShow = true;
@@ -486,14 +495,14 @@ export class ListComponent implements OnInit {
       data => {
         // 通信成功時
         console.log(data);
-        if (condId != '0'){
+        if (condId != '0') {
           this.conditionShowArray = data[data.length - 1];
           for (var i = 0; i < this.conditionShowArray.length; i++) {
             var condFld = null;
             var condVal = null;
             condFld = this.conditionShowArray[i]['condFld'];
             condVal = this.conditionShowArray[i]['condVal'];
-            this.setConditionShowAndVal(condFld,condVal);
+            this.setConditionShowAndVal(condFld, condVal);
           }
         }
 
@@ -501,7 +510,7 @@ export class ListComponent implements OnInit {
           let list = data[0];
           if (list.result !== '' && list.result == true) {
             // 画面表示パラメータのセット処理
-            this.setDspParam(data.slice(1,-1)); // 配列1つ目は、サーバ処理成功フラグなので除外
+            this.setDspParam(data.slice(1, -1)); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
       },
@@ -515,130 +524,129 @@ export class ListComponent implements OnInit {
   }
 
   // 設置表示条件と条件値
-  setConditionShowAndVal(condFld,condVal) {
-    switch (condFld)
-    {
-    case "incidentTypeSyougai":// インシデント分類（障害）
+  setConditionShowAndVal(condFld, condVal) {
+    switch (condFld) {
+      case "incidentTypeSyougai":// インシデント分類（障害）
         this.incidentTypeSyougai = true;
         break;
-    case "incidentTypeJiko":// インシデント分類（事故）
+      case "incidentTypeJiko":// インシデント分類（事故）
         this.incidentTypeJiko = true;
         break;
-    case "incidentTypeClaim":// インシデント分類（クレーム）
+      case "incidentTypeClaim":// インシデント分類（クレーム）
         this.incidentTypeClaim = true;
         break;
-    case "incidentTypeToiawase":// インシデント分類（問合せ）
+      case "incidentTypeToiawase":// インシデント分類（問合せ）
         this.incidentTypeToiawase = true;
         break;
-    case "incidentTypeInfo":// インシデント分類（情報）
+      case "incidentTypeInfo":// インシデント分類（情報）
         this.incidentTypeInfo = true;
         break;
-    case "incidentTypeOther":// インシデント分類（その他）
+      case "incidentTypeOther":// インシデント分類（その他）
         this.incidentTypeOther = true;
         break;
-    case "incidentStatusCall":// ステータス（受入済）
+      case "incidentStatusCall":// ステータス（受入済）
         this.incidentStatusCall = true;
         break;
-    case "incidentStatusTaio":// ステータス（対応入力済）
+      case "incidentStatusTaio":// ステータス（対応入力済）
         this.incidentStatusTaio = true;
         break;
-    case "incidentStatusAct":// ステータス（処置入力済）
+      case "incidentStatusAct":// ステータス（処置入力済）
         this.incidentStatusAct = true;
         break;
-    case "incidentNo":// インシデント番号
+      case "incidentNo":// インシデント番号
         this.incidentNo = condVal;
         break;
-    case "callContent":// 受付内容
+      case "callContent":// 受付内容
         this.callContent = condVal;
         break;
-    case "parentIncidentNo":// 親インシデント番号
+      case "parentIncidentNo":// 親インシデント番号
         this.parentIncidentNo = condVal;
         break;
-    case "incidentStartDateTimeFrom":// 発生日時（開始）
+      case "incidentStartDateTimeFrom":// 発生日時（開始）
         this.incidentStartDateTimeFrom = condVal;
         break;
-    case "incidentStartDateTimeTo":// 発生日時（終了）
+      case "incidentStartDateTimeTo":// 発生日時（終了）
         this.incidentStartDateTimeTo = condVal;
         break;
-    case "callStartDateFrom":// 受付日（開始）
+      case "callStartDateFrom":// 受付日（開始）
         this.callStartDateFrom = condVal;
         break;
-    case "callStartDateTo":// 受付日（終了）
+      case "callStartDateTo":// 受付日（終了）
         this.callStartDateTo = condVal;
         break;
-    case "industryTypeMachinery":// 業種区分（機械）
+      case "industryTypeMachinery":// 業種区分（機械）
         this.industryTypeShow = true;
         this.industryTypeMachinery = true;
         break;
-    case "industryTypeElectricalMachinery":// 業種区分（電機（E））
+      case "industryTypeElectricalMachinery":// 業種区分（電機（E））
         this.industryTypeShow = true;
         this.industryTypeElectricalMachinery = condVal;
         break;
-    case "industryTypeInstrumentation":// 業種区分（計装（I））
-    this.industryTypeShow = true;
+      case "industryTypeInstrumentation":// 業種区分（計装（I））
+        this.industryTypeShow = true;
         this.industryTypeInstrumentation = condVal;
         break;
-    case "industryTypeInfo":// 業種区分（情報（C））
+      case "industryTypeInfo":// 業種区分（情報（C））
         this.industryTypeShow = true;
         this.industryTypeInfo = condVal;
         break;
-    case "industryTypeEnvironment":// 業種区分（環境）
+      case "industryTypeEnvironment":// 業種区分（環境）
         this.industryTypeShow = true;
         this.industryTypeEnvironment = condVal;
         break;
-    case "industryTypeWBC":// 業種区分（WBC）
+      case "industryTypeWBC":// 業種区分（WBC）
         this.industryTypeShow = true;
         this.industryTypeWBC = condVal;
         break;
-    case "industryTypeOther":// 業種区分（その他）
+      case "industryTypeOther":// 業種区分（その他）
         this.industryTypeShow = true;
         this.industryTypeOther = condVal;
         break;
-    case "kijoNm":// 機場
+      case "kijoNm":// 機場
         this.kijoNm = condVal;
         break;
-    case "jigyosyutaiNm":// 事業主体
+      case "jigyosyutaiNm":// 事業主体
         this.jigyosyutaiNm = condVal;
         break;
-    case "setubiNm":// 設備
+      case "setubiNm":// 設備
         this.setubiNm = condVal;
         break;
-    case "prefCd":// 都道府県
+      case "prefCd":// 都道府県
         this.prefCd = condVal;
         break;
-    case "custNm":// 顧客
+      case "custNm":// 顧客
         this.custNm = condVal;
         break;
-    case "custTypeNenkan":// 顧客分類（年間契約）
+      case "custTypeNenkan":// 顧客分類（年間契約）
         this.custTypeShow = true;
         this.custTypeNenkan = true;
         break;
-    case "custTypeTenken":// 顧客分類（点検契約）
+      case "custTypeTenken":// 顧客分類（点検契約）
         this.custTypeShow = true;
         this.custTypeTenken = true;
         break;
-    case "custTypeNasi":// 顧客分類（契約なし）
+      case "custTypeNasi":// 顧客分類（契約なし）
         this.custTypeShow = true;
         this.custTypeNasi = true;
         break;
-    case "custTypeKasi":// 顧客分類（瑕疵期間中）
+      case "custTypeKasi":// 顧客分類（瑕疵期間中）
         this.custTypeShow = true;
         this.custTypeKasi = true;
         break;
-    case "custTypeOther":// 顧客分類（その他）
+      case "custTypeOther":// 顧客分類（その他）
         this.custTypeShow = true;
         this.custTypeOther = true;
         break;
-    case "salesDeptNm":// 営業部門
+      case "salesDeptNm":// 営業部門
         this.custNm = condVal;
         break;
-    case "salesUserNm":// 営業担当者
+      case "salesUserNm":// 営業担当者
         this.custNm = condVal;
         break;
-    case "relateUserNm":// 関係者
+      case "relateUserNm":// 関係者
         this.custNm = condVal;
         break;
-    default:
+      default:
         break;
     }
   }
@@ -647,13 +655,13 @@ export class ListComponent implements OnInit {
   getDateStringFromDate(date) {
 
     if (date && date.getFullYear()) {
-      var y:number = date.getFullYear();
-      var m:number = date.getMonth();
+      var y: number = date.getFullYear();
+      var m: number = date.getMonth();
       m++;
-      var d:number = date.getDate();
+      var d: number = date.getDate();
       // 2018.01.20 Newtouch更新 start
       // return  y + "-" + m + "-" + d + " 00:00:00";
-      return  y + "-" + m + "-" + d;
+      return y + "-" + m + "-" + d;
       // 2018.01.20 Newtouch更新 end
     } else {
       // 日付型でない値の場合
@@ -745,6 +753,23 @@ export class ListComponent implements OnInit {
     }
   }
 
+  // 並び替え処理(デフォルトの並び順指定)
+  defaultSort(column: string) { // ←イベント発火地点
+    var columnAsc = column + 'Asc';
+    var columnDesc = column + 'Desc';
+    this.changeOrderBy(columnDesc, columnAsc);
+    var orderBy = 'Desc';
+    this.order.set(column, orderBy); // ←ソートを行う
+
+    // 切り替え処理
+    for (var key in this.orderByParamArray) {
+      if (key != columnAsc && key != columnDesc) {
+        // 選択していない項目は全て初期化する
+        this.orderByParamArray[key] = false;
+      }
+    }
+  }
+
   // ソート順の取得
   getOrderBy(columnAsc: string, columnDesc: string) {
     if (this.orderByParamArray[columnAsc] && !this.orderByParamArray[columnDesc]) {
@@ -799,7 +824,7 @@ export class ListComponent implements OnInit {
     this.searchByKeyword(this.keyword);
   }
 
-  searchByKeyword(keyword){
+  searchByKeyword(keyword) {
     // 検索パラメータの作成
     let ps = new URLSearchParams();
     ps.set("keyword", this.keyword);
