@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
@@ -5,6 +6,7 @@ import { URLSearchParams } from '@angular/http';
 import { JsonpService } from '../jsonp.service';
 
 import { environment } from '../../environments/environment.local';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'my-app',
@@ -20,7 +22,8 @@ export class DetailComponent implements OnInit {
 
     let ps = new URLSearchParams();
     let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
-    if(prmIncientId){
+
+    if (prmIncientId) {
       ps.set('incidentId', prmIncientId);
     }
 
@@ -348,6 +351,9 @@ export class DetailComponent implements OnInit {
     this.productStatusCd = data.productStatusCd; //障害状況状態CD
     this.productStatusNm = data.productStatusNm; //障害状況状態名
 
+    // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch
+    this.initRelateUserList(data.relateUserList);
+    // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch
 
   }
 
@@ -398,5 +404,165 @@ export class DetailComponent implements OnInit {
 
   // ４．変更履歴
   chanegeRev = ""; // 配列で保持
+
+  // ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add Start newtouch
+  // それが空であるかどうかを判断する
+  isEmpty(str: any) {
+    return str == null || str == undefined || str == "" ? true : false;
+  }
+
+  // インシデント関係者 
+  initRelateUserList(relateUserList: Array<any>) {
+    let length = relateUserList.length;
+    console.log(relateUserList);
+    let resultList = [];
+    if (relateUserList.length > 0) {
+      for (let i = 0; i < length; i++) {
+        let sectionObj = {};
+        let section = relateUserList[i];
+        if (!this.isEmpty(section.relateUserSectionCd)) {
+          if (this.isDeptExist(section.relateUserSectionCd, section.relateUserSectionNm) != -1) {
+            continue;
+          }
+          sectionObj["relateUserSectionCd"] = section.relateUserSectionCd;
+          sectionObj["relateUserSectionNm"] = section.relateUserSectionNm;
+
+          let userList = [];
+
+          for (let j = 0; j < length; j++) {
+            let userObj = {};
+            let user = relateUserList[j];
+            if (!this.isEmpty(user.relateUserId)) {
+              if (user.relateUserSectionCd == section.relateUserSectionCd) {
+                userObj["relateUserId"] = user.relateUserId;
+                userObj["relateUserNm"] = user.relateUserNm;
+                userObj["kidokuDate"] = user.kidokuDate;
+                userList.push(userObj);
+              }
+            }
+          }
+
+          sectionObj["relateUsers"] = userList;
+          resultList.push(sectionObj);
+
+        }
+      }
+    }
+    console.log("txtList:" + this.txtList);
+    console.log(resultList);
+    this.txtList = resultList;
+  }
+
+
+  onConfirm($event: any) {
+    if ($event) {
+
+    }
+  }
+  // インシデント関係者の追加
+  onRelateUserSelected($event) {
+    if ($event) {
+      let salesUserId = $event["userId"];
+      let salesUserNm = $event["userNm"];
+      let salesDeptCd = $event["sectionCd"];
+      let salesDeptNm = $event["sectionNm"];
+      //console.log("onRelateUserSelected:" + salesUserId + "," + salesUserNm + "," + salesDeptCd + "," + salesDeptNm);
+
+      if (this.isDeptExist(salesDeptCd, salesDeptNm) != -1) {
+        // dept already exist
+        let deptIndex = this.isDeptExist(salesDeptCd, salesDeptNm);
+        if (this.isUserExist(salesUserId, salesUserNm, deptIndex) == -1) {
+          // one dept user not exist
+          this.txtList[deptIndex].relateUsers.push({
+            "relateUserId": salesUserId
+            , "relateUserNm": salesUserNm
+            , "kidokuDate": ""
+          });
+        } else {
+          // one dept user already exist
+          alert("user already exist! index in:(" + deptIndex + "," + this.isUserExist(salesUserId, salesDeptNm, deptIndex) + ")")
+        }
+      } else {
+        // dept not exist
+        this.txtList.push(
+          {
+            "relateUserSectionCd": salesDeptCd
+            , "relateUserSectionNm": salesDeptNm
+            , "relateUsers":
+              [
+                {
+                  "relateUserId": salesUserId
+                  , "relateUserNm": salesUserNm
+                  , "kidokuDate": ""
+                }
+              ]
+          }
+        );
+      }
+    }
+  }
+
+  // インシデント情報 
+  txtList = [];
+  // txtList = [
+  //   {
+  //     "relateUserSectionCd": "1"
+  //     , "relateUserSectionNm": "サービスソリューション事業本部 ＣＥ事業部 東京サービス部 第一グループ"
+  //     , "relateUsers":
+  //       [
+  //         {
+  //           "relateUserId": "USER1"
+  //           , "relateUserNm": "水道　一郎"
+  //           , "kidokuDate": "2017/12/18"
+  //         }
+  //         , {
+  //           "relateUserId": "USER2"
+  //           , "relateUserNm": "水道　二郎"
+  //           , "kidokuDate": ""
+  //         }
+  //       ]
+  //   }
+  // ];
+
+  // 部門が既に存在するかどうかを判断する
+  isDeptExist(targetCd: any, targetNm: any) {
+    var index = -1;
+    for (var i = 0; i < this.txtList.length; i++) {
+      var tmpCd = this.txtList[i].relateUserSectionCd.toString();
+      var tmpNm = this.txtList[i].relateUserSectionNm.toString();
+
+      if (tmpCd == targetCd.toString() && tmpNm == targetNm.toString()) {
+        index = i;
+      }
+    }
+    return index;
+  }
+
+  // 関連付けられたインシデント関係者が既に存在するかどうかを判断する
+  isUserExist(targetCd: any, targetNm: any, deptIndex: number) {
+    var index = -1;
+    let relateUsers = this.txtList[deptIndex].relateUsers;
+    for (var i = 0; i < relateUsers.length; i++) {
+      var tmpCd = relateUsers[i].relateUserId.toString();
+      var tmpNm = relateUsers[i].relateUserNm.toString();
+
+      if (tmpCd == targetCd.toString() && tmpNm == targetNm.toString()) {
+        index = i;
+      }
+    }
+    return index;
+  }
+
+  // インシデント関係者の削除
+  delete(relateUserSectionCd: any, relateUserSectionNm: any, relateUserId: any, relateUserNm: any, i: number, j: number) {
+    let relateUsers = this.txtList[i].relateUsers;
+    // 関連するユーザーを削除する
+    relateUsers.splice(j,1);
+    // 最後に関連付けられたユーザーの場合は、部門を削除します
+    if (relateUsers.length == 0) {
+      this.txtList.splice(i,1);
+    }
+  }
+  // ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add End   newtouch
 
 }

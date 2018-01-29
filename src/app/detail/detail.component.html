@@ -9,7 +9,8 @@
 //*****************************************************************************
 -->
 <my-header></my-header>
-<relateUserAdd-modal #relateUser></relateUserAdd-modal>
+<relateUserAdd-modal #relateUser (relateUserSelect)="onRelateUserSelected($event)"></relateUserAdd-modal>
+<common-modal #common (commonEnter)="onConfirm($event)"></common-modal>
 
 <div ng-cloak>
   <div class="container-fluid">
@@ -366,9 +367,12 @@
                 <i class="fa fa-dot-circle-o" aria-hidden="true"></i> 変更を通知する／
                 <i class="fa fa-circle-o" aria-hidden="true"></i> 変更を通知しない
               </strong>
-              <a class="relate-user-add-link" (click)="relateUser.openModal()">
-                <u>関係者を追加</u>
-              </a>
+<!-- ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add Start newtouch -->
+              <button class="" (click)="relateUser.openModal()">
+                  関係者を追加
+                  <i class="fa fa-user"></i>
+              </button>
+<!-- ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add End   newtouch -->
             </h5>
             <div class="context-margin">
               <div>サービスソリューション事業本部 ＣＥ事業部 東京サービス部 第一グループ</div>
@@ -391,6 +395,38 @@
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
+            </div>
+            <hr>
+            <div class="context-margin">
+              <ul *ngFor="let item of txtList;let i = index;" style="list-style:none;padding-left: 0px;">
+                <div>{{item.relateUserSectionNm}}</div>
+                <li *ngFor="let data of item.relateUsers;let j = index;">
+                    <span class="context-margin relate-user-nm"> {{data.relateUserNm}} <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span></span>
+                    <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                </li>
+              </ul>
+              <!-- <div>サービスソリューション事業本部 ＣＥ事業部 東京サービス部 第一グループ</div>
+              <div>
+                <span class="context-margin relate-user-nm"> 水道　一郎 （既読日：2017/12/18）</span>
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+              <div>
+                <span class="context-margin relate-user-nm"> 水道　二郎 　　　　　　　　　　　</span>
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+              <div>品質保証統括室 　品質管理グループ</div>
+              <div>
+                <span class="context-margin relate-user-nm"> 水道　花子 （既読日：2017/12/19）</span>
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div> -->
             </div>
           </div>
           <!-- /.panel-body -->
