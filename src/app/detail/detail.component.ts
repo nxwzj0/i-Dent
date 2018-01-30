@@ -455,12 +455,13 @@ export class DetailComponent implements OnInit {
   }
 
   // インシデント関係者 
-  initRelateUserList(relateUserList: Array<any>) {
-    let length = relateUserList.length;
-    if (relateUserList.length > 0) {
+  initRelateUserList(relateUserArray: Array<any>) {
+    this.relateUserList=[];
+    let length = relateUserArray.length;
+    if (relateUserArray.length > 0) {
       for (let i = 0; i < length; i++) {
         let sectionObj = {};
-        let section = relateUserList[i];
+        let section = relateUserArray[i];
         if (!this.isEmpty(section.relateUserSectionCd)) {
           if (this.isDeptExist(section.relateUserSectionCd, section.relateUserSectionNm) != -1) {
             continue;
@@ -472,7 +473,7 @@ export class DetailComponent implements OnInit {
 
           for (let j = 0; j < length; j++) {
             let userObj = {};
-            let user = relateUserList[j];
+            let user = relateUserArray[j];
             if (!this.isEmpty(user.relateUserId)) {
               if (user.relateUserSectionCd == section.relateUserSectionCd && user.relateUserSectionNm == section.relateUserSectionNm) {
                 userObj["relateUserId"] = user.relateUserId;
@@ -484,79 +485,49 @@ export class DetailComponent implements OnInit {
           }
 
           sectionObj["relateUsers"] = userList;
-          this.txtList.push(sectionObj);
+          this.relateUserList.push(sectionObj);
         }
       }
     }
   }
 
-  // インシデント関係者の追加
-  onRelateUserSelected($event) {
-    if ($event) {
-      let salesUserId = $event["userId"];
-      let salesUserNm = $event["userNm"];
-      let salesDeptCd = $event["sectionCd"];
-      let salesDeptNm = $event["sectionNm"];
-      //console.log("onRelateUserSelected:" + salesUserId + "," + salesUserNm + "," + salesDeptCd + "," + salesDeptNm);
+  // インシデント関係者 
+  findRelateUser(){
+    let ps = new URLSearchParams();
+    ps.set('incidentId', this.pageIncidentId);
 
-      if (this.isDeptExist(salesDeptCd, salesDeptNm) != -1) {
-        // dept already exist
-        let deptIndex = this.isDeptExist(salesDeptCd, salesDeptNm);
-        if (this.isUserExist(salesUserId, salesUserNm, deptIndex) == -1) {
-          // one dept user not exist
-          this.txtList[deptIndex].relateUsers.push({
-            "relateUserId": salesUserId
-            , "relateUserNm": salesUserNm
-            , "kidokuDate": ""
-          });
-        } else {
-          // one dept user already exist
-          alert("user already exist! index in:(" + deptIndex + "," + this.isUserExist(salesUserId, salesDeptNm, deptIndex) + ")")
-        }
-      } else {
-        // dept not exist
-        this.txtList.push(
-          {
-            "relateUserSectionCd": salesDeptCd
-            , "relateUserSectionNm": salesDeptNm
-            , "relateUsers":
-              [
-                {
-                  "relateUserId": salesUserId
-                  , "relateUserNm": salesUserNm
-                  , "kidokuDate": ""
-                }
-              ]
+    // 画面表示パラメータの取得処理
+    this.jsonpService.requestGet('IncidentDataGet.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        if (data[0]) {
+          let one = data[0];
+          if (one.result !== '' && one.result == true) {
+            console.log('findRelateUser success');
+            // 画面表示パラメータのセット処理
+            this.initRelateUserList(one.relateUserList);
           }
-        );
+        }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
       }
-    }
+      );
   }
 
   // インシデント情報 
-  txtList = [];
+  relateUserList = [];
 
   // 部門が既に存在するかどうかを判断する
   isDeptExist(targetCd: any, targetNm: any) {
     var index = -1;
-    for (var i = 0; i < this.txtList.length; i++) {
-      var tmpCd = this.txtList[i].relateUserSectionCd.toString();
-      var tmpNm = this.txtList[i].relateUserSectionNm.toString();
-
-      if (tmpCd == targetCd.toString() && tmpNm == targetNm.toString()) {
-        index = i;
-      }
-    }
-    return index;
-  }
-
-  // 関連付けられたインシデント関係者が既に存在するかどうかを判断する
-  isUserExist(targetCd: any, targetNm: any, deptIndex: number) {
-    var index = -1;
-    let relateUsers = this.txtList[deptIndex].relateUsers;
-    for (var i = 0; i < relateUsers.length; i++) {
-      var tmpCd = relateUsers[i].relateUserId.toString();
-      var tmpNm = relateUsers[i].relateUserNm.toString();
+    for (var i = 0; i < this.relateUserList.length; i++) {
+      var tmpCd = this.relateUserList[i].relateUserSectionCd.toString();
+      var tmpNm = this.relateUserList[i].relateUserSectionNm.toString();
 
       if (tmpCd == targetCd.toString() && tmpNm == targetNm.toString()) {
         index = i;
@@ -595,16 +566,8 @@ export class DetailComponent implements OnInit {
       data => {
         if (data[0]['resultFlg'] == '0') {
           // 通信成功時 
-          console.log('成功。');
-          
-          let relateUsers = this.txtList[this.delSectionIdx].relateUsers;
-          // 関連するユーザーを削除する
-          relateUsers.splice(this.delUserIdx,1);
-          // 最後に関連付けられたユーザーの場合は、部門を削除します
-          if (relateUsers.length == 0) {
-            this.txtList.splice(this.delSectionIdx,1);
-          }
-          
+          console.log('relateUserDelete成功。');
+          this.findRelateUser();     
         }else{
           alert(data[0]['resultMsg']);
         }
@@ -625,11 +588,41 @@ export class DetailComponent implements OnInit {
     this.relateUser.openModal(this.pageIncidentId);
   }
 
-  donothing(){
-    // 重複結果、重複無し
-    this.common.openModal('確認','関係者を追加します。宜しいですか？','OK','キャンセル')
-    // 重複結果、重複有り
-    this.common.openModal('確認','選んだユーザは既に登録されています。','','閉じる');
+  // インシデント関係者の追加
+  onRelateUserSelected($event) {
+    if ($event) {
+      let salesUserId = $event["userId"];
+      let salesUserNm = $event["userNm"];
+      let salesDeptCd = $event["sectionCd"];
+      let salesDeptNm = $event["sectionNm"];
+
+      let ps = new URLSearchParams();
+      ps.set('incidentId', this.pageIncidentId);
+      ps.set('relateUserId',salesUserId);
+      ps.set('relateUserNm',salesUserNm);
+      ps.set('relateUserSectionCd',salesDeptCd);
+      ps.set('relateUserSectionNm',salesDeptNm);
+  
+      // 検索
+      this.jsonpService.requestGet('IncidentRelateUserSave.php', ps)
+        .subscribe(
+        data => {
+          if (data[0]['resultFlg'] == '0') {
+            // 通信成功時
+            console.log('IncidentRelateUserSave成功。'); 
+            this.findRelateUser();
+          }else{
+            alert(data[0]['resultMsg']);
+          }
+        },
+        error => {
+          // 通信失敗もしくは、コールバック関数内でエラー
+          console.log(error);
+          console.log('サーバとのアクセスに失敗しました。');
+          return false;
+        }
+      );
+    }
   }
   // ================= 関係者を追加=================
 

@@ -13,12 +13,14 @@ import { JsonpService } from '../jsonp.service';
   styleUrls: ['./modal.component.css']
 })
 export class RelateUserAddModalComponent {
-  @ViewChild('template')
-  template;
+  @ViewChild('template') template;
+  @ViewChild('second') second;
   modalRef: BsModalRef;
 
   // ユーザイベント(親コンポーネントのメソッド呼び出し)
   @Output() relateUserSelect: EventEmitter<any> = new EventEmitter();
+  // 自作イベント(親コンポーネントのメソッド呼び出し)
+  @Output() commonEnter: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
@@ -47,11 +49,6 @@ export class RelateUserAddModalComponent {
 
   // モーダル表示
   openModal(pageIncidentId:any) {
-    /*--------------*//** 调试用 TEST *//*--------------*/
-    console.group("RelateUserAddModalComponent.openModal(pageIncidentId:any)");
-    console.log(pageIncidentId);
-    console.groupEnd();
-    /*--------------*//** 调试用 TEST *//*--------------*/
     this.incidentId = pageIncidentId;
     this.clearUserSearch();
     this.template.show();
@@ -80,7 +77,7 @@ export class RelateUserAddModalComponent {
       .subscribe(
       data => {
         // 通信成功時
-        console.log(data);
+        //console.log(data);
         if (data[0]) {
           let list = data[0];
           if (list.result !== '' && list.result == true) {
@@ -110,21 +107,108 @@ export class RelateUserAddModalComponent {
     this.userList = data;
   }
 
-  // 選択ボタンクリック
-  onSelect(userId: any, userNm: any, sectionCd: any, sectionNm: any) {
+  addUserId;
+  addUserNm;
+  addSectionCd;
+  addSectionNm;
+
+  // 追加確認モーダルのボタン 押すと、関係者が追加される
+  relateUserAdd(){
     // 営業担当者
     this.relateUserSelect.emit({
-      "userId": userId
-      , "userNm": userNm
-      , "sectionCd": sectionCd
-      , "sectionNm": sectionNm
+      "userId": this.addUserId
+      , "userNm": this.addUserNm
+      , "sectionCd": this.addSectionCd
+      , "sectionNm": this.addSectionNm
     });
     // モーダルの非表示
     this.template.hide();
   }
 
   // 追加ボタンを押したら、重複チェックを実施する
-  checkRelateUser() {
+  onSelect(userId: any, userNm: any, sectionCd: any, sectionNm: any) {
+    this.addUserId = userId;
+    this.addUserNm = userNm;
+    this.addSectionCd = sectionCd;
+    this.addSectionNm = sectionNm;
 
+    let ps = new URLSearchParams();
+    ps.set('incidentId', this.incidentId);
+    ps.set('relateUserSectionCd',sectionCd);
+    ps.set('relateUserId',userId);
+
+    // 検索
+    this.jsonpService.requestGet('IncidentRelateUserCheck.php', ps)
+      .subscribe(
+      data => {
+        console.log(data);
+        // インシデント関係者のデータ重複チェック true : 有、false : 無し
+        // this.childModal.show();
+        if (data[0]['resultFlg'] == true || data[0]['resultFlg'] == 'true') {
+          // 重複結果、重複有り
+          this.openModalSecond('確認','選んだユーザは既に登録されています。','','閉じる');
+        }else{
+          // 重複結果、重複無し
+          this.openModalSecond('確認','関係者を追加します。宜しいですか？','OK','キャンセル');
+        }
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        return false;
+      }
+    );
+    return false;
+  }
+
+    // モーダル表示
+    openModalSecond(headerStr: string, mes: string, enterBtnStr: string, closeBtnStr: string) {
+      this.setHeaderStr(headerStr);
+      this.setMes(mes);
+      this.setEnterBtnStr(enterBtnStr);
+      this.setCloseBtnStr(closeBtnStr);
+      this.second.show();
+    }
+  
+    headerStr: string; // モーダルヘッダー文字列
+    mes: string; // 表示文字列
+    enterBtnStr: string; // 処理ボタンの表示文字列
+    closeBtnStr: string; // 閉じるボタンの表示文字列
+    enterBtnShow = false; // 処理ボタンの表示フラグ
+
+      // モーダルヘッダー文字列の初期化
+  setHeaderStr(headerStr: string) {
+    this.headerStr = headerStr;
+  }
+
+  // 表示メッセージの初期化
+  setMes(mes: string) {
+    this.mes = mes;
+  }
+
+  // 処理ボタンの表示文字列の初期化
+  setEnterBtnStr(btnStr: string) {
+    this.enterBtnStr = btnStr;
+    if (btnStr) {
+      // 処理ボタンの表示文字列がある場合のみ処理ボタンを表示する
+      this.enterBtnShow = true;
+    } else {
+      // 処理ボタン非表示
+      this.enterBtnShow = false;
+    }
+  }
+
+  // 閉じるボタンの表示文字列の初期化
+  setCloseBtnStr(btnStr: string) {
+    this.closeBtnStr = btnStr;
+  }
+
+  // 処理ボタンを押した
+  enter() {
+    // モーダルを閉じる
+    this.second.hide();
+    // 親コンポーネントの処理を実行する為に、イベントを発火
+    this.relateUserAdd();
   }
 }
