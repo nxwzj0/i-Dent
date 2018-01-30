@@ -17,11 +17,8 @@ export class RelateUserAddModalComponent {
   template;
   modalRef: BsModalRef;
 
-    // モーダルのタイプ　親コンポーネントからの値受け取り
-    modalType: any;
-
-    // ユーザイベント(親コンポーネントのメソッド呼び出し)
-    @Output() relateUserSelect: EventEmitter<any> = new EventEmitter();
+  // ユーザイベント(親コンポーネントのメソッド呼び出し)
+  @Output() relateUserSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
@@ -30,6 +27,7 @@ export class RelateUserAddModalComponent {
   searchUserFirstNm = "";
   searchSectionNm = "";
   searchSectionCd = "";
+  incidentId = "";
 
   // ページングの設定
   maxSize: number = 5; // ページングの表示ページ数
@@ -38,7 +36,7 @@ export class RelateUserAddModalComponent {
   currentPage: number = 0; // 現在表示しているページ
   start: number = 0; // データ表示開始位置
   end: number = 10; // データ表示終了位置
-  
+
   // ページング処理
   pageChanged(event: any): void {
     this.start = this.itemsPerPage * (this.currentPage - 1);
@@ -48,11 +46,13 @@ export class RelateUserAddModalComponent {
   }
 
   // モーダル表示
-  openModal(modalTypeFromParent: any) {
-    if (modalTypeFromParent) {
-      // 親コンポーネントからの値受け取り
-      this.modalType = modalTypeFromParent;
-    }
+  openModal(pageIncidentId:any) {
+    /*--------------*//** 调试用 TEST *//*--------------*/
+    console.group("RelateUserAddModalComponent.openModal(pageIncidentId:any)");
+    console.log(pageIncidentId);
+    console.groupEnd();
+    /*--------------*//** 调试用 TEST *//*--------------*/
+    this.incidentId = pageIncidentId;
     this.clearUserSearch();
     this.template.show();
     this.search();
@@ -96,8 +96,8 @@ export class RelateUserAddModalComponent {
         return false;
       }
       );
-      this.currentPage = 1;
-      this.pageChanged(null);
+    this.currentPage = 1;
+    this.pageChanged(null);
   }
 
   // ユーザ検索結果リスト
@@ -114,13 +114,17 @@ export class RelateUserAddModalComponent {
   onSelect(userId: any, userNm: any, sectionCd: any, sectionNm: any) {
     // 営業担当者
     this.relateUserSelect.emit({
-        "userSearchType":this.modalType
-      , "userId": userId
+      "userId": userId
       , "userNm": userNm
       , "sectionCd": sectionCd
-      , "sectionNm": sectionNm 
+      , "sectionNm": sectionNm
     });
     // モーダルの非表示
     this.template.hide();
+  }
+
+  // 追加ボタンを押したら、重複チェックを実施する
+  checkRelateUser() {
+
   }
 }

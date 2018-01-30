@@ -10,6 +10,7 @@
 -->
 <my-header></my-header>
 <relateUserAdd-modal #relateUser (relateUserSelect)="onRelateUserSelected($event)"></relateUserAdd-modal>
+<common-modal #common (commonEnter)="donothing()"></common-modal>
 <common-modal #relateUserCommon (commonEnter)="relateUserDelete()"></common-modal>
 
 <div ng-cloak>
@@ -379,7 +380,7 @@
               <i class="fa fa-dot-circle-o" aria-hidden="true"></i> 変更を通知する／
               <i class="fa fa-circle-o" aria-hidden="true"></i> 変更を通知しない
             </strong>
-            <button class="" (click)="relateUser.openModal()">
+            <button class="" (click)="relateUserAdd()">
               関係者を追加
               <i class="fa fa-user"></i>
             </button>
@@ -392,7 +393,7 @@
                   {{data.relateUserNm}} 
                   <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span>
                 </span>
-                <!-- delete(item?.relateUserSectionCd,item?.relateUserSectionNm,data?.relateUserId,data?.relateUserNm,i,j)  setDeleteUserId(data?.relateUserId);-->
+                <!-- relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')-->
                 <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(item?.relateUserSectionCd,data?.relateUserId,deptIdx,userIdx);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
                   <i class="fa fa-trash"></i>
                 </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 
@@ -12,6 +12,9 @@ import { environment } from '../../environments/environment.local';
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {
+  @ViewChild('common') common;
+  @ViewChild('relateUser') relateUser;
+  
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) { }
   
@@ -532,25 +535,6 @@ export class DetailComponent implements OnInit {
 
   // インシデント情報 
   txtList = [];
-  // txtList = [
-  //   {
-  //     "relateUserSectionCd": "1"
-  //     , "relateUserSectionNm": "サービスソリューション事業本部 ＣＥ事業部 東京サービス部 第一グループ"
-  //     , "relateUsers":
-  //       [
-  //         {
-  //           "relateUserId": "USER1"
-  //           , "relateUserNm": "水道　一郎"
-  //           , "kidokuDate": "2017/12/18"
-  //         }
-  //         , {
-  //           "relateUserId": "USER2"
-  //           , "relateUserNm": "水道　二郎"
-  //           , "kidokuDate": ""
-  //         }
-  //       ]
-  //   }
-  // ];
 
   // 部門が既に存在するかどうかを判断する
   isDeptExist(targetCd: any, targetNm: any) {
@@ -581,12 +565,14 @@ export class DetailComponent implements OnInit {
     return index;
   }
 
+  // ================= フロントデスク削除処理 =================
   // 削除待ちの部門座標
   delSectionIdx;
   // 削除待ちのユーザー座標
   delUserIdx;
-  //
+  // 削除待ちの
   delSectionCd;
+  // 削除待ちの
   delUserId;
   setDeleteInfo(relateUserSectionCd:any,relateUserId:any,deptIdx :number,userIdx : number){
     this.delSectionIdx = deptIdx;
@@ -594,7 +580,7 @@ export class DetailComponent implements OnInit {
     this.delSectionCd = relateUserSectionCd;
     this.delUserId = relateUserId;
   }
-
+  
   // インシデント関係者の削除
   relateUserDelete() {
     
@@ -610,7 +596,7 @@ export class DetailComponent implements OnInit {
         if (data[0]['resultFlg'] == '0') {
           // 通信成功時 
           console.log('成功。');
-          // ================= フロントデスク削除処理 ================= 
+          
           let relateUsers = this.txtList[this.delSectionIdx].relateUsers;
           // 関連するユーザーを削除する
           relateUsers.splice(this.delUserIdx,1);
@@ -618,7 +604,7 @@ export class DetailComponent implements OnInit {
           if (relateUsers.length == 0) {
             this.txtList.splice(this.delSectionIdx,1);
           }
-          // ================= フロントデスク削除処理 ================= 
+          
         }else{
           alert(data[0]['resultMsg']);
         }
@@ -631,5 +617,21 @@ export class DetailComponent implements OnInit {
       }
       );
   }
+  // ================= フロントデスク削除処理 =================
+
+  // ================= 関係者を追加=================
+  // 関係者を追加button
+  relateUserAdd(){
+    this.relateUser.openModal(this.pageIncidentId);
+  }
+
+  donothing(){
+    // 重複結果、重複無し
+    this.common.openModal('確認','関係者を追加します。宜しいですか？','OK','キャンセル')
+    // 重複結果、重複有り
+    this.common.openModal('確認','選んだユーザは既に登録されています。','','閉じる');
+  }
+  // ================= 関係者を追加=================
+
   // ::: 2018.01.25 [#33] 関係者の表示・追加処理 Add End   newtouch
 }
