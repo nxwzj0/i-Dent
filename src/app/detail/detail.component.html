@@ -386,17 +386,16 @@
             </button>
           </h5>
           <div class="context-margin">
-            <ul *ngFor="let item of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
-              <div>{{item.relateUserSectionNm}}</div>
-              <li *ngFor="let data of item.relateUsers;let userIdx = index;">
+            <ul *ngFor="let dept of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
+              <div>{{dept.relateUserSectionNm}}</div>
+              <li *ngFor="let user of dept.relateUsers;let userIdx = index;">
                 <div style="width:235px;display: inline-block;">
                   <span class="context-margin relate-user-nm"> 
-                    {{data.relateUserNm}} 
-                    <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span>
+                    {{user.relateUserNm}} 
+                    <span *ngIf="user.kidokuDate != ''">（既読日：{{user.kidokuDate}}）</span>
                   </span>
                 </div>
-                <!-- relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')-->
-                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(item?.relateUserSectionCd,data?.relateUserId,deptIdx,userIdx);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
+                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(user?.relateId);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
                   <i class="fa fa-trash"></i>
                 </button>
               </li>

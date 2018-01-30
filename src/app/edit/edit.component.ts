@@ -835,8 +835,6 @@ export class EditComponent implements OnInit {
     }
   }
 
-
-
   // 部門が既に存在するかどうかを判断する
   isDeptExist(targetCd: any, targetNm: any) {
     var index = -1;

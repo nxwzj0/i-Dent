@@ -476,6 +476,7 @@ export class DetailComponent implements OnInit {
             let user = relateUserArray[j];
             if (!this.isEmpty(user.relateUserId)) {
               if (user.relateUserSectionCd == section.relateUserSectionCd && user.relateUserSectionNm == section.relateUserSectionNm) {
+                userObj["relateId"] = user.relateId;
                 userObj["relateUserId"] = user.relateUserId;
                 userObj["relateUserNm"] = user.relateUserNm;
                 userObj["kidokuDate"] = user.kidokuDate;
@@ -504,7 +505,6 @@ export class DetailComponent implements OnInit {
         if (data[0]) {
           let one = data[0];
           if (one.result !== '' && one.result == true) {
-            console.log('findRelateUser success');
             // 画面表示パラメータのセット処理
             this.initRelateUserList(one.relateUserList);
           }
@@ -537,28 +537,17 @@ export class DetailComponent implements OnInit {
   }
 
   // ================= フロントデスク削除処理 =================
-  // 削除待ちの部門座標
-  delSectionIdx;
-  // 削除待ちのユーザー座標
-  delUserIdx;
-  // 削除待ちの
-  delSectionCd;
-  // 削除待ちの
-  delUserId;
-  setDeleteInfo(relateUserSectionCd:any,relateUserId:any,deptIdx :number,userIdx : number){
-    this.delSectionIdx = deptIdx;
-    this.delUserIdx = userIdx;
-    this.delSectionCd = relateUserSectionCd;
-    this.delUserId = relateUserId;
+  // 削除待ちの関係者ID
+  delRelateId;
+  setDeleteInfo(relateId:any){
+    this.delRelateId = relateId;
   }
   
   // インシデント関係者の削除
   relateUserDelete() {
     
     let ps = new URLSearchParams();
-    ps.set('incidentId', this.pageIncidentId);
-    ps.set('relateUserSectionCd',this.delSectionCd);
-    ps.set('relateUserId',this.delUserId);
+    ps.set('relateId',this.delRelateId);
 
     // 検索
     this.jsonpService.requestGet('IncidentRelateUserDelete.php', ps)
@@ -566,7 +555,6 @@ export class DetailComponent implements OnInit {
       data => {
         if (data[0]['resultFlg'] == '0') {
           // 通信成功時 
-          console.log('relateUserDelete成功。');
           this.findRelateUser();     
         }else{
           alert(data[0]['resultMsg']);
@@ -609,7 +597,6 @@ export class DetailComponent implements OnInit {
         data => {
           if (data[0]['resultFlg'] == '0') {
             // 通信成功時
-            console.log('IncidentRelateUserSave成功。'); 
             this.findRelateUser();
           }else{
             alert(data[0]['resultMsg']);

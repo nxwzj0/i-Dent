@@ -961,17 +961,19 @@
               </strong>
             </h5>
             <div class="context-margin">
-              <ul *ngFor="let item of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
-                <div>{{item.relateUserSectionNm}}</div>
-                <li *ngFor="let data of item.relateUsers;let userIdx = index;">
+<!-- ::: 2018.01.30 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch -->
+              <ul *ngFor="let dept of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
+                <div>{{dept.relateUserSectionNm}}</div>
+                <li *ngFor="let user of dept.relateUsers;let userIdx = index;">
                   <div style="width:235px;display: inline-block;">
                     <span class="context-margin relate-user-nm"> 
-                      {{data.relateUserNm}} 
-                      <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span>
+                      {{user.relateUserNm}} 
+                      <span *ngIf="user.kidokuDate != ''">（既読日：{{user.kidokuDate}}）</span>
                     </span>
                   </div>
                 </li>
               </ul>
+<!-- ::: 2018.01.30 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch -->
             </div>
           </div>
           <!-- /.panel-body -->
