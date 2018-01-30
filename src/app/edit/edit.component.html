@@ -961,17 +961,17 @@
               </strong>
             </h5>
             <div class="context-margin">
-              <div>サービスソリューション事業本部 ＣＥ事業部 東京サービス部 第一グループ</div>
-              <div>
-                <span class="context-margin relate-user-nm"> 水道　一郎 （既読日：2017/12/18）</span>
-              </div>
-              <div>
-                <span class="context-margin relate-user-nm"> 水道　二郎 　　　　　　　　　　　</span>
-              </div>
-              <div>品質保証統括室 　品質管理グループ</div>
-              <div>
-                <span class="context-margin relate-user-nm"> 水道　花子 （既読日：2017/12/19）</span>
-              </div>
+              <ul *ngFor="let item of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
+                <div>{{item.relateUserSectionNm}}</div>
+                <li *ngFor="let data of item.relateUsers;let userIdx = index;">
+                  <div style="width:235px;display: inline-block;">
+                    <span class="context-margin relate-user-nm"> 
+                      {{data.relateUserNm}} 
+                      <span *ngIf="data.kidokuDate != ''">（既読日：{{data.kidokuDate}}）</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
           <!-- /.panel-body -->

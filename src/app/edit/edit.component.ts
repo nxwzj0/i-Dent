@@ -470,6 +470,10 @@ export class EditComponent implements OnInit {
     this.productGensyoNm = data.productGensyoNm; //障害状況現象名
     this.productStatusCd = data.productStatusCd; //障害状況状態CD
     this.productStatusNm = data.productStatusNm; //障害状況状態名
+
+    // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch
+    this.initRelateUserList(data.relateUserList);
+    // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch
   }
 
   // インシデント登録処理
@@ -782,5 +786,70 @@ export class EditComponent implements OnInit {
     { label: '電話対応', value: 2 },
     { label: 'その他', value: 3 },
   ];
+
+// ::: 2018.01.30 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch
+
+  // インシデント情報 
+  relateUserList = [];
+
+  // それが空であるかどうかを判断する
+  isEmpty(str: any) {
+    return str == null || str == undefined || str == "" ? true : false;
+  }
+
+  // インシデント関係者 
+  initRelateUserList(relateUserArray: Array<any>) {
+    this.relateUserList=[];
+    let length = relateUserArray.length;
+    if (relateUserArray.length > 0) {
+      for (let i = 0; i < length; i++) {
+        let sectionObj = {};
+        let section = relateUserArray[i];
+        if (!this.isEmpty(section.relateUserSectionCd)) {
+          if (this.isDeptExist(section.relateUserSectionCd, section.relateUserSectionNm) != -1) {
+            continue;
+          }
+          sectionObj["relateUserSectionCd"] = section.relateUserSectionCd;
+          sectionObj["relateUserSectionNm"] = section.relateUserSectionNm;
+
+          let userList = [];
+
+          for (let j = 0; j < length; j++) {
+            let userObj = {};
+            let user = relateUserArray[j];
+            if (!this.isEmpty(user.relateUserId)) {
+              if (user.relateUserSectionCd == section.relateUserSectionCd && user.relateUserSectionNm == section.relateUserSectionNm) {
+                userObj["relateId"] = user.relateId;
+                userObj["relateUserId"] = user.relateUserId;
+                userObj["relateUserNm"] = user.relateUserNm;
+                userObj["kidokuDate"] = user.kidokuDate;
+                userList.push(userObj);
+              }
+            }
+          }
+
+          sectionObj["relateUsers"] = userList;
+          this.relateUserList.push(sectionObj);
+        }
+      }
+    }
+  }
+
+
+
+  // 部門が既に存在するかどうかを判断する
+  isDeptExist(targetCd: any, targetNm: any) {
+    var index = -1;
+    for (var i = 0; i < this.relateUserList.length; i++) {
+      var tmpCd = this.relateUserList[i].relateUserSectionCd.toString();
+      var tmpNm = this.relateUserList[i].relateUserSectionNm.toString();
+
+      if (tmpCd == targetCd.toString() && tmpNm == targetNm.toString()) {
+        index = i;
+      }
+    }
+    return index;
+  }
+// ::: 2018.01.30 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch
 
 }
