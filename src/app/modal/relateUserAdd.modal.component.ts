@@ -19,8 +19,6 @@ export class RelateUserAddModalComponent {
 
   // ユーザイベント(親コンポーネントのメソッド呼び出し)
   @Output() relateUserSelect: EventEmitter<any> = new EventEmitter();
-  // 自作イベント(親コンポーネントのメソッド呼び出し)
-  @Output() commonEnter: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
 
@@ -143,7 +141,6 @@ export class RelateUserAddModalComponent {
       data => {
         console.log(data);
         // インシデント関係者のデータ重複チェック true : 有、false : 無し
-        // this.childModal.show();
         if (data[0]['resultFlg'] == true || data[0]['resultFlg'] == 'true') {
           // 重複結果、重複有り
           this.openModalSecond('確認','選んだユーザは既に登録されています。','','閉じる');
