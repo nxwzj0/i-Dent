@@ -18,8 +18,18 @@ export class DetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) { }
   
+  userId = "";
+  userName = "";
+  sectionCd = "";
+  sectionName = "";
+
   ngOnInit() {
     this.route.data.subscribe(obj => console.log(obj['category']));
+    // ログイン情報設定
+    this.userId = "999";
+    this.userName = "NARUTO";
+    this.sectionCd = "999";
+    this.sectionName = "KUNOHA";
 
     let ps = new URLSearchParams();
     let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
@@ -548,6 +558,11 @@ export class DetailComponent implements OnInit {
     
     let ps = new URLSearchParams();
     ps.set('relateId',this.delRelateId);
+    // ログイン情報設定
+    ps.set('userId',this.userId);
+    ps.set('userName',this.userName);
+    ps.set('sectionCd',this.sectionCd);
+    ps.set('sectionName',this.sectionName);
 
     // 検索
     this.jsonpService.requestGet('IncidentRelateUserDelete.php', ps)
@@ -590,6 +605,11 @@ export class DetailComponent implements OnInit {
       ps.set('relateUserNm',salesUserNm);
       ps.set('relateUserSectionCd',salesDeptCd);
       ps.set('relateUserSectionNm',salesDeptNm);
+      // ログイン情報設定
+      ps.set('userId',this.userId);
+      ps.set('userName',this.userName);
+      ps.set('sectionCd',this.sectionCd);
+      ps.set('sectionName',this.sectionName);
   
       // 検索
       this.jsonpService.requestGet('IncidentRelateUserSave.php', ps)
