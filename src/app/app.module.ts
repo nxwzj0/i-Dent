@@ -34,6 +34,7 @@ import { CustomerSearchModalComponent } from './modal/customerSearch.modal.compo
 import { EquipmentSearchModalComponent } from './modal/equipmentSearch.modal.component';
 
 import { JsonpService } from './jsonp.service';
+import { PostService } from './post.service';
 import { WindowRefService } from './windowRef.service';
 
 import { OrderByPipe } from './pipe/order.by.pipe';
@@ -75,7 +76,7 @@ import { OrderByPipe } from './pipe/order.by.pipe';
     FormsModule,
     HttpModule,
   ],
-  providers: [JsonpService, WindowRefService],
+  providers: [JsonpService, WindowRefService, PostService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -53,57 +53,57 @@ export class RelateUserAddModalComponent {
     this.search();
   }
 
-  // 検索条件の初期化
-  clearUserSearch() {
-    this.searchUserLastNm = "";
-    this.searchUserFirstNm = "";
-    this.searchSectionNm = "";
-    this.searchSectionCd = "";
-  }
+// 検索条件の初期化
+clearUserSearch() {
+  this.searchUserLastNm = "";
+  this.searchUserFirstNm = "";
+  this.searchSectionNm = "";
+  this.searchSectionCd = "";
+}
 
-  // 検索処理
-  search() {
-    // 検索パラメータの作成
-    let ps = new URLSearchParams();
-    ps.set("userNmSei", this.searchUserLastNm);
-    ps.set("userNmMei", this.searchUserFirstNm);
-    ps.set("sectionNm", this.searchSectionNm);
-    ps.set("sectionCd", this.searchSectionCd);
+// 検索処理
+search() {
+  // 検索パラメータの作成
+  let ps = new URLSearchParams();
+  ps.set("userNmSei", this.searchUserLastNm);
+  ps.set("userNmMei", this.searchUserFirstNm);
+  ps.set("sectionNm", this.searchSectionNm);
+  ps.set("sectionCd", this.searchSectionCd);
 
-    // 検索
-    this.jsonpService.commonRequestGet('UserListDataGet.php', ps)
-      .subscribe(
-      data => {
-        // 通信成功時
-        //console.log(data);
-        if (data[0]) {
-          let list = data[0];
-          if (list.result !== '' && list.result == true) {
-            // 画面表示パラメータのセット処理
-            this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
-          }
+  // 検索
+  this.jsonpService.commonRequestGet('UserListDataGet.php', ps)
+    .subscribe(
+    data => {
+      // 通信成功時
+      console.log(data);
+      if (data[0]) {
+        let list = data[0];
+        if (list.result !== '' && list.result == true) {
+          // 画面表示パラメータのセット処理
+          this.setDspParam(data.slice(1)); // 配列1つ目は、サーバ処理成功フラグなので除外
         }
-      },
-      error => {
-        // 通信失敗もしくは、コールバック関数内でエラー
-        console.log(error);
-        console.log('サーバとのアクセスに失敗しました。');
-        return false;
       }
-      );
-    this.currentPage = 1;
-    this.pageChanged(null);
-  }
+      this.currentPage = 1;
+      this.pageChanged(null);
+    },
+    error => {
+      // 通信失敗もしくは、コールバック関数内でエラー
+      console.log(error);
+      console.log('サーバとのアクセスに失敗しました。');
+      return false;
+    }
+    );
+}
 
-  // ユーザ検索結果リスト
-  userList = [];
-  // 画面表示パラメータのセット処理
-  setDspParam(data) {
-    // ページングの設定
-    this.bigTotalItems = data.length;
-    // ユーザリストをセット
-    this.userList = data;
-  }
+// ユーザ検索結果リスト
+userList = [];
+// 画面表示パラメータのセット処理
+setDspParam(data) {
+  // ページングの設定
+  this.bigTotalItems = data.length;
+  // ユーザリストをセット
+  this.userList = data;
+}
 
   addUserId;
   addUserNm;
