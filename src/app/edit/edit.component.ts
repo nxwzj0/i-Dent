@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
-import { Http, Headers, RequestOptions } from "@angular/http";
+import { Headers, RequestOptions } from "@angular/http";
 
 // datepikerの設定
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -11,6 +11,7 @@ import { ja } from 'ngx-bootstrap/locale';
 defineLocale('ja', ja);
 
 import { JsonpService } from '../jsonp.service';
+import { PostService } from '../post.service';
 
 import { environment } from '../../environments/environment.local';
 
@@ -21,7 +22,7 @@ import { environment } from '../../environments/environment.local';
 })
 export class EditComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private http: Http, private router: Router) {
+  constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private postService: PostService, private router: Router) {
     this.bsConfig = Object.assign({}, { locale: this.locale });
   }
 
@@ -476,152 +477,220 @@ export class EditComponent implements OnInit {
     // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch
   }
 
+  checkDateShowincidentStartDate = false; //発生日時(日付型チェック)
+  checkDateShowCallDate = false; //受付日(日付型チェック)
+  checkRequireShowCallDate = false; //受付日(nullチェック)
+  checkDateShowTaioDate = false; //対応日(日付型チェック)
+  checkDateShowActDate = false; //処置予定日(日付型チェック)
+  checkDateShowActStartDate = false; //処置開始日時（日付）(日付型チェック)
+  checkDateShowActEndDate = false; //処置終了日時（日付）(日付型チェック)
+
+  // 日付型値の日付型あるいはnullのチェック
+  checkDate() {
+    // 発生日時
+    this.checkDateShowincidentStartDate = false; //発生日時(日付型チェック)
+    var incidentStartDateValue = (<HTMLInputElement>document.getElementById('txt_incidentStartDate')).value;
+    if (this.incidentStartDate == null && incidentStartDateValue != "") {
+      this.checkDateShowincidentStartDate = true;
+      return false;
+    }
+
+    // 受付日
+    this.checkDateShowCallDate = false; //受付日(日付型チェック)
+    this.checkRequireShowCallDate = false; //受付日(nullチェック)
+    var callDateValue = (<HTMLInputElement>document.getElementById('txt_callDate')).value;
+    if (this.callDate == null && callDateValue != "") {
+      this.checkDateShowCallDate = true;
+      return false;
+    } else if (this.callDate == null && callDateValue == "") {
+      this.checkRequireShowCallDate = true;
+      return false;
+    }
+
+    // 対応日
+    this.checkDateShowTaioDate = false; //対応日(日付型チェック)
+    var taioDateValue = (<HTMLInputElement>document.getElementById('txt_taioDate')).value;
+    if (this.taioDate == null && taioDateValue != "") {
+      this.checkDateShowTaioDate = true;
+      return false;
+    }
+
+    // 処置予定日
+    this.checkDateShowActDate = false; //処置予定日(日付型チェック)
+    var actDateValue = (<HTMLInputElement>document.getElementById('txt_actDate')).value;
+    if (this.actDate == null && actDateValue != "") {
+      this.checkDateShowActDate = true;
+      return false;
+    }
+
+    // 処置開始日時（日付）
+    this.checkDateShowActStartDate = false; //処置開始日時（日付）(日付型チェック)
+    var actStartDateValue = (<HTMLInputElement>document.getElementById('txt_actStartDate')).value;
+    if (this.actStartDate == null && actStartDateValue != "") {
+      this.checkDateShowActStartDate = true;
+      return false;
+    }
+
+    // 処置終了日時（日付）
+    this.checkDateShowActEndDate = false; //処置終了日時（日付）(日付型チェック)
+    var actEndDateValue = (<HTMLInputElement>document.getElementById('txt_actEndDate')).value;
+    if (this.actEndDate == null && actEndDateValue != "") {
+      this.checkDateShowActEndDate = true;
+      return false;
+    }
+    return true;
+  }
+
   // インシデント登録処理
   onEntry(event, files: any) {
-    console.log('登録処理スタート');
+    if (this.checkDate()) {
+      console.log('登録処理スタート');
 
-    // TODO ファイルアップロード
-    // console.log(files);
-    // if(files){
-    //   let file = files[0];
-    //   let data = new FormData();
-    //   data.append('incidentFile', file, file.name);
-    //   console.log(data);
+      // // 画面表示パラメータの取得処理
+      let ps = new URLSearchParams();
+      ps.set('incidentId', this.incidentId);
+      ps.set('incidentNo', this.incidentNo);
+      ps.set('incidentStatusCd', this.incidentStatusCd);
+      ps.set('incidentStatusNm', this.incidentStatusNm);
+      ps.set('incidentTypeCd', this.incidentTypeCd);
+      ps.set('insDate', this.insDate);
+      ps.set('insUserNm', this.insUserNm);
+      ps.set('updDate', this.updDate);
+      ps.set('updUserNm', this.updUserNm);
+      ps.set('parentIncidentId', this.parentIncidentId);
+      ps.set('parentIncidentNo', this.parentIncidentNo);
+      var incidentStartDateStr = this.getDateStringFromDateAndTime(this.incidentStartDate, this.incidentStartTime, this.incidentStartMinite);
+      ps.set('incidentStartDate', incidentStartDateStr);
+      ps.set('industryTypeCd', this.industryTypeCd);
+      ps.set('infoSourceCd', this.infoSourceCd);
+      ps.set('infoSourceNm', this.infoSourceNm);
+      ps.set('infoProvider', this.infoProvider);
+      ps.set('infoProvidedTel', this.infoProvidedTel);
+      ps.set('memo', this.memo);
+      ps.set('kijoId', this.kijoId);
+      ps.set('kijoNm', this.kijoNm);
+      ps.set('jigyosyutaiId', this.jigyosyutaiId);
+      ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+      ps.set('setubiId', this.setubiId);
+      ps.set('setubiNm', this.setubiNm);
+      ps.set('prefId', this.prefId);
+      ps.set('prefNm', this.prefNm);
+      ps.set('custId', this.custId);
+      ps.set('custNm', this.custNm);
+      ps.set('custTypeCd', this.custTypeCd);
+      ps.set('custTypeNm', this.custTypeNm);
+      ps.set('salesDeptCd', this.salesDeptCd);
+      ps.set('salesDeptNm', this.salesDeptNm);
+      ps.set('salesUserId', this.salesUserId);
+      ps.set('salesUserNm', this.salesUserNm);
+      ps.set('deliveryPjId', this.deliveryPjId);
+      ps.set('deliveryPjNm', this.deliveryPjNm);
+      ps.set('custDept', this.custDept);
+      ps.set('requester', this.requester);
+      ps.set('contactTel', this.contactTel);
+      ps.set('contactFax', this.contactFax);
+      ps.set('contactMail', this.contactMail);
+      ps.set('skanDeptCd', this.skanDeptCd);
+      ps.set('skanDeptNm', this.skanDeptNm);
+      ps.set('skanUserId', this.skanUserId);
+      ps.set('skanUserNm', this.skanUserNm);
+      ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+      ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+      ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
 
-    //   this.http.post('http://172.20.108.34/INCIDENT/upload.php', data)
-    //   .subscribe(
-    //     data => console.log(data),
-    //     error => console.log(error)
-    //   );
-    // }
+      var callStartDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callStartTime, this.callStartMinite);
+      ps.set('callStartDate', callStartDateStr);
+      var callEndDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callEndTime, this.callEndMinite);
+      ps.set('callEndDate', callEndDateStr);
+      ps.set('callDeptCd', this.callDeptCd);
+      ps.set('callDeptNm', this.callDeptNm);
+      ps.set('callUserId', this.callUserId);
+      ps.set('callUserNm', this.callUserNm);
+      ps.set('callTel', this.callTel);
+      ps.set('callMail', this.callMail);
+      ps.set('callContent', this.callContent);
 
-    // // 画面表示パラメータの取得処理
-    let ps = new URLSearchParams();
-    ps.set('incidentId', this.incidentId);
-    ps.set('incidentNo', this.incidentNo);
-    ps.set('incidentStatusCd', this.incidentStatusCd);
-    ps.set('incidentStatusNm', this.incidentStatusNm);
-    ps.set('incidentTypeCd', this.incidentTypeCd);
-    ps.set('insDate', this.insDate);
-    ps.set('insUserNm', this.insUserNm);
-    ps.set('updDate', this.updDate);
-    ps.set('updUserNm', this.updUserNm);
-    ps.set('parentIncidentId', this.parentIncidentId);
-    ps.set('parentIncidentNo', this.parentIncidentNo);
-    var incidentStartDateStr = this.getDateStringFromDateAndTime(this.incidentStartDate, this.incidentStartTime, this.incidentStartMinite);
-    ps.set('incidentStartDate', incidentStartDateStr);
-    ps.set('industryTypeCd', this.industryTypeCd);
-    ps.set('infoSourceCd', this.infoSourceCd);
-    ps.set('infoSourceNm', this.infoSourceNm);
-    ps.set('infoProvider', this.infoProvider);
-    ps.set('infoProvidedTel', this.infoProvidedTel);
-    ps.set('memo', this.memo);
-    ps.set('kijoId', this.kijoId);
-    ps.set('kijoNm', this.kijoNm);
-    ps.set('jigyosyutaiId', this.jigyosyutaiId);
-    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
-    ps.set('setubiId', this.setubiId);
-    ps.set('setubiNm', this.setubiNm);
-    ps.set('prefId', this.prefId);
-    ps.set('prefNm', this.prefNm);
-    ps.set('custId', this.custId);
-    ps.set('custNm', this.custNm);
-    ps.set('custTypeCd', this.custTypeCd);
-    ps.set('custTypeNm', this.custTypeNm);
-    ps.set('salesDeptCd', this.salesDeptCd);
-    ps.set('salesDeptNm', this.salesDeptNm);
-    ps.set('salesUserId', this.salesUserId);
-    ps.set('salesUserNm', this.salesUserNm);
-    ps.set('deliveryPjId', this.deliveryPjId);
-    ps.set('deliveryPjNm', this.deliveryPjNm);
-    ps.set('custDept', this.custDept);
-    ps.set('requester', this.requester);
-    ps.set('contactTel', this.contactTel);
-    ps.set('contactFax', this.contactFax);
-    ps.set('contactMail', this.contactMail);
-    ps.set('skanDeptCd', this.skanDeptCd);
-    ps.set('skanDeptNm', this.skanDeptNm);
-    ps.set('skanUserId', this.skanUserId);
-    ps.set('skanUserNm', this.skanUserNm);
-    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
-    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
-    ps.set('jigyosyutaiNm', this.jigyosyutaiNm);
+      var taioStartDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioStartTime, this.taioStartMinite);
+      ps.set('taioStartDate', taioStartDateStr);
+      var taioEndDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioEndTime, this.taioEndMinite);
+      ps.set('taioEndDate', taioEndDateStr);
+      ps.set('taioDeptCd', this.taioDeptCd);
+      ps.set('taioDeptNm', this.taioDeptNm);
+      ps.set('taioUserId', this.taioUserId);
+      ps.set('taioUserNm', this.taioUserNm);
+      ps.set('taioTel', this.taioTel);
+      ps.set('taioMail', this.taioMail);
+      ps.set('taioContent', this.taioContent);
 
-    var callStartDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callStartTime, this.callStartMinite);
-    ps.set('callStartDate', callStartDateStr);
-    var callEndDateStr = this.getDateStringFromDateAndTime(this.callDate, this.callEndTime, this.callEndMinite);
-    ps.set('callEndDate', callEndDateStr);
-    ps.set('callDeptCd', this.callDeptCd);
-    ps.set('callDeptNm', this.callDeptNm);
-    ps.set('callUserId', this.callUserId);
-    ps.set('callUserNm', this.callUserNm);
-    ps.set('callTel', this.callTel);
-    ps.set('callMail', this.callMail);
-    ps.set('callContent', this.callContent);
+      var actDateStr = this.getDateStringFromDate(this.actDate);
+      ps.set('actDate', actDateStr);
+      ps.set('actTypeCd', this.actTypeCd);
+      var actStartDateStr = this.getDateStringFromDateAndTime(this.actStartDate, this.actStartTime, this.actStartMinite);
+      ps.set('actStartDate', actStartDateStr);
+      var actEndDateStr = this.getDateStringFromDateAndTime(this.actEndDate, this.actEndTime, this.actEndMinite);
+      ps.set('actEndDate', actEndDateStr);
+      ps.set('actDeptCd', this.actDeptCd);
+      ps.set('actDeptNm', this.actDeptNm);
+      ps.set('actUserId', this.actUserId);
+      ps.set('actUserNm', this.actUserNm);
+      ps.set('actTel', this.actTel);
+      ps.set('actMail', this.actMail);
+      ps.set('actContent', this.actContent);
 
-    var taioStartDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioStartTime, this.taioStartMinite);
-    ps.set('taioStartDate', taioStartDateStr);
-    var taioEndDateStr = this.getDateStringFromDateAndTime(this.taioDate, this.taioEndTime, this.taioEndMinite);
-    ps.set('taioEndDate', taioEndDateStr);
-    ps.set('taioDeptCd', this.taioDeptCd);
-    ps.set('taioDeptNm', this.taioDeptNm);
-    ps.set('taioUserId', this.taioUserId);
-    ps.set('taioUserNm', this.taioUserNm);
-    ps.set('taioTel', this.taioTel);
-    ps.set('taioMail', this.taioMail);
-    ps.set('taioContent', this.taioContent);
+      ps.set('productTypeCd', this.productTypeCd);
+      ps.set('productTypeNm', this.productTypeNm);
+      ps.set('productTriggerCd', this.productTriggerCd);
+      ps.set('productTriggerNm', this.productTriggerNm);
+      ps.set('productHindoCd', this.productHindoCd);
+      ps.set('productHindoNm', this.productHindoNm);
+      ps.set('productGensyoCd', this.productGensyoCd);
+      ps.set('productGensyoNm', this.productGensyoNm);
+      ps.set('productStatusCd', this.productStatusCd);
+      ps.set('productStatusNm', this.productStatusNm);
 
-    var actDateStr = this.getDateStringFromDate(this.actDate);
-    ps.set('actDate', actDateStr);
-    ps.set('actTypeCd', this.actTypeCd);
-    var actStartDateStr = this.getDateStringFromDateAndTime(this.actStartDate, this.actStartTime, this.actStartMinite);
-    ps.set('actStartDate', actStartDateStr);
-    var actEndDateStr = this.getDateStringFromDateAndTime(this.actEndDate, this.actEndTime, this.actEndMinite);
-    ps.set('actEndDate', actEndDateStr);
-    ps.set('actDeptCd', this.actDeptCd);
-    ps.set('actDeptNm', this.actDeptNm);
-    ps.set('actUserId', this.actUserId);
-    ps.set('actUserNm', this.actUserNm);
-    ps.set('actTel', this.actTel);
-    ps.set('actMail', this.actMail);
-    ps.set('actContent', this.actContent);
+      // 登録処理通信処理
+      this.jsonpService.requestGet('IncidentEntry.php', ps)
+        .subscribe(
+        data => {
+          // 通信成功時
+          console.log(data);
+          if (data[0]) {
+            let one = data[0];
+            if (one.result !== '' && one.result == true) {
 
-    ps.set('productTypeCd', this.productTypeCd);
-    ps.set('productTypeNm', this.productTypeNm);
-    ps.set('productTriggerCd', this.productTriggerCd);
-    ps.set('productTriggerNm', this.productTriggerNm);
-    ps.set('productHindoCd', this.productHindoCd);
-    ps.set('productHindoNm', this.productHindoNm);
-    ps.set('productGensyoCd', this.productGensyoCd);
-    ps.set('productGensyoNm', this.productGensyoNm);
-    ps.set('productStatusCd', this.productStatusCd);
-    ps.set('productStatusNm', this.productStatusNm);
+              if (!this.incidentId) {
+                // 新規登録の場合は、取得したIDを使う
+                this.incidentId = data.slice(1)[0].incidentId;
+              }
 
-    // 登録処理通信処理
-    this.jsonpService.requestGet('IncidentEntry.php', ps)
-      .subscribe(
-      data => {
-        // 通信成功時
-        console.log(data);
-        if (data[0]) {
-          let one = data[0];
-          if (one.result !== '' && one.result == true) {
-            
-            if(!this.incidentId){
-              // 新規登録の場合は、取得したIDを使う
-              this.incidentId = data.slice(1)[0].incidentId;
+              // ファイルアップロード
+              if (files) {
+                let file = files[0]; // TODO 1件のみ対応
+                if (file) {
+                  let data = new FormData();
+                  data.append('incidentFile', file, file.name);
+                  data.append('incidentId', this.incidentId);
+
+                  let result = this.postService.requestPost('FileUpload.php', data);
+                  console.log(result);
+                }
+
+              }
+
+              // 画面遷移
+              this.router.navigate(['/common', 'インシデント情報を登録しました', '/detail/' + this.incidentId]);
+
             }
-            this.router.navigate(['/common', 'インシデント情報を登録しました', '/detail/' + this.incidentId]);
           }
+        },
+        error => {
+          // 通信失敗もしくは、コールバック関数内でエラー
+          console.log(error);
+          console.log('サーバとのアクセスに失敗しました。');
+          return false;
         }
-      },
-      error => {
-        // 通信失敗もしくは、コールバック関数内でエラー
-        console.log(error);
-        console.log('サーバとのアクセスに失敗しました。');
-        return false;
-      }
-      );
+        );
+    }
   }
 
   // サーバから取得した日付をJavascriptのDate型に変更する（失敗時は、nullを返す）
@@ -715,8 +784,51 @@ export class EditComponent implements OnInit {
   prefArray = [
     { label: '北海道', value: 1 },
     { label: '青森県', value: 2 },
-    { label: '秋田県', value: 3 },
-    { label: '岩手県', value: 4 }
+    { label: '岩手県', value: 3 },
+    { label: '宮城県', value: 4 },
+    { label: '秋田県', value: 5 },
+    { label: '山形県', value: 6 },
+    { label: '福島県', value: 7 },
+    { label: '茨城県', value: 8 },
+    { label: '栃木県', value: 9 },
+    { label: '群馬県', value: 10 },
+    { label: '埼玉県', value: 11 },
+    { label: '千葉県', value: 12 },
+    { label: '東京都', value: 13 },
+    { label: '神奈川県', value: 14 },
+    { label: '新潟県', value: 15 },
+    { label: '富山県', value: 16 },
+    { label: '石川県', value: 17 },
+    { label: '福井県', value: 18 },
+    { label: '山梨県', value: 19 },
+    { label: '長野県', value: 20 },
+    { label: '岐阜県', value: 21 },
+    { label: '静岡県', value: 22 },
+    { label: '愛知県', value: 23 },
+    { label: '三重県', value: 24 },
+    { label: '滋賀県', value: 25 },
+    { label: '京都府', value: 26 },
+    { label: '大阪府', value: 27 },
+    { label: '兵庫県', value: 28 },
+    { label: '奈良県', value: 29 },
+    { label: '和歌山県', value: 30 },
+    { label: '鳥取県', value: 31 },
+    { label: '島根県', value: 32 },
+    { label: '岡山県', value: 33 },
+    { label: '広島県', value: 34 },
+    { label: '山口県', value: 35 },
+    { label: '徳島県', value: 36 },
+    { label: '香川県', value: 37 },
+    { label: '愛媛県', value: 38 },
+    { label: '高知県', value: 39 },
+    { label: '福岡県', value: 40 },
+    { label: '佐賀県', value: 41 },
+    { label: '長崎県', value: 42 },
+    { label: '熊本県', value: 43 },
+    { label: '大分県', value: 44 },
+    { label: '宮崎県', value: 45 },
+    { label: '鹿児島県', value: 46 },
+    { label: '沖縄県', value: 47 },
   ];
 
   // 顧客分類セレクト情報
