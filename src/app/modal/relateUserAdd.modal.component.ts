@@ -143,7 +143,7 @@ setDspParam(data) {
         // インシデント関係者のデータ重複チェック true : 有、false : 無し
         if (data[0]['resultFlg'] == true || data[0]['resultFlg'] == 'true') {
           // 重複結果、重複有り
-          this.openModalSecond('確認','選んだユーザは既に登録されています。','','閉じる');
+          this.openModalSecond('警告','選んだユーザは既に登録されています。','','閉じる');
         }else{
           // 重複結果、重複無し
           this.openModalSecond('確認','関係者を追加します。宜しいですか？','OK','キャンセル');
