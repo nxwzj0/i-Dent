@@ -27,9 +27,9 @@ export class DetailComponent implements OnInit {
     this.route.data.subscribe(obj => console.log(obj['category']));
     // ログイン情報設定
     this.userId = "999";
-    this.userName = "NARUTO";
+    this.userName = "渦巻鳴人";
     this.sectionCd = "999";
-    this.sectionName = "KUNOHA";
+    this.sectionName = "木ノ葉隠れの里";
 
     let ps = new URLSearchParams();
     let prmIncientId = this.route.snapshot.paramMap.get('incidentId');
@@ -37,6 +37,13 @@ export class DetailComponent implements OnInit {
       this.pageIncidentId = prmIncientId;
       ps.set('incidentId', prmIncientId);
     }
+    // ::: 2018.02.01 [#34] 関係者の既読処理 Add Start newtouch
+    ps.set('userId', this.userId);
+    ps.set('userName', this.userName);
+    ps.set('sectionCd', this.sectionCd);
+    ps.set('sectionName', this.sectionName);
+    // ::: 2018.02.01 [#34] 関係者の既読処理 Add End   newtouch
+
 
     // 画面表示パラメータの取得処理
     this.jsonpService.requestGet('IncidentDataGet.php', ps)
