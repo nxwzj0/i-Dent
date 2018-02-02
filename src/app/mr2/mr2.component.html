@@ -7,7 +7,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
-
+<loading [loading]="isLoading"></loading>
 <div>
     <div class="container-fluid">
         <div class="sub-win-content-start"></div>
@@ -25,7 +25,7 @@
                     <div class="panel-heading clearfix">
                         <span class="h3 incident-title-status">障害対応報告書(MR2)</span>
                         <div class="pull-right">
-                            <strong>最終更新日：{{updDate | date:'yyyy/MM/dd hh:mm'}} {{updUserNm}}</strong>
+                            <strong>最終更新日：{{updDateDsp | date:'yyyy/MM/dd HH:mm'}} {{updUserNmDsp}}</strong>
                         </div>
                     </div>
                     <!-- /.panel-heading -->
@@ -62,17 +62,17 @@
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>作成日：</strong>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{makeDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{makeDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>受付日：</strong>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{callDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{callDate | date:'yyyy/MM/dd HH:mm'}}</div>
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>障害発生日：</strong>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{startDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{startDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
@@ -123,37 +123,37 @@
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>出発日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{goDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{goDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>到着日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{arrivalDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{arrivalDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>作業開始日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{workStartDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{workStartDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>作業終了日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{workEndDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{workEndDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>現地出発日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{retuenDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{retuenDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>帰着日：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{arrivalBackDate | date:'yyyy/MM/dd hh:mm'}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{arrivalBackDate | date:'yyyy/MM/dd HH:mm'}}</div>
                             </div>
                         </div>
                     </div>
@@ -193,19 +193,19 @@
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>頻度：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{hindo}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{hindoDsp}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>現象：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{gensyo}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{gensyoDsp}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>状態：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{jyotai}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{jyotaiDsp}}</div>
                             </div>
                             <div class="info-detail-area">
                                 {{defectComment}}
@@ -267,7 +267,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                     <strong>顧客要望：</strong>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{actSyotiYobo}}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{actSyotiYoboDsp}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
@@ -430,7 +430,7 @@
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                 <strong>原因分類：</strong>
                             </div>
-                            <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{geninSortNm}}</div>
+                            <div class="col-lg-9 col-md-9 col-sm-6 col-xs-6">{{geninSortDsp}}</div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">

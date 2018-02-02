@@ -57,7 +57,7 @@
                 </ul>
               </li>
               <li>
-                <a routerLink="/edit" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }" class="header-text" target="_top">インシデント登録</a>
+                <a routerLink="/edit" (click)="reload()" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }" class="header-text" target="_top">インシデント登録</a>
               </li>
               <li>
                 <a class="header-text">管理</a>

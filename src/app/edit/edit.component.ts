@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { URLSearchParams } from '@angular/http';
 import { Headers, RequestOptions } from "@angular/http";
@@ -15,12 +15,18 @@ import { PostService } from '../post.service';
 
 import { environment } from '../../environments/environment.local';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'my-app',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
 })
 export class EditComponent implements OnInit {
+  @ViewChild('sel_incidentType')
+  sel_incidentType;
+
+  isLoading: boolean = true;
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private postService: PostService, private router: Router) {
     this.bsConfig = Object.assign({}, { locale: this.locale });
@@ -36,6 +42,7 @@ export class EditComponent implements OnInit {
       ps.set('incidentId', prmIncientId);
     }
     // 画面表示パラメータの取得処理
+    this.isLoading = true;
     this.jsonpService.requestGet('IncidentDataGet.php', ps)
       .subscribe(
       data => {
@@ -44,18 +51,61 @@ export class EditComponent implements OnInit {
           let one = data[0];
           if (one.result !== '' && one.result == true) {
             // 画面表示パラメータのセット処理
-            this.setDspParam(one);
+            this.setDspParam(data.slice(1,-1)[0]);
+
+            // 関連リンク 障害対応報告書(MR2) 取得
+            this.findMr2List(this.incidentNo);
           }
         }
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
         return false;
       }
       );
 
+  }
+
+  reloadEdit($event){
+    this.sel_incidentType.reset(); // インシデント分類CD
+  }
+
+  //MR2情報を取得する
+  findMr2List(incidentNo) {
+    let ps = new URLSearchParams();
+    if (incidentNo) {
+      ps.set('callNo', incidentNo);
+    }
+
+    // 画面表示パラメータの取得処理
+    this.isLoading = true;
+    this.jsonpService.requestGet('mr2ListDataGet.php', ps)
+      .subscribe(
+      data => {
+        // 通信成功時
+        console.log("受付番号成功");
+        console.log(data);
+        if (data[0]) {
+          if (data[0].result !== '' && data[0].result == true) {
+            // 画面表示パラメータのセット処理
+            let mr2Data = data.slice(1);
+            this.setMr2DspParam(mr2Data); // 配列1つ目は、サーバ処理成功フラグなので除外
+          }
+        }
+        this.isLoading = false;
+      },
+      error => {
+        // 通信失敗もしくは、コールバック関数内でエラー
+        console.log(error);
+        console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
+        return false;
+      }
+      );
   }
 
   // 事業主体の初期化
@@ -84,9 +134,9 @@ export class EditComponent implements OnInit {
 
   SUB_WIN = null;
   // 関連MR2表示処理
-  showMr2() {
+  showMr2(mkbid) {
     if (this.SUB_WIN) this.SUB_WIN.close();
-    this.SUB_WIN = this.CMN_openNewWindow1("./#/mr2", "sub_mr2", 1000, 760);
+    this.SUB_WIN = this.CMN_openNewWindow1("./#/mr2/" + mkbid, "sub_mr2", 1000, 760);
   }
 
   // 関連プロジェクト表示処理
@@ -477,6 +527,14 @@ export class EditComponent implements OnInit {
     // ::: 2018.01.26 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch
   }
 
+  // 障害対応報告(MR2)
+  MR2List = "" // MR2リスト
+
+  // 画面表示パラメータのセット処理
+  setMr2DspParam(data) {
+    this.MR2List = data;
+  }
+
   checkDateShowincidentStartDate = false; //発生日時(日付型チェック)
   checkDateShowCallDate = false; //受付日(日付型チェック)
   checkRequireShowCallDate = false; //受付日(nullチェック)
@@ -649,6 +707,7 @@ export class EditComponent implements OnInit {
       ps.set('productStatusNm', this.productStatusNm);
 
       // 登録処理通信処理
+      this.isLoading = true;
       this.jsonpService.requestGet('IncidentEntry.php', ps)
         .subscribe(
         data => {
@@ -682,11 +741,13 @@ export class EditComponent implements OnInit {
 
             }
           }
+          this.isLoading = false;
         },
         error => {
           // 通信失敗もしくは、コールバック関数内でエラー
           console.log(error);
           console.log('サーバとのアクセスに失敗しました。');
+          this.isLoading = false;
           return false;
         }
         );

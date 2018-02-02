@@ -8,6 +8,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
+<loading [loading]="isLoading"></loading>
 <my-header></my-header>
 <relateUserAdd-modal #relateUser (relateUserSelect)="onRelateUserSelected($event)"></relateUserAdd-modal>
 <common-modal #common (commonEnter)="donothing()"></common-modal>
@@ -20,7 +21,7 @@
         <button type="button" class="btn btn-warning">事故／クレーム連絡登録</button>
       </span>
       <span>
-        <button type="button" class="btn btn-warning">費用決済申請登録</button>
+        <button type="button" class="btn btn-warning" (click)="newHiyo('dsp','dsp',416161,'','1282')">費用決済申請登録</button>
       </span>
       <span>
         <button type="button" class="btn btn-danger" routerLink="/edit/{{incidentId}}" routerLinkActive="current" [routerLinkActiveOptions]="{ exact: true }">
@@ -42,7 +43,7 @@
             <span class="h4 incident-title-status">　{{incidentStatusNm}} {{incidentTypeNm}}</span>
             <div class="pull-right">
               <!-- <strong>登録日：{{insDate}} {{insUserNm}}　最終更新日：{{updDate}} {{updUserNm}}</strong> -->
-              <strong>登録日：{{insDate | date:'yyyy/MM/dd hh:mm'}} {{insUserNm}}　最終更新日：{{updDate | date:'yyyy/MM/dd hh:mm'}} {{updUserNm}}</strong>
+              <strong>登録日：{{insDate | date:'yyyy/MM/dd HH:mm'}} {{insUserNm}}　最終更新日：{{updDate | date:'yyyy/MM/dd HH:mm'}} {{updUserNm}}</strong>
             </div>
           </div>
           <!-- /.panel-heading -->
@@ -56,7 +57,7 @@
                 <strong>発生日時：</strong>
               </div>
               <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{incidentStartDateTime}}</div> -->
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{incidentStartDateTime | date:'yyyy/MM/dd hh:mm'}}</div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{incidentStartDateTime | date:'yyyy/MM/dd HH:mm'}}</div>
             </div>
             <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
@@ -209,10 +210,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
                   <!-- <strong>開始：</strong>&nbsp;&nbsp;{{callStartDate | date: 'shortTime'}}&nbsp;&nbsp;&nbsp;&nbsp; -->
                   <!-- <strong>開始：</strong>&nbsp;&nbsp;10:00&nbsp;&nbsp;&nbsp;&nbsp;-->
-                  <strong>開始：</strong>&nbsp;&nbsp;{{callStartDate | date:'hh:mm'}}&nbsp;&nbsp;&nbsp;&nbsp;
+                  <strong>開始：</strong>&nbsp;&nbsp;{{callStartDate | date:'HH:mm'}}&nbsp;&nbsp;&nbsp;&nbsp;
                   <!-- <strong>終了：</strong>&nbsp;&nbsp;{{callEndDate | date: 'shortTime'}}</div> -->
                   <!--<strong>終了：</strong>&nbsp;&nbsp;10:30</div>-->
-                  <strong>終了：</strong>&nbsp;&nbsp;{{callEndDate | date:'hh:mm'}}</div>
+                  <strong>終了：</strong>&nbsp;&nbsp;{{callEndDate | date:'HH:mm'}}</div>
               </div>
               <div class="row">
                 <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
@@ -252,399 +253,380 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
                   <!-- <strong>開始：</strong>&nbsp;&nbsp;{{taioStartDate | date: 'shortTime'}} -->
                   <!-- <strong>開始：</strong>&nbsp;&nbsp;10:00 -->
-                  <strong>開始：</strong>&nbsp;&nbsp;{{taioStartDate | date: 'hh:mm'}}
+                  <strong>開始：</strong>&nbsp;&nbsp;{{taioStartDate | date: 'HH:mm'}}
                   <!-- <strong>&nbsp;&nbsp;&nbsp;&nbsp;終了：</strong>&nbsp;&nbsp;{{taioEndDate | date: 'shortTime'}}</div> -->
                   <!-- <strong>&nbsp;&nbsp;&nbsp;&nbsp;終了：</strong>&nbsp;&nbsp;10:30</div> -->
-                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;終了：</strong>&nbsp;&nbsp;{{taioEndDate | date: 'hh:mm'}}</div>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;終了：</strong>&nbsp;&nbsp;{{taioEndDate | date: 'HH:mm'}}</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>対応部署：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioDeptNm}}</div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>対応者：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioUserNm}}</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>TEL：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioTel}}</div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>E-mail：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioMail}}</div>
+              </div>
+              <div class="info-detail-area">{{taioContent}}</div>
             </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>対応部署：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioDeptNm}}</div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>対応者：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioUserNm}}</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>TEL：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioTel}}</div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>E-mail：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{taioMail}}</div>
-            </div>
-            <div class="info-detail-area">{{taioContent}}</div>
-          </div>
 
-          <h5 class="context-header">
-            <strong>処置情報</strong>
-          </h5>
-          <div class="action-info-border">
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置予定日：</strong>
-              </div>
-              <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDate}} </div> -->
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDate | date:'yyyy/MM/dd'}} </div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置区分：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actTypeNm}} </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置開始日時：</strong>
-              </div>
-              <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actStartDateTime}} </div> -->
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actStartDateTime | date:'yyyy/MM/dd hh:mm'}} </div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置終了日時：</strong>
-              </div>
-              <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actEndDateTime}} </div> -->
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actEndDateTime | date:'yyyy/MM/dd hh:mm'}} </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置部署：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDeptNm}} </div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>処置者：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actUserNm}} </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>TEL：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actTel}} </div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>E-mail：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actMail}} </div>
-            </div>
-            <div class="info-detail-area">{{actContent}} </div>
-          </div>
-
-          <h5 class="context-header">
-            <strong>製品情報</strong>
-          </h5>
-          <div class="product-info-border">
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>機種区分：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productTypeNm}}</div>
-            </div>
-            <h5 class="context-sub-header">
-              <strong>障害状況</strong>
+            <h5 class="context-header">
+              <strong>処置情報</strong>
             </h5>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>　トリガー：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productTriggerNm}}</div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>頻度：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productHindoNm}}</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>　現象：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productGensyoNm}}</div>
-              <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-                <strong>状態：</strong>
-              </div>
-              <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productStatusNm}}</div>
-            </div>
-          </div>
-        </div>
-        <!-- /.panel-body -->
-      </div>
-      <!-- /.panel -->
-
-<!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch -->
-      <h4 class="panel-header text-primary">
-        <strong>▼関係者</strong>
-      </h4>
-      <div class="panel panel-default">
-        <div class="panel-body context-margin">
-          <h5 class="context-header">
-            <strong>
-              <i class="fa fa-dot-circle-o" aria-hidden="true"></i> 変更を通知する／
-              <i class="fa fa-circle-o" aria-hidden="true"></i> 変更を通知しない
-            </strong>
-            <button class="" (click)="relateUserAdd()" style="height:28px;">
-              関係者を追加
-              <i class="fa fa-user"></i>
-            </button>
-          </h5>
-          <div class="context-margin">
-            <ul *ngFor="let dept of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
-              <div>{{dept.relateUserSectionNm}}</div>
-              <li *ngFor="let user of dept.relateUsers;let userIdx = index;">
-                <div style="width:235px;display: inline-block;">
-                  <span class="context-margin relate-user-nm"> 
-                    {{user.relateUserNm}} 
-                    <span *ngIf="user.kidokuDate != ''">（既読日：{{user.kidokuDate}}）</span>
-                  </span>
+            <div class="action-info-border">
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置予定日：</strong>
                 </div>
-                <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(user?.relateId);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
-                  <i class="fa fa-trash"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- /.panel-body -->
-      </div>
-      <!-- /.panel -->
-<!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch -->
+                <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDate}} </div> -->
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDate | date:'yyyy/MM/dd'}} </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置区分：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actTypeNm}} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置開始日時：</strong>
+                </div>
+                <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actStartDateTime}} </div> -->
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actStartDateTime | date:'yyyy/MM/dd HH:mm'}} </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置終了日時：</strong>
+                </div>
+                <!-- <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actEndDateTime}} </div> -->
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actEndDateTime | date:'yyyy/MM/dd HH:mm'}} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置部署：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actDeptNm}} </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>処置者：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actUserNm}} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>TEL：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actTel}} </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>E-mail：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{actMail}} </div>
+              </div>
+              <div class="info-detail-area">{{actContent}} </div>
+            </div>
 
-      <h4 class="panel-header text-primary">
-        <strong>▼関連リンク</strong>
-      </h4>
-      <div class="panel panel-default">
-        <div class="panel-body context-margin">
-          <h5 class="context-header">
-            <strong>プロジェクト情報
-              <span class="text-danger">※プロジェクト情報はＡＲＣＳから行なってください。（ＡＲＣＳ登録後の翌日反映）</span>
-            </strong>
-          </h5>
-          <div class="context-margin">
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>プロジェクト番号：</strong>
+            <h5 class="context-header">
+              <strong>製品情報</strong>
+            </h5>
+            <div class="product-info-border">
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>機種区分：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productTypeNm}}</div>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <a (click)="showPj()">
-                  <u>J1000000</u>
-                </a>
+              <h5 class="context-sub-header">
+                <strong>障害状況</strong>
+              </h5>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>　トリガー：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productTriggerNm}}</div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>頻度：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productHindoNm}}</div>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>PJ主管部門：</strong>
+              <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>　現象：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productGensyoNm}}</div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                  <strong>状態：</strong>
+                </div>
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">{{productStatusNm}}</div>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">プロ主管</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>プロジェクト名：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>PM：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">川本　健</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>代表機場：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>都道府県：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">東京都</div>
             </div>
           </div>
-          <h5 class="context-header">
-            <strong>障害対応報告書(MR2)</strong>
-          </h5>
-          <div *ngFor="let data of MR2List" class="context-margin">
-            <a (click)="showMr2(data?.mkbid)">
-              <u *ngIf="data?.subjectNm.length > 0">{{data?.subjectNm}}</u>
-              <u *ngIf="data?.subjectNm.length == 0">（件名なし）</u>
-            </a>
+          <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+        <!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add Start newtouch -->
+        <h4 class="panel-header text-primary">
+          <strong>▼関係者</strong>
+        </h4>
+        <div class="panel panel-default">
+          <div class="panel-body context-margin">
+            <h5 class="context-header">
+              <strong>
+                <i class="fa fa-dot-circle-o" aria-hidden="true"></i> 変更を通知する／
+                <i class="fa fa-circle-o" aria-hidden="true"></i> 変更を通知しない
+              </strong>
+              <button class="" (click)="relateUserAdd()" style="height:28px;">
+                関係者を追加
+                <i class="fa fa-user"></i>
+              </button>
+            </h5>
+            <div class="context-margin">
+              <ul *ngFor="let dept of relateUserList;let deptIdx = index;" style="list-style:none;padding-left: 0px;">
+                <div>{{dept.relateUserSectionNm}}</div>
+                <li *ngFor="let user of dept.relateUsers;let userIdx = index;">
+                  <div style="width:235px;display: inline-block;">
+                    <span class="context-margin relate-user-nm">
+                      {{user.relateUserNm}}
+                      <span *ngIf="user.kidokuDate != ''">（既読日：{{user.kidokuDate}}）</span>
+                    </span>
+                  </div>
+                  <button type="button" class="btn btn-sx-ori btn-danger btn-close" (click)="setDeleteInfo(user?.relateId);relateUserCommon.openModal('確認','関係者を削除します。宜しいですか？','OK','キャンセル')">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        <!-- ::: 2018.01.29 [#33] インシデント関係者の表示・追加・削除 Add End   newtouch -->
+
+        <h4 class="panel-header text-primary">
+          <strong>▼関連リンク</strong>
+        </h4>
+        <div class="panel panel-default">
+          <div class="panel-body context-margin">
+            <h5 class="context-header">
+              <strong>プロジェクト情報
+                <span class="text-danger">※プロジェクト情報はＡＲＣＳから行なってください。（ＡＲＣＳ登録後の翌日反映）</span>
+              </strong>
+            </h5>
             <div class="context-margin">
               <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>作成日：</strong>
+                  <strong>プロジェクト番号：</strong>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.makeDate | date:'yyyy/MM/dd'}}</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <a (click)="showPj()">
+                    <u>J1000000</u>
+                  </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>PJ主管部門：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">プロ主管</div>
               </div>
               <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>依頼元：</strong>
+                  <strong>プロジェクト名：</strong>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.requestUserNm}}</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>PM：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">川本　健</div>
               </div>
               <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>作業担当者：</strong>
+                  <strong>代表機場：</strong>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.workUserNm}}</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>都道府県：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">東京都</div>
               </div>
             </div>
-          </div>
-          <h5 class="context-header">
-            <strong>労災・事故・クレーム連絡</strong>
-          </h5>
-          <div class="context-margin">
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>状態：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">第1報 正式発行</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>区分：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">品質（ランクＡ）</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>概要：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <a (click)="showJiko()">
-                  <u>XXXXXXXXXXXXXXXXXXXXXX</u>
-                </a>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>顧客名：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">川本　健</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>機場名：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>発行日：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">2017/1/1</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>発行元：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
-            </div>
-          </div>
-          <h5 class="context-header">
-            <strong>費用決済申請</strong>
-          </h5>
-          <div class="context-margin">
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>ID番号：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <a (click)="showHiyo('dsp','dsp',416161,'','1282')">
-                  <u>XXXXXXXXXX</u>
-                </a>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>ステータス：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">決裁</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>区分：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">クレーム対応</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>決裁番号：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">無償 第X号</div>
-            </div>
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>件名：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">XXXXXXXXXXXXXXXXXXXXXX</div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <strong>概算金額：</strong>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                <div class="pull-right">123,456</div>
+            <h5 class="context-header">
+              <strong>障害対応報告書(MR2)</strong>
+            </h5>
+            <div *ngFor="let data of MR2List" class="context-margin">
+              <a (click)="showMr2(data?.mkbid)">
+                <u *ngIf="data?.subjectNm.length > 0">{{data?.subjectNm}}</u>
+                <u *ngIf="data?.subjectNm.length == 0">（件名なし）</u>
+              </a>
+              <div class="context-margin">
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>作成日：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.makeDate | date:'yyyy/MM/dd'}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>依頼元：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.requestUserNm}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>作業担当者：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.workUserNm}}</div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- /.panel-body -->
-      </div>
-      <!-- /.panel -->
-
-      <h4 class="panel-header text-primary">
-        <strong>▼関連インシデント</strong>
-      </h4>
-      <div class="panel panel-default">
-        <div class="panel-body context-margin">
-          <h5 class="context-header">
-            <strong>同一機場インシデント</strong>
-          </h5>
-          <div class="context-margin">
-            <a (click)="showRelateIncident()">
-              <u>#12390 障害 2016/12/31 ○○○浄水場 ○○○市</u>
-            </a>
+            <h5 class="context-header">
+              <strong>労災・事故・クレーム連絡</strong>
+            </h5>
             <div class="context-margin">
-              Ａ系水処理設備の終沈（１、２号）の監視操作不能なので対応頂きたい。
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>状態：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">第1報 正式発行</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>区分：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">品質（ランクＡ）</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>概要：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <a (click)="showJiko()">
+                    <u>XXXXXXXXXXXXXXXXXXXXXX</u>
+                  </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>顧客名：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">川本　健</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>機場名：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>発行日：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">2017/1/1</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>発行元：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">ｘｘｘｘｘｘｘｘｘｘｘｘｘ</div>
+              </div>
             </div>
-          </div>
-          <h5 class="context-header">
-            <strong>同一顧客インシデント</strong>
-          </h5>
-          <div class="context-margin">
-            <a (click)="showRelateIncident()">
-              <u>#12312 問合せ 2016/12/31 ○○○センター ○○○企業局</u>
-            </a>
+            <h5 class="context-header">
+              <strong>費用決済申請</strong>
+            </h5>
             <div class="context-margin">
-              富士電機製変圧器のＰＣＢ含有問合せ。以下の型式の変圧器にＰＣＢが含まれているかを教えて下さい。
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>ID番号：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <a (click)="showHiyo('dsp','dsp',416161,'','1282')">
+                    <u>XXXXXXXXXX</u>
+                  </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>ステータス：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">決裁</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>区分：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">クレーム対応</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>決裁番号：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">無償 第X号</div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>件名：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">XXXXXXXXXXXXXXXXXXXXXX</div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <strong>概算金額：</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="pull-right">123,456</div>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- /.panel-body -->
         </div>
-        <!-- /.panel-body -->
-      </div>
-      <!-- /.panel -->
+        <!-- /.panel -->
 
-      <h4 class="panel-header text-primary">
-        <strong>▼変更履歴</strong>
-      </h4>
-      <div class="panel panel-default">
-        <div class="panel-body context-margin">
-          <h5 class="context-header">
-            <strong>更新者：川本　健(2017/1/2)</strong>
-          </h5>
-          <ul>
-            <li>
-              <strong>ステータス</strong> 対応中 から 完了 に変更</li>
-            <li>
-              <strong>営業部門</strong> ○○部門 に設定</li>
-            <li>
-              <strong>対応内容</strong> 更新</li>
-          </ul>
-          <h5 class="context-header">
-            <strong>更新者：吉原　聡(2017/1/2)</strong>
-          </h5>
-          <ul>
-            <li>
-              <strong>ステータス</strong> 対応中 に設定</li>
-            <li>
-              <strong>対応内容</strong> 更新</li>
-          </ul>
-          <h5 class="context-header">
-            <strong>更新者：川本　健(2017/1/1)</strong>
-          </h5>
-          <ul>
-            <li>
-              <strong>ステータス</strong> 受付済 に設定</li>
-            <li>
-              <strong>対応内容</strong> 更新</li>
-          </ul>
+        <h4 class="panel-header text-primary">
+          <strong>▼関連インシデント</strong>
+        </h4>
+        <div class="panel panel-default">
+          <div class="panel-body context-margin">
+            <h5 class="context-header">
+              <strong>同一機場インシデント</strong>
+            </h5>
+            <div class="context-margin">
+              <a (click)="showRelateIncident()">
+                <u>#12390 障害 2016/12/31 ○○○浄水場 ○○○市</u>
+              </a>
+              <div class="context-margin">
+                Ａ系水処理設備の終沈（１、２号）の監視操作不能なので対応頂きたい。
+              </div>
+            </div>
+            <h5 class="context-header">
+              <strong>同一顧客インシデント</strong>
+            </h5>
+            <div class="context-margin">
+              <a (click)="showRelateIncident()">
+                <u>#12312 問合せ 2016/12/31 ○○○センター ○○○企業局</u>
+              </a>
+              <div class="context-margin">
+                富士電機製変圧器のＰＣＢ含有問合せ。以下の型式の変圧器にＰＣＢが含まれているかを教えて下さい。
+              </div>
+            </div>
+          </div>
+          <!-- /.panel-body -->
         </div>
-        <!-- /.panel-body -->
+        <!-- /.panel -->
+
+        <h4 class="panel-header text-primary">
+          <strong>▼変更履歴</strong>
+        </h4>
+        <div class="panel panel-default">
+          <div class="panel-body context-margin">
+            <div *ngFor="let data of chanegeRev">
+              <h5 class="context-header">
+                <strong>更新者：{{data?.updUserNm}}({{data?.updDate | date:'yyyy/MM/dd HH:mm'}})</strong>
+              </h5>
+              <ul>
+                <li *ngFor="let changeData of data.DetailList">
+                  <strong>{{changeData?.key}}</strong>&emsp;{{changeData?.value}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
       </div>
-      <!-- /.panel -->
     </div>
+    <!-- /.row -->
   </div>
-  <!-- /.row -->
-</div>
 </div>

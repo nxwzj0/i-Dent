@@ -7,6 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'projectSearch-modal',
   templateUrl: './projectSearch.modal.component.html',
@@ -24,6 +26,8 @@ export class ProjectSearchModalComponent {
   @Output() projectSearchSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
+
+  isLoading: boolean = false;
 
   // 検索条件
   searchPjNo = "";
@@ -72,6 +76,7 @@ export class ProjectSearchModalComponent {
     ps.set("summaryNm", this.searchSummaryNm);
 
     // 検索
+    this.isLoading = true;
     this.jsonpService.commonRequestGet('ProjectListDataGet.php', ps)
       .subscribe(
       data => {
@@ -88,6 +93,7 @@ export class ProjectSearchModalComponent {
         }
         this.currentPage = 1;
         this.pageChanged(null);
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -95,6 +101,7 @@ export class ProjectSearchModalComponent {
         console.error(error);
         console.log('サーバとのアクセスに失敗しました。');
         console.groupEnd();
+        this.isLoading = false;
         return false;
       }
       );

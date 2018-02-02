@@ -8,6 +8,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { JsonpService } from '../jsonp.service';
 import { DatePipe } from '@angular/common';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'incidentSearch-modal',
   templateUrl: './incidentSearch.modal.component.html',
@@ -23,6 +25,8 @@ export class IncidentSearchModalComponent {
   @Output() incidentSearchSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService, private datePipe: DatePipe) { }
+
+  isLoading: boolean = false;
 
   // 検索条件
   searchIncidentNo = "";
@@ -82,8 +86,34 @@ export class IncidentSearchModalComponent {
     this.searchIncidentStatusTaio = "";
     this.searchIncidentStatusAct = "";
   }
+
+  checkDateShowCallStartDateFrom = false; //受付日（FROM）(日付型チェック)
+  checkDateShowCallStartDateTo = false; //受付日（TO）(日付型チェック)
+
+  // 日付型値の日付型チェック
+  checkDate() {
+
+      // 受付日（FROM）
+      this.checkDateShowCallStartDateFrom = false; //受付日（FROM）(日付型チェック)
+      var callStartDateFromValue = (<HTMLInputElement>document.getElementById('txt_callStartDateFrom')).value;
+      if (this.searchCallStartDateFrom == null && callStartDateFromValue != "") {
+        this.checkDateShowCallStartDateFrom = true;
+        return false;
+      }
+
+      // 受付日（TO）
+      this.checkDateShowCallStartDateTo = false; //受付日（TO）(日付型チェック)
+      var callStartDateToValue = (<HTMLInputElement>document.getElementById('txt_callStartDateTo')).value;
+      if (this.searchCallStartDateTo == null && callStartDateToValue != "") {
+        this.checkDateShowCallStartDateTo = true;
+        return false;
+      }
+      return true;
+    }
+
   // 検索処理
   search() {
+    if (this.checkDate()) {
     // 検索パラメータの作成
     let ps = new URLSearchParams();
 
@@ -104,6 +134,7 @@ export class IncidentSearchModalComponent {
     ps.set("incidentStatusAct", this.searchIncidentStatusAct);
 
     // 検索
+    this.isLoading = true;
     this.jsonpService.requestGet('IncidentListDataGet.php', ps)
       .subscribe(
       data => {
@@ -120,6 +151,7 @@ export class IncidentSearchModalComponent {
         }
         this.currentPage = 1;
         this.pageChanged(null);
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -127,9 +159,11 @@ export class IncidentSearchModalComponent {
         console.log('サーバとのアクセスに失敗しました。');
         console.log(error);
         console.groupEnd();
+        this.isLoading = false;
         return false;
       }
       );
+    }
   }
 
   // インシデント情報検索結果リスト

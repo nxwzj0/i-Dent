@@ -13,6 +13,7 @@ export class HeaderComponent {
 
   // ヘッダーイベント(親コンポーネントのメソッド呼び出し)
   @Output() headerSearch: EventEmitter<any> = new EventEmitter();
+  @Output() headerEdit: EventEmitter<any> = new EventEmitter();
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService, private router: Router) { }
 
@@ -35,6 +36,7 @@ export class HeaderComponent {
       .subscribe(
       data => {
         // 通信成功時
+        console.log(data);
         if (data[0]) {
           let list = data[0];
           if (list.result !== '' && list.result == true) {
@@ -67,6 +69,10 @@ export class HeaderComponent {
     if (this.category == 'list') {
       // // 検索画面の場合 listComponentの処理を実行
       this.headerSearch.emit({});
+    }
+    if (this.category == 'edit') {
+      // // 検索画面の場合 listComponentの処理を実行
+      this.headerEdit.emit({});
     }
   }
 

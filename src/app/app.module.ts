@@ -32,6 +32,7 @@ import { ConditionDeleteModalComponent } from './modal/conditionDelete.modal.com
 import { ProjectSearchModalComponent } from './modal/projectSearch.modal.component';
 import { CustomerSearchModalComponent } from './modal/customerSearch.modal.component';
 import { EquipmentSearchModalComponent } from './modal/equipmentSearch.modal.component';
+import { LoadingComponent } from './loading/loading.component';
 
 import { JsonpService } from './jsonp.service';
 import { PostService } from './post.service';
@@ -62,6 +63,7 @@ import { OrderByPipe } from './pipe/order.by.pipe';
     CustomerSearchModalComponent,
     EquipmentSearchModalComponent,
     CommonComponent,
+    LoadingComponent,
     OrderByPipe
   ],
   imports: [

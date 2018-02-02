@@ -6,6 +6,8 @@ import { JsonpService } from '../jsonp.service';
 
 import { environment } from '../../environments/environment.local';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'my-app',
   templateUrl: './detail.component.html',
@@ -14,10 +16,12 @@ import { environment } from '../../environments/environment.local';
 export class DetailComponent implements OnInit {
   @ViewChild('common') common;
   @ViewChild('relateUser') relateUser;
-  
+
 
   constructor(private route: ActivatedRoute, private jsonpService: JsonpService) { }
-  
+
+  isLoading: boolean = true;
+
   userId = "";
   userName = "";
   sectionCd = "";
@@ -44,8 +48,8 @@ export class DetailComponent implements OnInit {
     ps.set('sectionName', this.sectionName);
     // ::: 2018.02.01 [#34] 関係者の既読処理 Add End   newtouch
 
-
     // 画面表示パラメータの取得処理
+    this.isLoading = true;
     this.jsonpService.requestGet('IncidentDataGet.php', ps)
       .subscribe(
       data => {
@@ -54,17 +58,22 @@ export class DetailComponent implements OnInit {
           let one = data[0];
           if (one.result !== '' && one.result == true) {
             // 画面表示パラメータのセット処理
-            this.setDspParam(one);
+            this.setDspParam(data.slice(1,-1)[0]);
+
+            // 変更履歴パラメータのセット処理
+            this.setChangeRev(data.slice(2)[0]);
 
             // 関連リンク 障害対応報告書(MR2) 取得
             this.findMr2List(this.incidentNo);
           }
         }
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
         return false;
       }
       );
@@ -78,6 +87,7 @@ export class DetailComponent implements OnInit {
     }
 
     // 画面表示パラメータの取得処理
+    this.isLoading = true;
     this.jsonpService.requestGet('mr2ListDataGet.php', ps)
       .subscribe(
       data => {
@@ -91,11 +101,13 @@ export class DetailComponent implements OnInit {
             this.setMr2DspParam(mr2Data); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
         return false;
       }
       );
@@ -138,6 +150,41 @@ export class DetailComponent implements OnInit {
     if (this.SUB_WIN) this.SUB_WIN.close();
     let url = environment.jikoPath + "jiko171211.html"; // 環境に合わせたURLを作成する TODO:固定値
     this.SUB_WIN = this.CMN_openNewWindow1(url, "sub_jiko", 1200, 800);
+  }
+
+  // 費用決済申請 新規登録画面表示処理 TODO:画面表示と自動転記
+  newHiyo(status, division, idno, bno, system_id, gougi_answer) {
+    if (system_id == "") {
+      system_id = "1282";
+    }
+
+    // var frm = window.document.fm1;
+    var strurl;
+
+    strurl = environment.hiyoPath + "wf_main_input.php";
+    strurl += "?user_id=ADF";
+    strurl += "&authority=9";
+    //	strurl += "&system_id=1282";
+    strurl += "&system_id=" + system_id;
+    strurl += "&status=" + status;
+    strurl += "&division=" + division;
+    strurl += "&idno=" + idno;
+    strurl += "&win_kbn=1";
+    if (gougi_answer) strurl += "&gougi_answer_mode=Y";
+
+    strurl += '&unit_flg=';
+    strurl += '&main_system_id=';
+    strurl += '&main_idno=';
+    strurl += '&param1=';
+    strurl += '&param2=';
+    strurl += '&param3=';
+    //	URLにBNOが含まれているかどうか？
+    if (bno != "") {
+      strurl = strurl.replace("BNO=&", "BNO=" + bno + "&");
+    }
+
+    this.SUB_WIN = this.CMN_openNewWindow1(strurl, "WF_EDIT", 1200, 800);
+    return;
   }
 
   // 関連費用決済申請表示処理 TODO:固定値表示
@@ -416,6 +463,11 @@ export class DetailComponent implements OnInit {
     this.MR2List = data;
   }
 
+  // 変更履歴パラメータのセット処理
+  setChangeRev(data) {
+    this.chanegeRev = data;
+  }
+
   /**
    * 以下、削除予定の固定値
    * 
@@ -473,7 +525,7 @@ export class DetailComponent implements OnInit {
 
   // インシデント関係者 
   initRelateUserList(relateUserArray: Array<any>) {
-    this.relateUserList=[];
+    this.relateUserList = [];
     let length = relateUserArray.length;
     if (relateUserArray.length > 0) {
       for (let i = 0; i < length; i++) {
@@ -510,7 +562,7 @@ export class DetailComponent implements OnInit {
   }
 
   // インシデント関係者 
-  findRelateUser(){
+  findRelateUser() {
     let ps = new URLSearchParams();
     ps.set('incidentId', this.pageIncidentId);
 
@@ -523,7 +575,7 @@ export class DetailComponent implements OnInit {
           let one = data[0];
           if (one.result !== '' && one.result == true) {
             // 画面表示パラメータのセット処理
-            this.initRelateUserList(one.relateUserList);
+            this.initRelateUserList(data.slice(1,-1)[0].relateUserList);
           }
         }
       },
@@ -556,20 +608,20 @@ export class DetailComponent implements OnInit {
   // ================= フロントデスク削除処理 =================
   // 削除待ちの関係者ID
   delRelateId;
-  setDeleteInfo(relateId:any){
+  setDeleteInfo(relateId: any) {
     this.delRelateId = relateId;
   }
-  
+
   // インシデント関係者の削除
   relateUserDelete() {
-    
+
     let ps = new URLSearchParams();
-    ps.set('relateId',this.delRelateId);
+    ps.set('relateId', this.delRelateId);
     // ログイン情報設定
-    ps.set('userId',this.userId);
-    ps.set('userName',this.userName);
-    ps.set('sectionCd',this.sectionCd);
-    ps.set('sectionName',this.sectionName);
+    ps.set('userId', this.userId);
+    ps.set('userName', this.userName);
+    ps.set('sectionCd', this.sectionCd);
+    ps.set('sectionName', this.sectionName);
 
     // 検索
     this.jsonpService.requestGet('IncidentRelateUserDelete.php', ps)
@@ -577,8 +629,8 @@ export class DetailComponent implements OnInit {
       data => {
         if (data[0]['resultFlg'] == '0') {
           // 通信成功時 
-          this.findRelateUser();     
-        }else{
+          this.findRelateUser();
+        } else {
           alert(data[0]['resultMsg']);
         }
       },
@@ -594,7 +646,7 @@ export class DetailComponent implements OnInit {
 
   // ================= 関係者を追加=================
   // 関係者を追加button
-  relateUserAdd(){
+  relateUserAdd() {
     this.relateUser.openModal(this.pageIncidentId);
   }
 
@@ -608,16 +660,16 @@ export class DetailComponent implements OnInit {
 
       let ps = new URLSearchParams();
       ps.set('incidentId', this.pageIncidentId);
-      ps.set('relateUserId',salesUserId);
-      ps.set('relateUserNm',salesUserNm);
-      ps.set('relateUserSectionCd',salesDeptCd);
-      ps.set('relateUserSectionNm',salesDeptNm);
+      ps.set('relateUserId', salesUserId);
+      ps.set('relateUserNm', salesUserNm);
+      ps.set('relateUserSectionCd', salesDeptCd);
+      ps.set('relateUserSectionNm', salesDeptNm);
       // ログイン情報設定
-      ps.set('userId',this.userId);
-      ps.set('userName',this.userName);
-      ps.set('sectionCd',this.sectionCd);
-      ps.set('sectionName',this.sectionName);
-  
+      ps.set('userId', this.userId);
+      ps.set('userName', this.userName);
+      ps.set('sectionCd', this.sectionCd);
+      ps.set('sectionName', this.sectionName);
+
       // 検索
       this.jsonpService.requestGet('IncidentRelateUserSave.php', ps)
         .subscribe(
@@ -625,7 +677,7 @@ export class DetailComponent implements OnInit {
           if (data[0]['resultFlg'] == '0') {
             // 通信成功時
             this.findRelateUser();
-          }else{
+          } else {
             alert(data[0]['resultMsg']);
           }
         },
@@ -635,7 +687,7 @@ export class DetailComponent implements OnInit {
           console.log('サーバとのアクセスに失敗しました。');
           return false;
         }
-      );
+        );
     }
   }
   // ================= 関係者を追加=================

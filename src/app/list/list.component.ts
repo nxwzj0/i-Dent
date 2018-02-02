@@ -452,6 +452,49 @@ export class ListComponent implements OnInit {
 
   }
 
+
+  checkDateShowCallStartDateFrom = false; //受付日（FROM）(日付型チェック)
+  checkDateShowCallStartDateTo = false; //受付日（TO）(日付型チェック)
+  checkDateShowIncidentStartDateFrom = false; //発生日時（FROM）(日付型チェック)
+  checkDateShowIncidentStartDateTo = false; //発生日時（TO）(日付型チェック)
+
+  // 日付型値の日付型チェック
+  checkDate() {
+
+    // 受付日（FROM）
+    this.checkDateShowCallStartDateFrom = false; //受付日（FROM）(日付型チェック)
+    var callStartDateFromValue = (<HTMLInputElement>document.getElementById('txt_callStartDateFrom')).value;
+    if (this.callStartDateFrom == null && callStartDateFromValue != "") {
+      this.checkDateShowCallStartDateFrom = true;
+      return false;
+    }
+
+    // 受付日（TO）
+    this.checkDateShowCallStartDateTo = false; //受付日（TO）(日付型チェック)
+    var callStartDateToValue = (<HTMLInputElement>document.getElementById('txt_callStartDateTo')).value;
+    if (this.callStartDateTo == null && callStartDateToValue != "") {
+      this.checkDateShowCallStartDateTo = true;
+      return false;
+    }
+
+    // 発生日時（FROM）
+    this.checkDateShowIncidentStartDateFrom = false; //発生日時（FROM）(日付型チェック)
+    var incidentStartDateFromValue = (<HTMLInputElement>document.getElementById('txt_incidentStartDateTimeFrom')).value;
+    if (this.incidentStartDateTimeFrom == null && incidentStartDateFromValue != "") {
+      this.checkDateShowIncidentStartDateFrom = true;
+      return false;
+    }
+
+    // 発生日時（TO）
+    this.checkDateShowIncidentStartDateTo = false; //発生日時（TO）(日付型チェック)
+    var incidentStartDateToValue = (<HTMLInputElement>document.getElementById('txt_incidentStartDateTimeTo')).value;
+    if (this.incidentStartDateTimeTo == null && incidentStartDateToValue != "") {
+      this.checkDateShowIncidentStartDateTo = true;
+      return false;
+    }
+    return true;
+  }
+
   incidentList = [];
   incidentNo = null;
   callContent = null;
@@ -462,6 +505,7 @@ export class ListComponent implements OnInit {
   callStartDateTo = null;
   // 検索処理
   search() {
+    if (this.checkDate()) {
     // 検索パラメータの作成
     let ps = new URLSearchParams();
     ps.set("incidentNo", this.incidentNo);
@@ -498,6 +542,7 @@ export class ListComponent implements OnInit {
         return false;
       }
       );
+    }
   }
 
   keyword = null;

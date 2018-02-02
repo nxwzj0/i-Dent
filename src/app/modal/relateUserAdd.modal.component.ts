@@ -7,6 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'relateUserAdd-modal',
   templateUrl: './relateUserAdd.modal.component.html',
@@ -21,6 +23,8 @@ export class RelateUserAddModalComponent {
   @Output() relateUserSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
+
+  isLoading: boolean = false;
 
   // 検索条件
   searchUserLastNm = "";
@@ -71,6 +75,7 @@ search() {
   ps.set("sectionCd", this.searchSectionCd);
 
   // 検索
+  this.isLoading = true;
   this.jsonpService.commonRequestGet('UserListDataGet.php', ps)
     .subscribe(
     data => {
@@ -85,11 +90,13 @@ search() {
       }
       this.currentPage = 1;
       this.pageChanged(null);
+      this.isLoading = false;
     },
     error => {
       // 通信失敗もしくは、コールバック関数内でエラー
       console.log(error);
       console.log('サーバとのアクセスに失敗しました。');
+      this.isLoading = false;
       return false;
     }
     );
@@ -136,6 +143,7 @@ setDspParam(data) {
     ps.set('relateUserId',userId);
 
     // 検索
+    this.isLoading = true;
     this.jsonpService.requestGet('IncidentRelateUserCheck.php', ps)
       .subscribe(
       data => {
@@ -148,11 +156,13 @@ setDspParam(data) {
           // 重複結果、重複無し
           this.openModalSecond('確認','関係者を追加します。宜しいですか？','OK','キャンセル');
         }
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
         return false;
       }
     );

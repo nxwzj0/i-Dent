@@ -8,6 +8,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
+<loading [loading]="isLoading"></loading>
 <my-header></my-header>
 
 <div>
@@ -54,8 +55,8 @@
                 <td class="char-list">{{data?.kijoNm}}</td>
                 <td class="char-list">{{data?.setubiNm}}</td>
                 <td class="status-list">{{data?.prefNm}}</td>
-                <td class="date-list">{{data?.incidentStartDateTime}}</td>
-                <td class="date-list">{{data?.callDate}}</td>
+                <td class="date-list">{{data?.incidentStartDateTime| date:'yyyy/MM/dd HH:mm'}}</td>
+                <td class="date-list">{{data?.callDate| date:'yyyy/MM/dd HH:mm'}}</td>
                 <td class="status-list">{{data?.incidentTypeNm}}</td>
                 <td class="status-list">{{data?.incidentStatusNm}}</td>
                 <td class="status-list">{{data?.relatePj}}</td>

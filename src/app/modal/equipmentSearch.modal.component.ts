@@ -7,6 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'equipmentSearch-modal',
   templateUrl: './equipmentSearch.modal.component.html',
@@ -19,6 +21,8 @@ export class EquipmentSearchModalComponent {
   modalRef: BsModalRef;
 
   constructor(private modalService: BsModalService) { }
+
+  isLoading: boolean = false;
 
   // 検索条件
   searchItem1 = "";

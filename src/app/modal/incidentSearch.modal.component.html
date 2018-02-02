@@ -7,7 +7,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
-
+<loading [loading]="isLoading"></loading>
 <div bsModal #template="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -68,7 +68,7 @@
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-7">
               <div class="date-div">
                 <div class="input-group">
-                  <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                  <input id="txt_callStartDateFrom" name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
                     [(bsValue)]="searchCallStartDateFrom" value="{{searchCallStartDateFrom | date:'yyyy/MM/dd'}}">
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
@@ -76,11 +76,14 @@
                     </button>
                   </span>
                 </div>
+                <span class="text-danger" *ngIf="checkDateShowCallStartDateFrom">
+                  受付日（FROM）に、日付を入力してください。
+                </span>
               </div>
               <span class="text-center inner-text">～</span>
               <div class="date-div">
                 <div class="input-group">
-                  <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                  <input id="txt_callStartDateTo" name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
                     [(bsValue)]="searchCallStartDateTo" value="{{searchCallStartDateTo | date:'yyyy/MM/dd'}}">
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
@@ -88,6 +91,9 @@
                     </button>
                   </span>
                 </div>
+                <span class="text-danger" *ngIf="checkDateShowCallStartDateTo">
+                  受付日（TO）に、日付を入力してください。
+                </span>
               </div>
             </div>
           </div>

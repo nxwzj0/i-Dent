@@ -7,6 +7,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { JsonpService } from '../jsonp.service';
 
+import { LoadingComponent } from "../loading/loading.component";
+
 @Component({
   selector: 'sectionSearch-modal',
   templateUrl: './sectionSearch.modal.component.html',
@@ -24,6 +26,8 @@ export class SectionSearchModalComponent {
   @Output() salesSectionSelect: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private jsonpService: JsonpService) { }
+
+  isLoading: boolean = false;
 
   //検索条件
   searchPostCd = "";
@@ -73,6 +77,7 @@ export class SectionSearchModalComponent {
     ps.set("companyNm", this.searchCompanyNm);
 
     // 検索
+    this.isLoading = true;
     this.jsonpService.commonRequestGet('SectionListDataGet.php', ps)
       .subscribe(
       data => {
@@ -89,6 +94,7 @@ export class SectionSearchModalComponent {
         }
         this.currentPage = 1;
         this.pageChanged(null);
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
@@ -96,6 +102,7 @@ export class SectionSearchModalComponent {
         console.error(error);
         console.log('サーバとのアクセスに失敗しました。');
         console.groupEnd();
+        this.isLoading = false;
         return false;
       }
       );

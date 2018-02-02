@@ -4,6 +4,7 @@ import { URLSearchParams } from '@angular/http';
 
 import { JsonpService } from '../jsonp.service';
 import { WindowRefService } from '../windowRef.service';
+import { LoadingComponent } from "../loading/loading.component";
 
 @Component({
   selector: 'my-mr2',
@@ -17,6 +18,7 @@ export class Mr2Component implements OnInit {
     this.nativeWindow = winRef.getNativeWindow();
   }
 
+  isLoading: boolean = true;
   mr2Data = [];
 
   ngOnInit() {
@@ -30,6 +32,7 @@ export class Mr2Component implements OnInit {
     }
 
     // 画面表示パラメータの取得処理
+    this.isLoading = true;
     this.jsonpService.requestGet('mr2DataGet.php', ps)
       .subscribe(
       data => {
@@ -43,11 +46,13 @@ export class Mr2Component implements OnInit {
             this.setDspParam(mr2Data[0]); // 配列1つ目は、サーバ処理成功フラグなので除外
           }
         }
+        this.isLoading = false;
       },
       error => {
         // 通信失敗もしくは、コールバック関数内でエラー
         console.log(error);
         console.log('サーバとのアクセスに失敗しました。');
+        this.isLoading = false;
         return false;
       }
       );
@@ -55,10 +60,8 @@ export class Mr2Component implements OnInit {
 
   // 画面表示パラメータの初期化
   // 基本情報
-  insDate = ""; // 登録日
-  insUserNm = ""; // 登録者
-  updDate = "" // 更新日
-  updUserNm = ""; // 更新者
+  updDateDsp = ""; // 最終更新日
+  updUserNmDsp = ""; // 最終更新ユーザー
   incidentNo = ""; // 受付番号
   actionCnt = ""; // 出動回数
   PjId = ""; // PJ番号
@@ -88,9 +91,9 @@ export class Mr2Component implements OnInit {
   subjectNm = ""; // 件名
   setubiNm = ""; // 設備名
   triggerDsp = ""; // トリガー
-  hindo = ""; // 頻度
-  gensyo = ""; // 現象
-  jyotai = ""; // 状態
+  hindoDsp = ""; // 頻度
+  gensyoDsp = ""; // 現象
+  jyotaiDsp = ""; // 状態
   defectComment = ""; // 不具合状況
   setubiStop = ""; // 設備停止
   dataDefect = ""; // データ欠損
@@ -99,8 +102,7 @@ export class Mr2Component implements OnInit {
   genin = ""; // 原因特定
   geninComment = ""; // 原因
   actSyotiNm = ""; // 処置方法
-  actSyotiYobo = ""; // 顧客要望
-  actSyotiDetail = ""; // 顧客要望内容
+  actSyotiYoboDsp = ""; // 顧客要望
   actionTaisakuDt = ""; // 対策期限
   actionSonotaComm = ""; // その他コメント
   actComment = ""; // 処置
@@ -130,8 +132,7 @@ export class Mr2Component implements OnInit {
   hosyuKeiyakuNm = ""; // 保守契約(種類)
   kakuninMethNm = ""; // 確認方法
   failureRankNm = ""; // 障害ランク
-  geninSortNm = ""; // 原因分類
-  geninSortStr = ""; // 原因分類　直接入力
+  geninSortDsp = ""; // 原因分類
   koukaiNm = ""; // 社外公開
   syanaiMessage = ""; // 社内向け連絡事項・補足・備考欄
 
@@ -145,20 +146,13 @@ export class Mr2Component implements OnInit {
   targetCan4 = ""; // 対象CAN4
   targetCan5 = ""; // 対象CAN5
 
-  mkbid = ""; // MKBID
-
-
   // 画面表示パラメータのセット処理
   setDspParam(data) {
     // 最終更新日・最終更新ユーザー
-    if (data.updDate != "" && data.updUserNm != "") {
-      this.updDate = data.updDate;
-      this.updUserNm = data.updUserNm;
-    } else {
-      this.updDate = data.insDate;
-      this.updUserNm = data.insUserNm;
-    }
+    this.updDateDsp = data.updDateDsp;
+    this.updUserNmDsp = data.updUserNmDsp;
 
+    // 基本情報
     this.incidentNo = data.incidentNo;
     this.actionCnt = data.actionCnt;
     this.PjId = data.PjId;
@@ -176,6 +170,7 @@ export class Mr2Component implements OnInit {
     this.issSectionNm = data.issSectionNm;
     this.mr2StsNm = data.mr2StsNm;
 
+    // 行動記録
     this.goDate = data.goDate;
     this.arrivalDate = data.arrivalDate;
     this.workStartDate = data.workStartDate;
@@ -183,35 +178,13 @@ export class Mr2Component implements OnInit {
     this.retuenDate = data.retuenDate;
     this.arrivalBackDate = data.arrivalBackDate;
 
+    // 作業情報
     this.subjectNm = data.subjectNm;
     this.setubiNm = data.setubiNm;
-
-    this.triggerDsp = data.triggerDsp
-
-    if (data.hindoStr.length > 0) {
-      // 頻度：その他選択有
-      this.hindo = data.hindo + "（" + data.hindoStr + "）";
-    } else {
-      // 頻度：その他選択無
-      this.hindo = data.hindo;
-    }
-
-    if (data.gensyoStr.length > 0) {
-      // 現象：その他選択有
-      this.gensyo = data.gensyo + "（" + data.gensyoStr + "）";
-    } else {
-      // 現象：その他選択無
-      this.gensyo = data.gensyo;
-    }
-
-    if (data.jyotaiStr.length > 0) {
-      // 状態：その他選択有
-      this.jyotai = data.jyotai + "（" + data.jyotaiStr + "）";
-    } else {
-      // 状態：その他選択無
-      this.jyotai = data.jyotai;
-    }
-
+    this.triggerDsp = data.triggerDsp;
+    this.hindoDsp = data.hindoDsp;
+    this.gensyoDsp = data.gensyoDsp;
+    this.jyotaiDsp = data.jyotaiDsp;
     this.defectComment = data.defectComment;
     this.setubiStop = data.setubiStop;
     this.dataDefect = data.dataDefect;
@@ -220,15 +193,7 @@ export class Mr2Component implements OnInit {
     this.genin = data.genin;
     this.geninComment = data.geninComment;
     this.actSyotiNm = data.actSyotiNm;
-
-    if (data.actSyotiDetail.length > 0) {
-      // 顧客要望 有り
-      this.actSyotiYobo = data.actSyotiYobo + "（" + data.actSyotiDetail + "）";
-    } else {
-      // 顧客要望 無し
-      this.actSyotiYobo = data.actSyotiYobo;
-    }
-
+    this.actSyotiYoboDsp = data.actSyotiYoboDsp;
     this.actionTaisakuDt = data.actionTaisakuDt;
     this.actionSonotaComm = data.actionSonotaComm;
     this.actComment = data.actComment;
@@ -245,8 +210,11 @@ export class Mr2Component implements OnInit {
     this.finalCheckPassNm = data.finalCheckPassNm;
     this.finalCheckDetNm = data.finalCheckDetNm;
 
+    // お客様入力欄
     this.thisTimeWorkNm = data.thisTimeWorkNm;
     this.custComment = data.custComment;
+
+    // 社内向け入力欄
     this.supSotiSortNm = data.supSotiSortNm;
     this.supKisyuKbnNm = data.supKisyuKbnNm;
     this.seisakuMaker = data.seisakuMaker;
@@ -255,27 +223,20 @@ export class Mr2Component implements OnInit {
     this.hosyuKeiyakuNm = data.hosyuKeiyakuNm;
     this.kakuninMethNm = data.kakuninMethNm;
     this.failureRankNm = data.failureRankNm;
-
-    if (data.geninSortStr.length > 0) {
-      // 原因分類：その他選択有
-      this.geninSortNm = data.geninSortNm + "（" + data.geninSortStr + "）";
-    } else {
-      // 原因分類：その他選択無
-      this.geninSortNm = data.geninSortNm;
-    }
-
+    this.geninSortDsp = data.geninSortDsp;
     this.koukaiNm = data.koukaiNm;
     this.syanaiMessage = data.syanaiMessage;
 
+    // 改善情報
     this.kaizen = data.kaizen;
 
+    // 対象CAN
     this.targetCan1 = data.targetCan1;
     this.targetCan2 = data.targetCan2;
     this.targetCan3 = data.targetCan3;
     this.targetCan4 = data.targetCan4;
     this.targetCan5 = data.targetCan5;
 
-    this.mkbid = data.mkbid;
   }
 
 }

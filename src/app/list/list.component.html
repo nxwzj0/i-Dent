@@ -8,6 +8,7 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
+<loading [loading]="isLoading"></loading>
 <my-header #header (headerSearch)="reloadSearch($event)"></my-header>
 <conditionSave-modal #conditionSaveModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionSave-modal>
 <conditionDelete-modal #conditionDeleteModal (conDelButtonshowDelFlg)="setShowDelFlg($event)" (changeCondition)="changeCondition($event)"></conditionDelete-modal>
@@ -233,7 +234,7 @@
             <div class="date-div">
               <div class="input-group">
                 <!-- <input type="text" class="form-control"> -->
-                <input name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                <input id="txt_callStartDateFrom" name="txt_callStartDateFrom" type="text" class="form-control" #dpCallStartDateFrom="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
                   [(bsValue)]="callStartDateFrom" value="{{callStartDateFrom | date:'yyyy/MM/dd'}}">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-input-support" (click)="dpCallStartDateFrom.toggle()">
@@ -241,12 +242,15 @@
                   </button>
                 </span>
               </div>
+              <span class="text-danger" *ngIf="checkDateShowCallStartDateFrom">
+                受付日（FROM）に、日付を入力してください。
+              </span>
             </div>
             <span class="text-center inner-text">～</span>
             <div class="date-div">
               <div class="input-group">
                 <!-- <input type="text" class="form-control"> -->
-                <input name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
+                <input id="txt_callStartDateTo" name="txt_callStartDateTo" type="text" class="form-control" #dpCallStartDateTo="bsDatepicker" bsDatepicker [bsConfig]="bsConfig"
                   [(bsValue)]="callStartDateTo" value="{{callStartDateTo | date:'yyyy/MM/dd'}}">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-input-support" (click)="dpCallStartDateTo.toggle()">
@@ -254,6 +258,9 @@
                   </button>
                 </span>
               </div>
+              <span class="text-danger" *ngIf="checkDateShowCallStartDateTo">
+                受付日（TO）に、日付を入力してください。
+              </span>
             </div>
           </div>
         </span>
@@ -434,7 +441,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
             <div class="date-div">
               <div class="input-group">
-                <input name="txt_incidentStartDateTimeFrom" type="text" class="form-control" #dpIncidentStartDateTimeFrom="bsDatepicker"
+                <input id="txt_incidentStartDateTimeFrom" name="txt_incidentStartDateTimeFrom" type="text" class="form-control" #dpIncidentStartDateTimeFrom="bsDatepicker"
                   bsDatepicker [bsConfig]="bsConfig" [(bsValue)]="incidentStartDateTimeFrom" value="{{incidentStartDateTime | date:'yyyy/MM/dd'}}">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-input-support" (click)="dpIncidentStartDateTimeFrom.toggle()">
@@ -442,11 +449,14 @@
                   </button>
                 </span>
               </div>
+              <span class="text-danger" *ngIf="checkDateShowIncidentStartDateFrom">
+                発生日時（FROM）に、日付を入力してください。
+              </span>
             </div>
             <span class="text-center inner-text">～</span>
             <div class="date-div">
               <div class="input-group">
-                <input name="txt_incidentStartDateTimeTo" type="text" class="form-control" #dpIncidentStartDateTimeTo="bsDatepicker" bsDatepicker
+                <input id="txt_incidentStartDateTimeTo" name="txt_incidentStartDateTimeTo" type="text" class="form-control" #dpIncidentStartDateTimeTo="bsDatepicker" bsDatepicker
                   [bsConfig]="bsConfig" [(bsValue)]="incidentStartDateTimeTo" value="{{incidentStartDateTimeTo | date:'yyyy/MM/dd'}}">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-input-support" (click)="dpIncidentStartDateTimeTo.toggle()">
@@ -454,6 +464,9 @@
                   </button>
                 </span>
               </div>
+              <span class="text-danger" *ngIf="checkDateShowIncidentStartDateTo">
+                発生日時（TO）に、日付を入力してください。
+              </span>
             </div>
           </div>
         </span>
@@ -679,8 +692,8 @@
                 <td class="char-list">{{data?.kijoNm}}</td>
                 <td class="char-list">{{data?.setubiNm}}</td>
                 <td class="status-list">{{data?.prefNm}}</td>
-                <td class="date-list">{{data?.incidentStartDateTime}}</td>
-                <td class="date-list">{{data?.callDate}}</td>
+                <td class="date-list">{{data?.incidentStartDateTime| date:'yyyy/MM/dd HH:mm'}}</td>
+                <td class="date-list">{{data?.callDate| date:'yyyy/MM/dd HH:mm'}}</td>
                 <td class="status-list">{{data?.incidentTypeNm}}</td>
                 <td class="status-list">{{data?.incidentStatusNm}}</td>
                 <td class="status-list">{{data?.relatePj}}</td>

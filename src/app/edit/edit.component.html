@@ -8,7 +8,8 @@
 //	修正履歴　　　　：
 //*****************************************************************************
 -->
-<my-header></my-header>
+<loading [loading]="isLoading"></loading>
+<my-header (headerEdit)="reloadEdit($event)"></my-header>
 <common-modal #common (commonEnter)="onEntry($event, iFile.files)"></common-modal>
 <incidentSearch-modal #incident (incidentSearchSelect)="onIncidentSearchSelected($event)"></incidentSearch-modal>
 <kijoSearch-modal #kijo></kijoSearch-modal>
@@ -51,7 +52,7 @@
             <span class="h3 incident-title-status">{{incidentNo}}</span>
             <span class="h4 incident-title-status">　{{incidentStatusNm}}</span>
             <div class="pull-right">
-              <strong>登録日：{{insDate}} {{insUserNm}}　最終更新日：{{updDate}} {{updUserNm}}</strong>
+              <strong>登録日：{{insDate | date:'yyyy/MM/dd HH:mm'}} {{insUserNm}}　最終更新日：{{updDate | date:'yyyy/MM/dd HH:mm'}} {{updUserNm}}</strong>
             </div>
           </div>
           <!-- /.panel-heading -->
@@ -1114,30 +1115,30 @@
             <h5 class="context-header">
               <strong>障害対応報告書(MR2)</strong>
             </h5>
-            <div class="context-margin">
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>件名：</strong>
+            <div *ngFor="let data of MR2List" class="context-margin">
+              <a (click)="showMr2(data?.mkbid)">
+                <u *ngIf="data?.subjectNm.length > 0">{{data?.subjectNm}}</u>
+                <u *ngIf="data?.subjectNm.length == 0">（件名なし）</u>
+              </a>
+              <div class="context-margin">
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>作成日：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.makeDate | date:'yyyy/MM/dd'}}</div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <a (click)="showMr2()">
-                    <u>XXXXXXXXXXシーケンサ異常</u>
-                  </a>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>依頼元：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.requestUserNm}}</div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>作成日：</strong>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <strong>作業担当者：</strong>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{{data?.workUserNm}}</div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">2017/1/4</div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>依頼元：</strong>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">依頼元</div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                  <strong>作業担当者：</strong>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">川本　健</div>
               </div>
             </div>
             <h5 class="context-header">
